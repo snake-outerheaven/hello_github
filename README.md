@@ -1,3 +1,2 @@
 # hello_github
-might be adding some stuff as i learn programming, consider this a hello world for git and github 
-( this will be free software, so feel free to contribute or use anything if its useful  ) 
+Estarei adicionando mais coisas, neste primeiro momento ainda estou em uma fase bastante inicial, então este repo será como um backup dos meus códigos, estou licenciando como GPL3 porque achei interessante manter tudo como free software.
