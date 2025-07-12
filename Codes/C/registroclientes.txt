@@ -1,0 +1,26 @@
+Registro de clientes do banco.
+
+
+
+Cliente 1
+
+Nome: Penrose
+Número da conta de Penrose: 1
+Saldo de Penrose: 1000.00
+Em dívida: Não
+Trabalha: Não
+
+
+
+
+Cliente 2
+
+Nome: Yokino
+Número da conta de Yokino: 2
+Saldo de Yokino: 1000.00
+Em dívida: Não
+Trabalha: Não
+
+
+
+
