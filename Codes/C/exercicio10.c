@@ -29,13 +29,13 @@
 typedef struct { // Essa forma de declarar structs é útil
                  // para eu usar cliente em qualquer lugar
                  // no código.
-  char nome_cliente[100];
-  int numero_conta;
-  double conta_cliente;
-  int status_divida; // bool
-  int status_trabalho; // bool
+  char nome_cliente[100]; // 100 bits
+  int numero_conta; // 1
+  double conta_cliente; // 1 
+  int status_divida; // bool bool1 = true
+  int status_trabalho; // bool bool2 = false
   char ocupacao[100];
-  double renda;
+  double renda; //8
 } cliente; // Meu cliente!
 
 // Função para exibir o vetor de estruturas para o usuário, eu chamo ela no
