@@ -29,36 +29,6 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 ---
 
-## 🚀 Como usar
-
-1. **Clone o repositório:**
-
-   git clone https://github.com/snake-outerheaven/hello_github.git
-
-2. **Acesse a pasta desejada:**
-
-   cd hello_github/Codes/C++
-
-3. **Compile ou execute conforme a linguagem:**
-
-   - **C/C++**
-
-     gcc arquivo.c -o programa   # Ou g++
-     ./programa
-
-   - **Python**
-
-     python3 arquivo.py
-
-   - **Rust**
-
-     rustc arquivo.rs
-     ./arquivo
-
-   - **Outros:** verifique o README da subpasta, se houver.
-
----
-
 ## 📌 Sobre este projeto
 
 - **Licença:** GPL v3
@@ -69,7 +39,7 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 ## 🤝 Como contribuir
 
-1. **Fork** este repositório.
+1. **Forke** este repositório.
 2. **Clone seu fork:**
 
    git clone https://github.com/SEU_USUARIO/hello_github.git
