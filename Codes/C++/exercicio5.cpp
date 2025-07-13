@@ -1,6 +1,6 @@
 #include <cmath>
-// biblioteca para matemática 
-#include <ios>
+// biblioteca para matemática
+
 #include <iostream>
 #include <iomanip>
 // biblioteca para entrada e saída (I/O)
