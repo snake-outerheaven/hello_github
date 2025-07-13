@@ -91,6 +91,8 @@ int main ( void ) {
     bool entrada_valida = false;
     std::string resposta; // puxando a resposta
 
+    limpar_tela();
+    
     std::this_thread::sleep_for(std::chrono::seconds(2)); // manipulação de tempo em C++, revisar se está correto
     
     std::cout << "Este é um programa que executa cálculos simples ao receber dois números do usuário,\n"
