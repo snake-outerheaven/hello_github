@@ -1,23 +1,37 @@
-#include <iostream> // biblioteca para entrada e saída (I/O)
-#include <string> // biblioteca de tipos e métodos para manipulação de strings
-#include <thread> // isso aqui consigo manipular diretamente com o processo do executável
-#include <chrono> // puxo para pegar um tipo de tempo
-#include <cstdlib> // puxo para usar std::command
+#include <cmath>
+#include <iostream>
+// biblioteca para entrada e saída (I/O)
+
+#include <string>
+// biblioteca de tipos e métodos para manipulação de strings
+
+#include <thread>
+// isso aqui consigo manipular diretamente com o processo do executável
+
+#include <chrono>
+// puxo para pegar um tipo de tempo
+
+#include <cstdlib>
+// puxo para usar std::system
+
+#include <algorithm> 
+#include <cctype>
+// ambos para normalizar string em método descrito na função principal para tornar todo o conteúdo da resposta minúsculo
+
 /*Classe simples para começar a molhar os pés em */
 
 class Calculadora {
 
   private:
-    //metodos escondidos ( só a classe usa)
+    // métodos escondidos (só a classe usa)
     // na prática apenas inicializando variáveis privadas, que só servem para a classe
     double a_;
     double b_;
     //std::string erro_; removi, pois acho desnecessário e acho que pode passar para a main
 
   public:
-    // metodos publicos pelos quais o código geral pode interagir com a classe 
+    // métodos públicos pelos quais o código geral pode interagir com a classe 
 
-    
     // construtor: chamado quando se cria um objeto com a classe Calculadora
     // parece ser uma função que executa inicializando tudo, e imprimir que está tudo certo
     Calculadora(double a = 0, double b = 0){
@@ -27,7 +41,7 @@ class Calculadora {
     }
 
     ~Calculadora(){
-      //Destrutor: chamado quando a Calculadora é destruida
+      //Destrutor: chamado quando a Calculadora é destruída
       std::cout << "Calculadora desligada!" << std::endl;
     }
 
@@ -47,8 +61,10 @@ class Calculadora {
     }
 
     double div(){
-      //método da divisão
-      return a_ / b_; // lembrar de cuidadr da divisão por zero na função principal
+      if(b_ == 0){
+        return NAN;
+      }
+      return a_ / b_; // lembrar de cuidar da divisão por zero na função principal
     }
 };
 
@@ -64,3 +80,72 @@ void limpar_tela( void ){
 }
 
 // eu poderia escrever uma função bool, mas eu teria que ver os artifícios de C++ para comprovar todos os tipos de leitura de forma genérica, investigar depois...
+
+int main ( void ) {
+  while(true) {
+    // inicializo variáveis vazias para não dar problemas 
+    double a{} , b{};
+    bool entrada_valida = false;
+    std::string resposta; // puxando a resposta
+
+    std::this_thread::sleep_for(std::chrono::seconds(2)); // manipulação de tempo em C++, revisar se está correto
+    
+    std::cout << "Este é um programa que executa cálculos simples ao receber dois números do usuário,\n"
+      << " estes cálculos incluem soma, subtração, multiplicação e divisão, e visa \n"
+      << " demonstrar de forma inicial o uso de classes e POO (Programação Orientada a Objetos)\n"
+      << " de C++.";
+
+    std::cout << "\n\n";
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    std::cout << "Digite os valores de a e b para realizar os cálculos entre eles: ";
+
+    do {
+      if (std::cin >> a >> b){
+        entrada_valida = true;
+      }else{
+        std::cout << "Um dos valores digitados não procede, favor digitar novamente: ";
+        std::cin.clear();
+        std::cin.ignore(1024,'\n');  // limpa até 1024 caracteres ou até o '\n'
+      }
+    }while(!entrada_valida);
+
+    std::cin.ignore(1024, '\n'); // limpa o buffer antes de pegar a resposta completa com getline
+
+    std::cout << a << " e " << b << " estão corretos? ";
+
+    do{
+      std::getline(std::cin, resposta);
+    }while(resposta.empty());
+
+    std::transform(resposta.begin(), resposta.end(), resposta.begin(),
+      [](unsigned char c){return std::tolower(c);});
+    // Aplica uma transformação em cada caractere da string 'resposta':
+    // 1. Percorre a string do começo (resposta.begin()) até o fim (resposta.end()).
+    // 2. Para cada caractere, chama a função definida aqui, que é um "lambda" —
+    //    uma função sem nome, criada diretamente dentro do código para facilitar.
+    // 3. Esse lambda recebe um caractere 'c' (como unsigned char para evitar erros)
+    //    e usa a função std::tolower para transformar 'c' em letra minúscula.
+    // 4. O resultado substitui o caractere original na mesma posição da string,
+    //    então a string 'resposta' é modificada diretamente (in-place).
+    // Resumindo: converte todas as letras da string para minúsculas sem criar outra string.
+
+    if ( resposta == "sim" || resposta == "s" || resposta == "ss"){
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+
+      Calculadora calc(a,b); // inicializo o meu objeto aqui, isso deve chamar o construtor
+
+      std::cout << "Resultados saindo:\n" << "Soma = " << calc.soma() << "\nSubtração = " << calc.sub()
+                << "\nMultiplicação: " << calc.mult() << "\nDivisão = " << calc.div() << std::endl;
+
+      break; // Sai do loop infinito e termina o programa
+
+    } else {
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+      std::cout << "Vamos tentar novamente.\n\n";
+      // Continua o loop para repetir o processo
+    }
+  }
+  return 0;
+}
