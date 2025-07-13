@@ -21,7 +21,7 @@
 #include <cctype>
 // ambos para normalizar string em método descrito na função principal para tornar todo o conteúdo da resposta minúsculo
 
-/*Classe simples para começar a molhar os pés em */
+/*Classe simples para começar a molhar os pés em OOP*/
 
 class Calculadora {
 
@@ -35,11 +35,11 @@ class Calculadora {
   public:
     // métodos públicos pelos quais o código geral pode interagir com a classe 
 
-    // construtor: chamado quando se cria um objeto com a classe Calculadora
+    // construtor: método que ocorre ao se inicializar uma classe
     // parece ser uma função que executa inicializando tudo, e imprimir que está tudo certo
     Calculadora(double a = 0, double b = 0){
-      a_ = a;
-      b_ = b;
+      a_ = a; // ao inicializar o objeto, os valores com os quais ele receber do código geral, passam 
+      b_ = b; // para a parte privada
       std::cout << "Calculadora pronta! a = " << a_ << ", b = " << b_ << "\n";
     }
 
@@ -126,6 +126,7 @@ int main ( void ) {
 
     std::transform(resposta.begin(), resposta.end(), resposta.begin(),
       [](unsigned char c){return std::tolower(c);});
+
     // Aplica uma transformação em cada caractere da string 'resposta':
     // 1. Percorre a string do começo (resposta.begin()) até o fim (resposta.end()).
     // 2. Para cada caractere, chama a função definida aqui, que é um "lambda" —
@@ -141,7 +142,9 @@ int main ( void ) {
 
       Calculadora calc(a,b); // inicializo o meu objeto aqui, isso deve chamar o construtor
 
-      std::cout << std::fixed << std::setprecision(2); // aqui eu seto a precição de cout para 2 casas decimais
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+
+      std::cout << std::fixed << std::setprecision(2); // aqui eu seto a precisão de cout para 2 casas decimais
 
       std::cout << "Resultados saindo:\n" << "Soma = " << calc.soma() << "\nSubtração = " << calc.sub()
                 << "\nMultiplicação: " << calc.mult() << "\nDivisão = " << calc.div() << std::endl;
