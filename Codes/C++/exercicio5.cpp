@@ -1,5 +1,8 @@
 #include <cmath>
+// biblioteca para matemática 
+#include <ios>
 #include <iostream>
+#include <iomanip>
 // biblioteca para entrada e saída (I/O)
 
 #include <string>
@@ -135,6 +138,8 @@ int main ( void ) {
       std::this_thread::sleep_for(std::chrono::seconds(1));
 
       Calculadora calc(a,b); // inicializo o meu objeto aqui, isso deve chamar o construtor
+
+      std::cout << std::fixed << std::setprecision(2); // aqui eu seto a precição de cout para 2 casas decimais
 
       std::cout << "Resultados saindo:\n" << "Soma = " << calc.soma() << "\nSubtração = " << calc.sub()
                 << "\nMultiplicação: " << calc.mult() << "\nDivisão = " << calc.div() << std::endl;
