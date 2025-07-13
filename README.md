@@ -7,16 +7,22 @@ Aqui você encontra códigos em **C**, **C++**, **Python**, **Rust** e outras li
 
 ## 📂 Estrutura
 
+```
+
 Codes/
 ├── C/
-│ └── ... (exercícios e exemplos em C)
+│   └── ... (exercícios e exemplos em C)
 ├── C++/
-│ └── ... (exercícios e exemplos em C++)
+│   └── ... (exercícios e exemplos em C++)
 ├── Python/
-│ └── ... (scripts e exercícios em Python)
+│   └── ... (scripts e exercícios em Python)
 ├── Rust/
-│ └── ... (testes e exemplos em Rust)
+│   └── ... (testes e exemplos em Rust)
 └── ... (outras linguagens)
+
+```
+
+
 
 Cada subpasta agrupa códigos conforme a linguagem.  
 Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
