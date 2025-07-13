@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 
-
 class Calculadora {
 
   private:
@@ -12,7 +11,7 @@ class Calculadora {
     std::string erro_;
 
   public:
-    // metodos publicos pelos quais o código geral pode interagir com os dados da função main
+    // metodos publicos pelos quais o código geral pode interagir com a classe 
 
     
     // construtor: chamado quando se cria um objeto com a classe Calculadora
@@ -29,7 +28,7 @@ class Calculadora {
       std::cout << "Calculadora desligada!" << std::endl;
     }
 
-    double soma (){
+    double soma(){
       // método de soma 
       return a_ + b_;
     }
