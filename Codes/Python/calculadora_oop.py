@@ -169,7 +169,8 @@ def menu_calculadora(calc):
         print('12) Converter graus para radianos (de a)')
         print('13) Converter radianos para graus (de a)')
         print('14) Atualizar valores de a e b')
-        print('15) Sair')
+        print('15) Exibit a e b')
+        print('16) Sair')
 
         opcao = input('Escolha uma opção (1-15): ').strip()
 
@@ -210,6 +211,8 @@ def menu_calculadora(calc):
                 calc.b = b
                 print(f'Valores atualizados: a = {a}, b = {b}')
             case '15':
+                print(f'Os valores registrados são {calc.a} e {calc.b}')
+            case '16':
                 print('Encerrando o programa.')
                 del calc
                 time.sleep(1)
