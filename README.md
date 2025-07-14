@@ -5,7 +5,7 @@ Aqui você encontra códigos em **C**, **C++**, **Python**, **Rust** e outras li
 
 ---
 
-## 📂 Estrutura
+## Estrutura
 
 ```
 
@@ -29,7 +29,7 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 ---
 
-## 📌 Sobre este projeto
+##  Sobre este projeto
 
 - **Licença:** GPL v3
 - **Propósito:** Portfólio de estudos, registro da evolução no aprendizado de programação e espaço para colaborar ou comentar.
@@ -37,7 +37,7 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 ---
 
-## 🤝 Como contribuir
+##  Como contribuir
 
 1. **Forke** este repositório.
 2. **Clone seu fork:**
@@ -64,7 +64,7 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 ---
 
-## ✅ Dicas gerais
+##  Dicas gerais
 
 - Mantenha commits pequenos e mensagens claras.
 - Crie uma branch específica para cada nova ideia ou correção.
@@ -78,5 +78,3 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 - Siga a organização de pastas.
 
 ---
-
-**Bons estudos e boas contribuições! 🚀✨**
