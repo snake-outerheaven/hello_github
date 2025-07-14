@@ -123,12 +123,9 @@ class Calculadora:
         graus = round(math.degrees(valor), 4)
 
         if entrada is not None:
-            print(f'{entrada} radianos equivalem a {graus} graus.')
+            return f'{entrada} radianos equivalem a {graus} graus.'
         else:
-            print(f'{valor} radianos equivalem a {graus} graus.')
-
-        return graus
-
+            return f'{valor} radianos equivalem a {graus} graus.'
 
 # Função para limpar a tela de forma portátil (Windows e Unix)
 def limpar_tela():
@@ -235,8 +232,9 @@ def menu_calculadora(calc):
             case '12':
                 calc.graus_para_radianos()
             case '13':
-                entrada = input('Digite uma expressão em radianos (ex: 2*pi/3, pi/4) ou ENTER para usar valor atual de "a": ').strip()
-                if entrada == '':
+                entrada = input('Digite uma expressão em radianos (ex: 2*pi/3, pi/4) ou apenas digite enter'
+                                ' para usar valor atual de "a": ').strip().lower()
+                if not entrada:
                     # Se vazio, chama sem parâmetro para usar self.a
                     calc.radianos_para_graus()
                 else:
