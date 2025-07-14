@@ -5,22 +5,15 @@ import math
 
 class Calculadora:
 
-    # construtor, método que roda quando a classe é inicializada
     def __init__(self, a=0, b=0):
-        # self significa os atributos próprios do objeto, podendo ser feitas várias instâncias de classe
-        # com a e b de valores diferentes
         self.a = a
         self.b = b
-        time.sleep(1)  # só pra dar uma pausa e dar efeito na inicialização
+        time.sleep(1)
         print(f'Calculadora inicializada com {a} e {b}!')
 
-    # destrutor, método que roda quando o objeto inicializado com essa classe
-    # é destruído.
     def __del__(self):
-        time.sleep(1)  # pausa para dar efeito dramático :)
+        time.sleep(1)
         print('Calculadora destruída!')
-
-    # métodos simples para as operações da calculadora
 
     def soma(self):
         return self.a + self.b
@@ -37,144 +30,120 @@ class Calculadora:
         else:
             return self.a / self.b
 
-    # operações trigonométricas e matemáticas avançadas
-
-    def seno(self):
-        # calcula seno de self.a, que está em graus, mas math.sin precisa de radianos
-        # então convertemos graus para radianos com math.radians antes de passar para math.sin
-        return math.sin(math.radians(self.a))
-
-    def cosseno(self):
-        # calcula cosseno de self.a (em graus), convertendo para radianos
-        return math.cos(math.radians(self.a))
-
-    def tangente(self):
-        # calcula tangente de self.a (em graus), convertendo para radianos
-        return math.tan(math.radians(self.a))
-
     def potencia(self):
-        # calcula self.a elevado a self.b usando operador **
         return self.a ** self.b
 
     def raiz_quadrada(self):
-        # verifica se self.a é negativo, pois raiz quadrada de número negativo não é real
+        # trata raiz de número negativo
         if self.a < 0:
-            # avisa que não é possível calcular raiz quadrada de número negativo
             return 'Lamento, mas não dá para calcular raiz quadrada de número negativo.'
         else:
-            # calcula raiz quadrada normalmente usando math.sqrt
-            return math.sqrt(self.a)
+            # calcula raiz normalmente e formata o resultado para 4 casas decimais
+            return f'{math.sqrt(self.a):.4f}'
 
     def logaritmo(self, base=10):
-        # verifica se self.a é positivo, porque logaritmo só é definido para números > 0
         if self.a <= 0:
             return 'Lamento, mas logaritmo só é definido para números positivos.'
         else:
-            # calcula logaritmo de self.a na base passada (padrão base 10)
-            return math.log(self.a, base)
+            return f'{math.log(self.a, base):.4f}'
 
-    # método para avaliar uma expressão matemática usando eval com sandbox
+    def seno(self):
+        # calcula seno de a em graus convertendo para radianos
+        return f'{math.sin(math.radians(self.a)):.4f}'
+
+    def cosseno(self):
+        # calcula cosseno de a em graus convertendo para radianos
+        return f'{math.cos(math.radians(self.a)):.4f}'
+
+    def tangente(self):
+        # verifica se tangente está perto de ser indefinida (90 + k*180 graus)
+        angulo_mod = self.a % 180
+        if abs(angulo_mod - 90) < 1e-10:  # aproximação
+            return 'Lamento, tangente indefinida para esse ângulo.'
+        else:
+            return f'{math.tan(math.radians(self.a)):.4f}'
+
     def avaliar_expressao(self, expressao: str):
-        # prepara um "ambiente seguro" para avaliar a expressão que o usuário passar
-        # nesse ambiente, só permitimos acesso a: módulo math, atributos a e b,
-        # e bloqueamos o acesso a built-ins do Python para evitar código malicioso
         ambiente = {
             "math": math,
             "a": self.a,
             "b": self.b,
-            "__builtins__": {}  # remove built-ins para segurança
+            "__builtins__": {}
         }
         try:
-            # avalia a expressão matemática no ambiente controlado
             resultado = eval(expressao, ambiente)
-            return resultado
+            if isinstance(resultado, float):
+                return f'{resultado:.4f}'
+            else:
+                return resultado
         except Exception as e:
-            # se der erro (ex: sintaxe errada, divisão por zero, nome inválido),
-            # retorna uma mensagem amigável para o usuário
             return f'Opa, deu erro aqui: {e}'
 
-    # métodos para conversão graus <-> radianos
-
     def graus_para_radianos(self):
-        # converte o atributo 'a' que está em graus para radianos e retorna arredondado
         radianos = round(math.radians(self.a), 4)
         print(f'O valor de {self.a} graus em radianos é: {radianos}')
         return radianos
 
     def radianos_para_graus(self):
-        # converte o atributo 'a' que está em radianos para graus e retorna arredondado
         graus = round(math.degrees(self.a), 4)
         print(f'O valor de {self.a} radianos em graus é: {graus}')
         return graus
 
 
-# Função para limpar a tela do terminal de forma portátil entre Windows e Linux/Mac
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-# Conjuntos de respostas aceitas para confirmação positiva
 RESPOSTAS_POSITIVAS = {
     "sim", "s", "ss", "claro", "ok", "yes", "y",
     "affirmativo", "positivo", "beleza", "certamente"
 }
 
-# Conjuntos de respostas aceitas para confirmação negativa
 RESPOSTAS_NEGATIVAS = {
     "não", "nao", "n", "nn", "no", "negativo", "nem", "nunca", "jamais"
 }
 
 
-# Função que pede os números ao usuário e valida a confirmação
 def obter_numeros():
     while True:
         try:
             print('Por favor, digite dois números:\n')
-
-            # Entrada dos dois números, um por vez
             a = float(input('Digite o 1º número (para funções que usam só um número, digite aqui): '))
             b = float(input('Digite o 2º número (para funções que usam só um número, pode deixar zero): '))
 
             resposta_valida = False
 
-            # Loop para validar a confirmação do usuário sobre os números digitados
             while not resposta_valida:
                 resposta = input(f'Deseja confirmar {a} e {b} como números escolhidos? ').strip().lower()
                 if resposta in RESPOSTAS_POSITIVAS:
-                    # se positivo, confirma os números e sai do loop para retornar
                     print(f'Certo, {a} e {b} confirmados!')
                     resposta_valida = True
                 elif resposta in RESPOSTAS_NEGATIVAS:
-                    # se negativo, limpa a tela e reinicia o processo de entrada dos números
                     print('Beleza, vamos tentar de novo...')
                     time.sleep(1)
                     limpar_tela()
-                    resposta_valida = True  # sai do loop interno, mas não retorna os números
+                    resposta_valida = True
                 else:
-                    # se resposta inválida, pede para digitar algo válido
                     print('Huh?... não entendi sua resposta.')
                     time.sleep(1)
                     limpar_tela()
 
-            # só retorna os números se o usuário confirmou (resposta positiva)
             if resposta_valida and resposta in RESPOSTAS_POSITIVAS:
-                return a, b  # retorna os números confirmados para o programa continuar
+                return a, b
 
         except ValueError:
-            # caso o usuário digite algo que não seja número, avisa e repete o loop
             print('Ei, só números válidos, por favor!')
             time.sleep(1)
             limpar_tela()
 
 
-# Função que exibe o menu com as opções e trata a escolha do usuário
 def menu_calculadora(calc):
     while True:
         print('\nQual operação você quer fazer?')
-        print('1) Soma')
-        print('2) Subtração')
-        print('3) Multiplicação')
-        print('4) Divisão')
+        print('1) Soma (usa a e b)')
+        print('2) Subtração (usa a e b)')
+        print('3) Multiplicação (usa a e b)')
+        print('4) Divisão (usa a e b)')
         print('5) Potência (a elevado a b)')
         print('6) Raiz quadrada (de a)')
         print('7) Logaritmo base 10 (de a)')
@@ -184,21 +153,26 @@ def menu_calculadora(calc):
         print('11) Avaliar expressão matemática (use math, a e b)')
         print('12) Converter graus para radianos (de a)')
         print('13) Converter radianos para graus (de a)')
-        print('14) Sair')
+        print('14) Atualizar valores de a e b')
+        print('15) Sair')
 
-        opcao = input('Escolha uma opção (1-14): ').strip()
+        opcao = input('Escolha uma opção (1-15): ').strip()
 
         match opcao:
             case '1':
-                print(f'O resultado da soma é: {calc.soma()}')
+                print(f'O resultado da soma é: {calc.soma():.4f}')
             case '2':
-                print(f'O resultado da subtração é: {calc.sub()}')
+                print(f'O resultado da subtração é: {calc.sub():.4f}')
             case '3':
-                print(f'O resultado da multiplicação é: {calc.mult()}')
+                print(f'O resultado da multiplicação é: {calc.mult():.4f}')
             case '4':
-                print(f'O resultado da divisão é: {calc.div()}')
+                resultado = calc.div()
+                if isinstance(resultado, float):
+                    print(f'O resultado da divisão é: {resultado:.4f}')
+                else:
+                    print(resultado)
             case '5':
-                print(f'O resultado da potência é: {calc.potencia()}')
+                print(f'O resultado da potência é: {calc.potencia():.4f}')
             case '6':
                 print(f'A raiz quadrada de {calc.a} é: {calc.raiz_quadrada()}')
             case '7':
@@ -218,6 +192,12 @@ def menu_calculadora(calc):
             case '13':
                 calc.radianos_para_graus()
             case '14':
+                print('Vamos atualizar os valores de a e b...')
+                a, b = obter_numeros()
+                calc.a = a
+                calc.b = b
+                print(f'Valores atualizados para a = {a} e b = {b}')
+            case '15':
                 print('Ok, encerrando a calculadora...')
                 del calc
                 time.sleep(1)
