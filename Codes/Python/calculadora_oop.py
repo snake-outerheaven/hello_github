@@ -82,7 +82,7 @@ def main():
                 resposta_valida = False
 
                 # loop de validação
-                while not resposta_valida:
+                while not resposta_valida: # resposta_valida == False
                     resposta = input(f'Deseja confirmar {a} e {b} como números escolhidos? ').strip().lower()
 
                     if resposta in RESPOSTAS_POSITIVAS:
@@ -101,7 +101,7 @@ def main():
                         limpar_tela()
 
                 #truquezinho, usando um bool para capturar respostas válidas e quebrar o loop de validação
-                if resposta_valida:
+                if resposta_valida: # if resposta_valida == true
                     break
                 else:
                     continue
