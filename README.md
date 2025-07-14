@@ -74,7 +74,6 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
    git checkout main
    git merge upstream/main
    git push origin main
-
 ```
 - Siga a organização de pastas.
 
