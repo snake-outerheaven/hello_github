@@ -41,23 +41,23 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 1. **Forke** este repositório.
 2. **Clone seu fork:**
-
+```
    git clone https://github.com/SEU_USUARIO/hello_github.git
-
+```
 3. **Configure o `upstream` para acompanhar o repositório original:**
-
+```
    git remote add upstream https://github.com/snake-outerheaven/hello_github.git
-
+```
 4. **Crie uma branch para suas alterações:**
-
+```
    git checkout -b feature/nova-ideia
-
+```
 5. **Faça suas alterações, commit e push:**
-
+```
    git add .
    git commit -m "feat: descreva sua contribuição"
    git push origin feature/nova-ideia
-
+```
 6. **Abra um Pull Request** para a branch `main` deste repositório.
 
 7. Use **Issues** para relatar bugs, propor melhorias ou discutir ideias.
