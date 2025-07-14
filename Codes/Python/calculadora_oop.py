@@ -169,7 +169,7 @@ def menu_calculadora(calc):
         print('12) Converter graus para radianos (de a)')
         print('13) Converter radianos para graus (de a)')
         print('14) Atualizar valores de a e b')
-        print('15) Exibit a e b')
+        print('15) Exibir a e b')
         print('16) Sair')
 
         opcao = input('Escolha uma opção (1-15): ').strip()
