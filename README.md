@@ -69,12 +69,13 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 - Mantenha commits pequenos e mensagens claras.
 - Crie uma branch específica para cada nova ideia ou correção.
 - Sincronize seu fork regularmente:
-
+```
    git fetch upstream
    git checkout main
    git merge upstream/main
    git push origin main
 
+```
 - Siga a organização de pastas.
 
 ---
