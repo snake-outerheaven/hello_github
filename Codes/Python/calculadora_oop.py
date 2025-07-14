@@ -5,14 +5,14 @@ import math
 
 class Calculadora:
 
-    # Inicializa a calculadora com os valores a e b
+    # construtor, cuida da inicialização do objeto, colocando os dados obtidos do código na instância criada
     def __init__(self, a=0, b=0):
         self.a = a
         self.b = b
         time.sleep(1)
-        print(f'Calculadora inicializada com {a} e {b}.')
+        print(f'Calculadora inicializada com {self.a} e {self.b}.') # faz mais sentido mostrar dados do objeto
 
-    # Informa quando o objeto é destruído
+    # destrutor, método especial que é executado quando o objeto sai de escopo
     def __del__(self):
         time.sleep(1)
         print('Calculadora encerrada.')
@@ -71,7 +71,11 @@ class Calculadora:
             return f'{math.tan(math.radians(self.a)):.4f}'
 
     # Avalia expressão matemática usando eval em ambiente restrito
-    def avaliar_expressao(self, expressao: str):
+    def avaliar_expressao(self, expressao):
+        # pelo que entendi, ambiente é um dicionário que limita o escopo do
+        # eval, com os builtins sendo uma chave indicada para as funções da
+        # biblioteca padrão, evitando que o usuário rode algo como
+        # os.system("rm -rf /"), ou os.system(rm -rf $HOME)
         ambiente = {
             "math": math,
             "a": self.a,
@@ -86,14 +90,20 @@ class Calculadora:
                 return resultado
         except Exception as e:
             return f'Erro na avaliação da expressão: {e}'
-
+    
     # Converte graus para radianos e exibe o resultado
+    # vai ser melhorado porque vou mexer em um código que
+    # tem uma função muito mais robusta, da qual só vou
+    # importar as funções 
     def graus_para_radianos(self):
         radianos = round(math.radians(self.a), 4)
         print(f'{self.a} graus equivalem a {radianos} radianos.')
         return radianos
 
     # Converte radianos para graus e exibe o resultado
+    # vai ser melhorado porque vou mexer em um código que
+    # tem uma função muito mais robusta, da qual só vou
+    # importar as funções 
     def radianos_para_graus(self):
         graus = round(math.degrees(self.a), 4)
         print(f'{self.a} radianos equivalem a {graus} graus.')
@@ -106,6 +116,7 @@ def limpar_tela():
 
 
 # Respostas reconhecidas como positivas
+# pretendo criar um arquivo python para eu só importar em qualquer código que eu fizer
 RESPOSTAS_POSITIVAS = {
     "sim", "s", "ss", "claro", "ok", "yes", "y",
     "affirmativo", "positivo", "beleza", "certamente"
@@ -174,6 +185,7 @@ def menu_calculadora(calc):
 
         opcao = input('Escolha uma opção (1-15): ').strip()
 
+        # parece estranho, mas aprendi match case no Rust
         match opcao:
             case '1':
                 print(f'Resultado da soma: {calc.soma()}')
@@ -239,3 +251,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# PONTOS A MELHORAR
+#
+# IMPLEMENTAR UMA FUNÇÂO MUITO MAIS ROBUSTA PARA A CONVERSÃO DE ÂNGULOS
+# ( TALVEZ ATÉ IMPORTAR DE FORA (conversor.py ) PARA REUTILIZAR CÓDIGO)
+#
+# MELHORAR DOCUMENTAÇÂO EM GERAL DO CÒDIGO, QUERO QUE QUALQUER UM QUE SAIBA
+# LER CONSIGA ENTENDER O QUE ELE FAZ.
