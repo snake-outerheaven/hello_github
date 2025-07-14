@@ -104,9 +104,29 @@ class Calculadora:
     # vai ser melhorado porque vou mexer em um código que
     # tem uma função muito mais robusta, da qual só vou
     # importar as funções 
-    def radianos_para_graus(self):
-        graus = round(math.degrees(self.a), 4)
-        print(f'{self.a} radianos equivalem a {graus} graus.')
+    def radianos_para_graus(self, entrada=None):
+        
+        if entrada is not None:
+            try:
+                # transforma a string para minúsculas e substitui 'pi' por 'math.pi'
+                expressao = entrada.lower().replace('pi','math.pi')
+                ambiente = {"math": math, "__builtins__": {}}
+                valor = eval(expressao, ambiente)  # avalia a expressão restrita
+            
+            except Exception as e:
+                return f'Erro na expressão: {e}'
+        
+        else:
+            # se o usuário nao escrever string, usa o valor de a capturado por obter_numeros()
+            valor = self.a
+
+        graus = round(math.degrees(valor), 4)
+
+        if entrada is not None:
+            print(f'{entrada} radianos equivalem a {graus} graus.')
+        else:
+            print(f'{valor} radianos equivalem a {graus} graus.')
+
         return graus
 
 
@@ -178,12 +198,12 @@ def menu_calculadora(calc):
         print('10) Tangente (de a graus)')
         print('11) Avaliar expressão matemática (use math, a e b)')
         print('12) Converter graus para radianos (de a)')
-        print('13) Converter radianos para graus (de a)')
+        print('13) Converter radianos para graus (expressão opcional)')
         print('14) Atualizar valores de a e b')
         print('15) Exibir a e b')
         print('16) Sair')
 
-        opcao = input('Escolha uma opção (1-15): ').strip()
+        opcao = input('Escolha uma opção (1-16): ').strip()
 
         # parece estranho, mas aprendi match case no Rust
         match opcao:
@@ -215,7 +235,12 @@ def menu_calculadora(calc):
             case '12':
                 calc.graus_para_radianos()
             case '13':
-                calc.radianos_para_graus()
+                entrada = input('Digite uma expressão em radianos (ex: 2*pi/3, pi/4) ou ENTER para usar valor atual de "a": ').strip()
+                if entrada == '':
+                    # Se vazio, chama sem parâmetro para usar self.a
+                    calc.radianos_para_graus()
+                else:
+                    print(calc.radianos_para_graus(entrada))
             case '14':
                 print('Atualizando valores de a e b...')
                 a, b = obter_numeros()
@@ -251,7 +276,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 # PONTOS A MELHORAR
