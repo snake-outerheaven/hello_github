@@ -5,64 +5,72 @@ import math
 
 class Calculadora:
 
+    # Inicializa a calculadora com os valores a e b
     def __init__(self, a=0, b=0):
         self.a = a
         self.b = b
         time.sleep(1)
-        print(f'Calculadora inicializada com {a} e {b}!')
+        print(f'Calculadora inicializada com {a} e {b}.')
 
+    # Informa quando o objeto é destruído
     def __del__(self):
         time.sleep(1)
-        print('Calculadora destruída!')
+        print('Calculadora encerrada.')
 
+    # Soma de a e b
     def soma(self):
-        return self.a + self.b
+        return f'{self.a + self.b:.4f}'
 
+    # Subtração de a menos b
     def sub(self):
-        return self.a - self.b
+        return f'{self.a - self.b:.4f}'
 
+    # Multiplicação de a por b
     def mult(self):
-        return self.a * self.b
+        return f'{self.a * self.b:.4f}'
 
+    # Divisão de a por b, com proteção contra divisão por zero
     def div(self):
         if self.b == 0:
-            return f'Lamento, mas b não pode ser {self.b}'
+            return 'Erro: divisão por zero não permitida.'
         else:
-            return self.a / self.b
+            return f'{self.a / self.b:.4f}'
 
+    # Potência: a elevado a b
     def potencia(self):
-        return self.a ** self.b
+        return f'{self.a ** self.b:.4f}'
 
+    # Raiz quadrada de a, com verificação para números negativos
     def raiz_quadrada(self):
-        # trata raiz de número negativo
         if self.a < 0:
-            return 'Lamento, mas não dá para calcular raiz quadrada de número negativo.'
+            return 'Erro: raiz quadrada de número negativo não definida.'
         else:
-            # calcula raiz normalmente e formata o resultado para 4 casas decimais
             return f'{math.sqrt(self.a):.4f}'
 
+    # Logaritmo base 10 de a, com validação para números positivos
     def logaritmo(self, base=10):
         if self.a <= 0:
-            return 'Lamento, mas logaritmo só é definido para números positivos.'
+            return 'Erro: logaritmo definido apenas para números positivos.'
         else:
             return f'{math.log(self.a, base):.4f}'
 
+    # Seno de a em graus
     def seno(self):
-        # calcula seno de a em graus convertendo para radianos
         return f'{math.sin(math.radians(self.a)):.4f}'
 
+    # Cosseno de a em graus
     def cosseno(self):
-        # calcula cosseno de a em graus convertendo para radianos
         return f'{math.cos(math.radians(self.a)):.4f}'
 
+    # Tangente de a em graus, tratando pontos onde tangente é indefinida
     def tangente(self):
-        # verifica se tangente está perto de ser indefinida (90 + k*180 graus)
         angulo_mod = self.a % 180
-        if abs(angulo_mod - 90) < 1e-10:  # aproximação
-            return 'Lamento, tangente indefinida para esse ângulo.'
+        if abs(angulo_mod - 90) < 1e-10:
+            return 'Erro: tangente indefinida para este ângulo.'
         else:
             return f'{math.tan(math.radians(self.a)):.4f}'
 
+    # Avalia expressão matemática usando eval em ambiente restrito
     def avaliar_expressao(self, expressao: str):
         ambiente = {
             "math": math,
@@ -77,54 +85,60 @@ class Calculadora:
             else:
                 return resultado
         except Exception as e:
-            return f'Opa, deu erro aqui: {e}'
+            return f'Erro na avaliação da expressão: {e}'
 
+    # Converte graus para radianos e exibe o resultado
     def graus_para_radianos(self):
         radianos = round(math.radians(self.a), 4)
-        print(f'O valor de {self.a} graus em radianos é: {radianos}')
+        print(f'{self.a} graus equivalem a {radianos} radianos.')
         return radianos
 
+    # Converte radianos para graus e exibe o resultado
     def radianos_para_graus(self):
         graus = round(math.degrees(self.a), 4)
-        print(f'O valor de {self.a} radianos em graus é: {graus}')
+        print(f'{self.a} radianos equivalem a {graus} graus.')
         return graus
 
 
+# Função para limpar a tela de forma portátil (Windows e Unix)
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+# Respostas reconhecidas como positivas
 RESPOSTAS_POSITIVAS = {
     "sim", "s", "ss", "claro", "ok", "yes", "y",
     "affirmativo", "positivo", "beleza", "certamente"
 }
 
+# Respostas reconhecidas como negativas
 RESPOSTAS_NEGATIVAS = {
     "não", "nao", "n", "nn", "no", "negativo", "nem", "nunca", "jamais"
 }
 
 
+# Função para obter e confirmar dois números do usuário
 def obter_numeros():
     while True:
         try:
-            print('Por favor, digite dois números:\n')
+            print('Digite dois números:\n')
             a = float(input('Digite o 1º número (para funções que usam só um número, digite aqui): '))
             b = float(input('Digite o 2º número (para funções que usam só um número, pode deixar zero): '))
 
             resposta_valida = False
 
             while not resposta_valida:
-                resposta = input(f'Deseja confirmar {a} e {b} como números escolhidos? ').strip().lower()
+                resposta = input(f'Deseja confirmar {a} e {b}? ').strip().lower()
                 if resposta in RESPOSTAS_POSITIVAS:
-                    print(f'Certo, {a} e {b} confirmados!')
+                    print('Números confirmados.')
                     resposta_valida = True
                 elif resposta in RESPOSTAS_NEGATIVAS:
-                    print('Beleza, vamos tentar de novo...')
+                    print('Vamos tentar novamente.')
                     time.sleep(1)
                     limpar_tela()
                     resposta_valida = True
                 else:
-                    print('Huh?... não entendi sua resposta.')
+                    print('Resposta não reconhecida. Por favor, responda sim ou não.')
                     time.sleep(1)
                     limpar_tela()
 
@@ -132,14 +146,15 @@ def obter_numeros():
                 return a, b
 
         except ValueError:
-            print('Ei, só números válidos, por favor!')
+            print('Entrada inválida. Por favor, digite números válidos.')
             time.sleep(1)
             limpar_tela()
 
 
+# Menu para escolher operação
 def menu_calculadora(calc):
     while True:
-        print('\nQual operação você quer fazer?')
+        print('\nEscolha a operação desejada:')
         print('1) Soma (usa a e b)')
         print('2) Subtração (usa a e b)')
         print('3) Multiplicação (usa a e b)')
@@ -160,60 +175,58 @@ def menu_calculadora(calc):
 
         match opcao:
             case '1':
-                print(f'O resultado da soma é: {calc.soma():.4f}')
+                print(f'Resultado da soma: {calc.soma()}')
             case '2':
-                print(f'O resultado da subtração é: {calc.sub():.4f}')
+                print(f'Resultado da subtração: {calc.sub()}')
             case '3':
-                print(f'O resultado da multiplicação é: {calc.mult():.4f}')
+                print(f'Resultado da multiplicação: {calc.mult()}')
             case '4':
                 resultado = calc.div()
-                if isinstance(resultado, float):
-                    print(f'O resultado da divisão é: {resultado:.4f}')
-                else:
-                    print(resultado)
+                print(resultado)
             case '5':
-                print(f'O resultado da potência é: {calc.potencia():.4f}')
+                print(f'Resultado da potência: {calc.potencia()}')
             case '6':
-                print(f'A raiz quadrada de {calc.a} é: {calc.raiz_quadrada()}')
+                print(f'Raiz quadrada de {calc.a}: {calc.raiz_quadrada()}')
             case '7':
-                print(f'O logaritmo base 10 de {calc.a} é: {calc.logaritmo()}')
+                print(f'Logaritmo base 10 de {calc.a}: {calc.logaritmo()}')
             case '8':
-                print(f'O seno de {calc.a} graus é: {calc.seno()}')
+                print(f'Seno de {calc.a} graus: {calc.seno()}')
             case '9':
-                print(f'O cosseno de {calc.a} graus é: {calc.cosseno()}')
+                print(f'Cosseno de {calc.a} graus: {calc.cosseno()}')
             case '10':
-                print(f'A tangente de {calc.a} graus é: {calc.tangente()}')
+                print(f'Tangente de {calc.a} graus: {calc.tangente()}')
             case '11':
                 expr = input('Digite a expressão matemática (ex: math.sin(math.radians(a)) + b): ')
                 resultado = calc.avaliar_expressao(expr)
-                print(f'O resultado da expressão é: {resultado}')
+                print(f'Resultado da expressão: {resultado}')
             case '12':
                 calc.graus_para_radianos()
             case '13':
                 calc.radianos_para_graus()
             case '14':
-                print('Vamos atualizar os valores de a e b...')
+                print('Atualizando valores de a e b...')
                 a, b = obter_numeros()
                 calc.a = a
                 calc.b = b
-                print(f'Valores atualizados para a = {a} e b = {b}')
+                print(f'Valores atualizados: a = {a}, b = {b}')
             case '15':
-                print('Ok, encerrando a calculadora...')
+                print('Encerrando o programa.')
                 del calc
                 time.sleep(1)
                 break
             case _:
-                print('Opção inválida, tenta de novo aí.')
+                print('Opção inválida. Tente novamente.')
 
         input('\nPressione Enter para continuar...')
         limpar_tela()
 
 
+# Função principal
 def main():
     limpar_tela()
     time.sleep(1)
 
-    print('\nBem vindo à versão avançada da calculadora orientada a objetos!\n')
+    print('\nBem-vindo ao programa de calculadora OOP.\n')
 
     a, b = obter_numeros()
     calc = Calculadora(a, b)
@@ -223,4 +236,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
