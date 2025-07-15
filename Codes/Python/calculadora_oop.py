@@ -19,48 +19,48 @@ class Calculadora:
 
     # Soma de a e b
     def soma(self):
-        return f'{self.a + self.b:.4f}'
+        return f'{self.a + self.b:.2f}'
 
     # Subtração de a menos b
     def sub(self):
-        return f'{self.a - self.b:.4f}'
+        return f'{self.a - self.b:.2f}'
 
     # Multiplicação de a por b
     def mult(self):
-        return f'{self.a * self.b:.4f}'
+        return f'{self.a * self.b:.2f}'
 
     # Divisão de a por b, com proteção contra divisão por zero
     def div(self):
         if self.b == 0:
             return 'Erro: divisão por zero não permitida.'
         else:
-            return f'{self.a / self.b:.4f}'
+            return f'{self.a / self.b:.2f}'
 
     # Potência: a elevado a b
     def potencia(self):
-        return f'{self.a ** self.b:.4f}'
+        return f'{self.a ** self.b:.2f}'
 
     # Raiz quadrada de a, com verificação para números negativos
     def raiz_quadrada(self):
         if self.a < 0:
             return 'Erro: raiz quadrada de número negativo não definida.'
         else:
-            return f'{math.sqrt(self.a):.4f}'
+            return f'{math.sqrt(self.a):.2f}'
 
     # Logaritmo base 10 de a, com validação para números positivos
     def logaritmo(self, base=10):
         if self.a <= 0:
             return 'Erro: logaritmo definido apenas para números positivos.'
         else:
-            return f'{math.log(self.a, base):.4f}'
+            return f'{math.log(self.a, base):.2f}'
 
     # Seno de a em graus
     def seno(self):
-        return f'{math.sin(math.radians(self.a)):.4f}'
+        return f'{math.sin(math.radians(self.a)):.2f}'
 
     # Cosseno de a em graus
     def cosseno(self):
-        return f'{math.cos(math.radians(self.a)):.4f}'
+        return f'{math.cos(math.radians(self.a)):.2f}'
 
     # Tangente de a em graus, tratando pontos onde tangente é indefinida
     def tangente(self):
@@ -68,7 +68,7 @@ class Calculadora:
         if abs(angulo_mod - 90) < 1e-10:
             return 'Erro: tangente indefinida para este ângulo.'
         else:
-            return f'{math.tan(math.radians(self.a)):.4f}'
+            return f'{math.tan(math.radians(self.a)):.2f}'
 
     # Avalia expressão matemática usando eval em ambiente restrito
     def avaliar_expressao(self, expressao):
@@ -85,7 +85,7 @@ class Calculadora:
         try:
             resultado = eval(expressao, ambiente)
             if isinstance(resultado, float):
-                return f'{resultado:.4f}'
+                return f'{resultado:.2f}'
             else:
                 return resultado
         except Exception as e:
@@ -96,7 +96,7 @@ class Calculadora:
     # tem uma função muito mais robusta, da qual só vou
     # importar as funções 
     def graus_para_radianos(self):
-        radianos = round(math.radians(self.a), 4)
+        radianos = round(math.radians(self.a), 2)
         print(f'{self.a} graus equivalem a {radianos} radianos.')
         return radianos
 
@@ -109,7 +109,7 @@ class Calculadora:
         if entrada is not None:
             try:
                 # transforma a string para minúsculas e substitui 'pi' por 'math.pi'
-                expressao = entrada.lower().replace('pi','math.pi')
+                expressao = entrada.replace('pi','math.pi')
                 ambiente = {"math": math, "__builtins__": {}}
                 valor = eval(expressao, ambiente)  # avalia a expressão restrita
             
@@ -120,7 +120,7 @@ class Calculadora:
             # se o usuário nao escrever string, usa o valor de a capturado por obter_numeros()
             valor = self.a
 
-        graus = round(math.degrees(valor), 4)
+        graus = round(math.degrees(valor), 2)
 
         if entrada is not None:
             return f'{entrada} radianos equivalem a {graus} graus.'
