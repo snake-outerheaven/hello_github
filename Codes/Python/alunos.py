@@ -109,9 +109,9 @@ def calcular_media_ponderada(notas, pesos):
     return round(media, 2) # a função retorna a média com duas casas decimais
 
 # função main
-z ='S'
 print('Este é um programa que calcula a média ponderada de um aluno.')
-while z == 'SIM' or z=='S':
+z = 'S'
+while z == 'SIM' or z=='S'or z =='SS':
     aluno = confirmar_aluno() # chamada da primeira função, salvando o que esta sendo retornado em nome
     print(f'Aluno confirmado: {aluno}')
     notas2, pesos2 = registrar_notas_e_pesos() # chamada da segunda função, salvando o que esta sendo retornado em
