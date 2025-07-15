@@ -182,6 +182,7 @@ def obter_numeros():
 # Menu para escolher operação
 def menu_calculadora(calc):
     while True:
+        print('0) Sair')
         print('\nEscolha a operação desejada:')
         print('1) Soma (usa a e b)')
         print('2) Subtração (usa a e b)')
@@ -198,12 +199,17 @@ def menu_calculadora(calc):
         print('13) Converter radianos para graus (expressão opcional)')
         print('14) Atualizar valores de a e b')
         print('15) Exibir a e b')
-        print('16) Sair')
 
         opcao = input('Escolha uma opção (1-16): ').strip()
 
         # parece estranho, mas aprendi match case no Rust
         match opcao:
+
+            case '0':
+                print('Encerrando o programa.')
+                del calc
+                time.sleep(1)
+                break
             case '1':
                 print(f'Resultado da soma: {calc.soma()}')
             case '2':
@@ -247,11 +253,6 @@ def menu_calculadora(calc):
                 print(f'Valores atualizados: a = {a}, b = {b}')
             case '15':
                 print(f'Os valores registrados são {calc.a} e {calc.b}')
-            case '16':
-                print('Encerrando o programa.')
-                del calc
-                time.sleep(1)
-                break
             case _:
                 print('Opção inválida. Tente novamente.')
 
