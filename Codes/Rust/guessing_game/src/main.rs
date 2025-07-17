@@ -24,7 +24,7 @@ fn limpar_tela() {
         .expect("Não foi possível limpar tela!");
 }
 
-// função que faz a captura do valor do número do
+// função que faz a captura do valor do número do usuário
 
 fn obtendo_palpite() -> u32 {
     sleep(Duration::from_millis(500));
@@ -83,6 +83,5 @@ fn main() {
         };
 
         // comparar números é verboso, mas a forma como rust aborda as coisas não é muito difícil de entender, agora é seguir lendo o livro
-        
     } // fim do loop aqui
 }
