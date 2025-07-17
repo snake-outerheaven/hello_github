@@ -58,8 +58,8 @@ fn main() {
     let numero_secreto = rand::thread_rng().gen_range(1..=100);
     // este é o gerador de números aleatórios
     // coisas como RNG geralmente tem uma semente de geração, como os mundos do minecraft, e aqui não
-    // é diferente, thread_rng faz a mesma coisa usando as fontes de entropia ( caos ) para gerar um número
-    // e o gen_range apenas limita o alcance da geração de números aleatórios
+    // é diferente, thread_rng faz a mesma coisa usando as fontes de entropia do meu sistema ( caos ) para gerar um número
+    // e o gen_range apenas limita o alcance da geração de números aleatórios para o intervalo de 1 a 100
 
     loop {
         let palpite: u32 = obtendo_palpite();
@@ -81,5 +81,8 @@ fn main() {
                 continue;
             }
         };
-    }
+
+        // comparar números é verboso, mas a forma como rust aborda as coisas não é muito difícil de entender, agora é seguir lendo o livro
+        
+    } // fim do loop aqui
 }
