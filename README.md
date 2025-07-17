@@ -1,7 +1,7 @@
 # hello_github
 
 Repositório pessoal para guardar exercícios, testes e experimentos em várias linguagens de programação.  
-Aqui você encontra códigos em **C**, **C++**, **Python** e outras linguagens, organizados por pastas.
+Aqui você encontra códigos em **C**, **C++**, **Python** , **Rust** e outras linguagens, organizados por pastas.
 
 ---
 
@@ -16,6 +16,8 @@ Codes/
 │   └── ... (exercícios e exemplos em C++)
 ├── Python/
 │   └── ... (scripts e exercícios em Python)
+├── Rust/
+│   └── ... (testes e exemplos em Rust)
 └── ... (outras linguagens)
 
 ```
