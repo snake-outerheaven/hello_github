@@ -2,12 +2,13 @@
 // vou fazer umas pequenas alterações do original, primeiramente, pretendo modularizar o código, criando uma
 // função que obtenha a entrada do número ( a função vai retornar um result)
 
-use rand::Rng;
-use std::cmp::Ordering;
-use std::io;
-use std::process::Command;
-use std::thread::sleep;
-use std::time::Duration;
+use rand::Rng; // biblioteca externa para geração de valores aleatórios
+use std::cmp::Ordering; // estrutura de comparação de números, da biblioteca padrão de comparativos
+use std::io; // biblioteca padrão de entrada e saída
+use std::process::Command; // estrutura Command usada para rodar comandos do shell
+use std::thread::sleep; // função que pausa o código, da biblioteca de manipulação de threads
+use std::time::Duration; // estrutura que me permite manipular o tempo, usada principalmente no sleep
+// vem da biblioteca padrão de tipos temporais ( não sei melhor forma de descrever)
 
 // função que busca limpar tela de forma portátil no Windows e sistemas Unix-like
 
