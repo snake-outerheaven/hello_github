@@ -14,7 +14,7 @@ use std::time::Duration; // estrutura que me permite manipular o tempo, usada pr
 fn limpar_tela() {
     println!("Limpando tela...");
     sleep(Duration::from_millis(500));
-    let clear = if cfg!(target_os = "windows ") {
+    let clear = if cfg!(target_os = "windows") {
         "cls"
     } else {
         "clear"
