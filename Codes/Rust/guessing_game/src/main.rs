@@ -4,10 +4,9 @@
 
 use rand::Rng; // biblioteca externa para geração de valores aleatórios
 use std::cmp::Ordering;
-use std::f32::consts::LOG10_2;
 // estrutura de comparação de números, da biblioteca padrão de comparativos
-use std::fs::{self, OpenOptions}; // biblioteca de manipulação de arquivos em rust
-use std::io::{self, Read, Write}; // biblioteca padrão de entrada e saída
+use std::fs::OpenOptions; // biblioteca de manipulação de arquivos em rust
+use std::io::{self, Write}; // biblioteca padrão de entrada e saída
 // chamei desse jeito pela forma especial, de chamar um módulo interno e a biblioteca ao mesmo tempo
 // pois nas outras bibliotecas, reduzi o escopo, enquanto em io, preciso manter o uso total devido
 // ao fato de I/O ser o core do programa
@@ -153,7 +152,7 @@ fn obtendo_nome() -> String {
         println!("O nome '{}' está correto? (S/N)", nome);
         io::stdin()
             .read_line(&mut resposta)
-            .expect(("Crash and burn, falha ao ler stdin!"));
+            .expect("Crash and burn, falha ao ler stdin!");
 
         match resposta.trim().to_uppercase().as_str() {
             "S" => {
@@ -178,7 +177,6 @@ fn obtendo_nome() -> String {
 }
 
 fn main() {
-    // rodar o o jogo e registrar o resultado
     limpar_tela();
     println!("Seja bem vindo à este pequeno jogo de advinhação em Rust!");
     println!("Seu progresso será salvo na pasta log do projeto!");
@@ -194,8 +192,6 @@ fn main() {
         .read(true)
         .open("log/game_log.txt")
         .expect("falha ao abrir arquivo, crie a pasta log no diretório do projeto");
-
-    // estou em amores com Rust, criar uma stream para um arquivo é muito fácil!
 
     writeln!(arquivo, "{}\n", linha);
 
