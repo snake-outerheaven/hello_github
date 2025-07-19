@@ -1,0 +1,11 @@
+
+Nome do jogador: Doc Hudson - Número de tentativas: 9 - Número secreto da rodada: 1
+
+Nome do jogador: mate - Número de tentativas: 8 - Número secreto da rodada: 46
+
+Nome do jogador: finn mcmissile - Número de tentativas: 1 - Número secreto da rodada: 66
+
+Nome do jogador: tun tun sahur - Número de tentativas: 11 - Número secreto da rodada: 46
+
+Nome do jogador: Douglas - Número de tentativas: 10 - Número secreto da rodada: 9
+

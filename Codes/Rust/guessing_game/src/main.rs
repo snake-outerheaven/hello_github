@@ -3,9 +3,15 @@
 // função que obtenha a entrada do número ( a função vai retornar um result)
 
 use rand::Rng; // biblioteca externa para geração de valores aleatórios
-use std::cmp::Ordering; // estrutura de comparação de números, da biblioteca padrão de comparativos
-use std::io; // biblioteca padrão de entrada e saída
-use std::process::Command; // estrutura Command usada para rodar comandos do shell
+use std::cmp::Ordering;
+use std::f32::consts::LOG10_2;
+// estrutura de comparação de números, da biblioteca padrão de comparativos
+use std::fs::{self, OpenOptions}; // biblioteca de manipulação de arquivos em rust
+use std::io::{self, Read, Write}; // biblioteca padrão de entrada e saída
+// chamei desse jeito pela forma especial, de chamar um módulo interno e a biblioteca ao mesmo tempo
+// pois nas outras bibliotecas, reduzi o escopo, enquanto em io, preciso manter o uso total devido
+// ao fato de I/O ser o core do programa
+use std::process::{Command, exit}; // estrutura Command usada para rodar comandos do shell
 use std::thread::sleep; // função que pausa o código, da biblioteca de manipulação de threads
 use std::time::Duration; // estrutura que me permite manipular o tempo, usada principalmente no sleep
 // vem da biblioteca padrão de tipos temporais ( não sei melhor forma de descrever)
@@ -24,11 +30,11 @@ fn limpar_tela() {
         .expect("Não foi possível limpar tela!");
 }
 
-// função que faz a captura do valor do número do usuário
+// função que faz a captura do valor do número do usuário, está dentro da função jogar
 
 fn obtendo_palpite() -> u32 {
     sleep(Duration::from_millis(500));
-    println!("Digite o seu palpite para o número misterioso:");
+    println!("Digite o seu palpite para o número misterioso: ( De 1 à 100 )");
     let mut palpite = String::new();
     loop {
         palpite.clear();
@@ -83,10 +89,8 @@ fn verif(tentativas: u32) -> bool {
     }
 }
 
-fn main() {
-    limpar_tela();
-    // agora vem o uso principal de tudo até então, a função main deve rodar a lógica principal, que é gerar o
-    // número secreto, obter a entrada do usuário, comparar a entrada com o número secreto ( tudo de acordo
+fn jogar() -> (u32, u32) {
+    // func retorna tupla, para salvar no arquivo
 
     let numero_secreto = rand::thread_rng().gen_range(1..=100);
     // este é o gerador de números aleatórios
@@ -109,8 +113,10 @@ fn main() {
             }
             Ordering::Equal => {
                 sleep(Duration::from_millis(500));
-                println!("Bingo! Você adivinhou o número secreto com {tentativas}. Parabéns!");
-                return;
+                println!(
+                    "Bingo! Você adivinhou o número secreto com {tentativas} tentativas. Parabéns!"
+                );
+                break;
             }
             Ordering::Greater => {
                 sleep(Duration::from_millis(500));
@@ -122,5 +128,84 @@ fn main() {
         usuario_quer_parar = verif(tentativas);
 
         // comparar números é verboso, mas a forma como rust aborda as coisas não é muito difícil de entender, agora é seguir lendo o livro
-    } // fim do loop aqui
+    } // fim do laço while
+
+    if usuario_quer_parar {
+        exit(1)
+    }
+
+    return (numero_secreto, tentativas);
+}
+
+fn obtendo_nome() -> String {
+    let mut nome = String::new();
+    let mut confirmar: bool = false;
+    let mut resposta = String::new();
+    sleep(Duration::from_millis(250));
+    println!("Por favor, digite o seu nome:");
+    io::stdin()
+        .read_line(&mut nome)
+        .expect("crash and burn! falha ao ler stdin");
+
+    nome = nome.trim().to_string();
+
+    while !confirmar {
+        println!("O nome '{}' está correto? (S/N)", nome);
+        io::stdin()
+            .read_line(&mut resposta)
+            .expect(("Crash and burn, falha ao ler stdin!"));
+
+        match resposta.trim().to_uppercase().as_str() {
+            "S" => {
+                sleep(Duration::from_millis(250));
+                println!("{nome} confirmado!");
+                confirmar = true;
+            }
+            "N" => {
+                sleep(Duration::from_millis(250));
+                println!("Certo! Aguarde para inserir o seu nome novamente.");
+                return obtendo_nome();
+            }
+            _ => {
+                sleep(Duration::from_millis(250));
+                println!("Digite uma entrada válida por favor!");
+                continue;
+            }
+        }
+    }
+
+    return nome;
+}
+
+fn main() {
+    // rodar o o jogo e registrar o resultado
+    limpar_tela();
+    println!("Seja bem vindo à este pequeno jogo de advinhação em Rust!");
+    println!("Seu progresso será salvo na pasta log do projeto!");
+    let usuario: String = obtendo_nome();
+    let (numero_secreto, tentativas) = jogar();
+    let linha = format!(
+        "Nome do jogador: {} - Número de tentativas: {} - Número secreto da rodada: {}",
+        usuario, tentativas, numero_secreto
+    );
+    let mut arquivo = OpenOptions::new()
+        .append(true)
+        .create(true)
+        .read(true)
+        .open("log/game_log.txt")
+        .expect("falha ao abrir arquivo, crie a pasta log no diretório do projeto");
+
+    // estou em amores com Rust, criar uma stream para um arquivo é muito fácil!
+
+    writeln!(arquivo, "{}\n", linha);
+
+    sleep(Duration::from_millis(250));
+
+    //println!("Jogatinha salva!");
+
+    //println!("As últimas rodadas serão mostradas abaixo.");
+
+    //let conteudo = fs::read_to_string("").expect("boom");
+
+    //println!("{conteudo}");
 }
