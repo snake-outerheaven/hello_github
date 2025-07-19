@@ -201,11 +201,9 @@ fn main() {
 
     sleep(Duration::from_millis(250));
 
-    //println!("Jogatinha salva!");
+    println!(
+        "Abaixo serão mostradas as rodadas anteriores, com a rodada atual sendo a utlima listada."
+    );
 
-    //println!("As últimas rodadas serão mostradas abaixo.");
-
-    //let conteudo = fs::read_to_string("").expect("boom");
-
-    //println!("{conteudo}");
+    println!("{:?}", arquivo);
 }

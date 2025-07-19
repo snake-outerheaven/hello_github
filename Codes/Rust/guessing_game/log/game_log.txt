@@ -9,3 +9,5 @@ Nome do jogador: tun tun sahur - Número de tentativas: 11 - Número secreto da 
 
 Nome do jogador: Douglas - Número de tentativas: 10 - Número secreto da rodada: 9
 
+Nome do jogador: neo - Número de tentativas: 7 - Número secreto da rodada: 33
+
