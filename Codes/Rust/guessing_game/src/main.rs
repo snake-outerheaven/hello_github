@@ -37,28 +37,28 @@ fn obtendo_palpite() -> u32 {
     let mut palpite = String::new();
     loop {
         palpite.clear();
-        // faltou limpar palpite a cada iteração, causando um bug de lógica, pois read_line insere o conteúdo do buffer, não limpando
-        // entradas anteriores
+        // faltou limpar palpite a cada iteração, causando um bug de lógica, pois .read_line insere o conteúdo do buffer,
+        // não limpando as entradas anteriores
         io::stdin()
             .read_line(&mut palpite)
             .expect("crash and burn! ( falha ao ler o palpite )");
         match palpite.trim().parse::<u32>() {
-            Ok(palpite) if palpite >= 1 && palpite <= 100 => {
+            Ok(palpite) if (1..100).contains(&palpite) => {
                 sleep(Duration::from_secs(1));
                 println!("Você acha que é {palpite}.");
-                return palpite;
+                palpite
             }
             Ok(_) => {
                 println!("Por favor, digite um número entre 1 e 100!");
+                continue;
             }
             Err(_) => {
                 println!("Por favor, digite um número válido!");
+                continue;
             }
         };
     } //loop
 }
-
-// aqui vem a função que modulariza a obtenção de input do usuário
 
 fn verif(tentativas: u32) -> bool {
     sleep(Duration::from_millis(300));
@@ -72,20 +72,62 @@ fn verif(tentativas: u32) -> bool {
         "S" => {
             sleep(Duration::from_millis(250));
             println!("Certo, vamos continuar o jogo!");
-            return false;
+            false
         }
 
         "N" => {
             sleep(Duration::from_millis(250));
             println!("Certo, obrigado por jogar este jogo!");
-            return true;
+            true
         }
         _ => {
             sleep(Duration::from_millis(250));
             println!("Resposta inválida! Favor responder S ou N.");
-            return verif(tentativas); // recursão mesmo, nao acho que vai pesar muito na stack
+            verif(tentativas) // recursão mesmo, nao acho que vai pesar muito na stack
         }
     }
+}
+
+// func que obtem o nome
+
+fn obtendo_nome() -> String {
+    let mut nome = String::new();
+    let mut confirmar: bool = false;
+    let mut resposta = String::new();
+    sleep(Duration::from_millis(250));
+    println!("Por favor, digite o seu nome:");
+    io::stdin()
+        .read_line(&mut nome)
+        .expect("crash and burn! falha ao ler stdin");
+
+    nome = nome.trim().to_string();
+
+    while !confirmar {
+        println!("O nome '{}' está correto? (S/N)", nome);
+        io::stdin()
+            .read_line(&mut resposta)
+            .expect("Crash and burn, falha ao ler stdin!");
+
+        match resposta.trim().to_uppercase().as_str() {
+            "S" => {
+                sleep(Duration::from_millis(250));
+                println!("{nome} confirmado!");
+                confirmar = true;
+            }
+            "N" => {
+                sleep(Duration::from_millis(250));
+                println!("Certo! Aguarde para inserir o seu nome novamente.");
+                return obtendo_nome();
+            }
+            _ => {
+                sleep(Duration::from_millis(250));
+                println!("Digite S/N.");
+                continue;
+            }
+        }
+    }
+
+    nome
 }
 
 fn jogar() -> (u32, u32) {
@@ -126,54 +168,15 @@ fn jogar() -> (u32, u32) {
         // verificação se o usuário quer parar ou continuar
         usuario_quer_parar = verif(tentativas);
 
-        // comparar números é verboso, mas a forma como rust aborda as coisas não é muito difícil de entender, agora é seguir lendo o livro
+        // comparar números é verboso, mas a forma como rust aborda as coisas não é muito difícil de entender,
+        //  agora é seguir lendo o livro
     } // fim do laço while
 
     if usuario_quer_parar {
         exit(1)
     }
 
-    return (numero_secreto, tentativas);
-}
-
-fn obtendo_nome() -> String {
-    let mut nome = String::new();
-    let mut confirmar: bool = false;
-    let mut resposta = String::new();
-    sleep(Duration::from_millis(250));
-    println!("Por favor, digite o seu nome:");
-    io::stdin()
-        .read_line(&mut nome)
-        .expect("crash and burn! falha ao ler stdin");
-
-    nome = nome.trim().to_string();
-
-    while !confirmar {
-        println!("O nome '{}' está correto? (S/N)", nome);
-        io::stdin()
-            .read_line(&mut resposta)
-            .expect("Crash and burn, falha ao ler stdin!");
-
-        match resposta.trim().to_uppercase().as_str() {
-            "S" => {
-                sleep(Duration::from_millis(250));
-                println!("{nome} confirmado!");
-                confirmar = true;
-            }
-            "N" => {
-                sleep(Duration::from_millis(250));
-                println!("Certo! Aguarde para inserir o seu nome novamente.");
-                return obtendo_nome();
-            }
-            _ => {
-                sleep(Duration::from_millis(250));
-                println!("Digite S/N.");
-                continue;
-            }
-        }
-    }
-
-    return nome;
+    (numero_secreto, tentativas)
 }
 
 fn main() {
