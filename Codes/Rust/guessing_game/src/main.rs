@@ -6,7 +6,7 @@ use rand::Rng; // biblioteca externa para geração de valores aleatórios
 use std::cmp::Ordering;
 // estrutura de comparação de números, da biblioteca padrão de comparativos
 use std::fs::OpenOptions; // biblioteca de manipulação de arquivos em rust
-use std::io::{self, Write}; // biblioteca padrão de entrada e saída
+use std::io::{self, Read, Write}; // biblioteca padrão de entrada e saída
 // chamei desse jeito pela forma especial, de chamar um módulo interno e a biblioteca ao mesmo tempo
 // pois nas outras bibliotecas, reduzi o escopo, enquanto em io, preciso manter o uso total devido
 // ao fato de I/O ser o core do programa
