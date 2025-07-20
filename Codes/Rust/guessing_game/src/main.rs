@@ -173,6 +173,9 @@ fn jogar() -> (u32, u32) {
     } // fim do laço while
 
     if usuario_quer_parar {
+        sleep(Duration::from_millis(250));
+        println!("Ok, saindo do código, obrigado por jogar!");
+        sleep(Duration::from_secs(1));
         exit(1)
     }
 
