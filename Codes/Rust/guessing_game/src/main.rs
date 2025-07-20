@@ -6,7 +6,7 @@ use rand::Rng; // biblioteca externa para geração de valores aleatórios
 use std::cmp::Ordering;
 // estrutura de comparação de números, da biblioteca padrão de comparativos
 use std::fs::OpenOptions; // biblioteca de manipulação de arquivos em rust
-use std::io::{self, Read, Write}; // biblioteca padrão de entrada e saída
+use std::io::{self, Write}; // biblioteca padrão de entrada e saída
 // chamei desse jeito pela forma especial, de chamar um módulo interno e a biblioteca ao mesmo tempo
 // pois nas outras bibliotecas, reduzi o escopo, enquanto em io, preciso manter o uso total devido
 // ao fato de I/O ser o core do programa
@@ -167,7 +167,7 @@ fn obtendo_nome() -> String {
             }
             _ => {
                 sleep(Duration::from_millis(250));
-                println!("Digite uma entrada válida por favor!");
+                println!("Digite S/N.");
                 continue;
             }
         }
@@ -186,6 +186,7 @@ fn main() {
         "Nome do jogador: {} - Número de tentativas: {} - Número secreto da rodada: {}",
         usuario, tentativas, numero_secreto
     );
+    // fica para o registro como gerenciar arquivos...
     let mut arquivo = OpenOptions::new()
         .append(true)
         .create(true)
@@ -193,7 +194,17 @@ fn main() {
         .open("log/game_log.txt")
         .expect("falha ao abrir arquivo, crie a pasta log no diretório do projeto");
 
-    writeln!(arquivo, "{}\n", linha);
+    match writeln!(arquivo, "{}\n", linha) {
+        Ok(_) => {
+            sleep(Duration::from_millis(250));
+            println!("Dados salvos com sucesso!");
+        }
+        Err(_) => {
+            sleep(Duration::from_millis(250));
+            println!("Erro ao salvar arquivo, favor verificar se a pasta log do projeto existe.");
+            println!("Aqui seguem os dados do jogador para registro externo.");
+        }
+    };
 
     sleep(Duration::from_millis(250));
 
