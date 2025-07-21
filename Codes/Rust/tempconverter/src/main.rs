@@ -1,6 +1,6 @@
 use std::fs::OpenOptions;
 use std::io::{self, Write};
-use std::process::{Command, exit};
+use std::process::{exit, Command};
 use std::thread::sleep;
 use std::time::Duration;
 
@@ -62,7 +62,7 @@ fn tempconverter(user: String) -> f64 {
 
         match escolha.trim() {
             "1" => loop {
-                sleep(Duration::from_secs(250));
+                sleep(Duration::from_millis(250));
                 println!("Certo, por favor, digite a temperatura em Celsius.");
                 io::stdin()
                     .read_line(&mut temp)
