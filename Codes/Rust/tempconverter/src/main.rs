@@ -1,5 +1,6 @@
-use std::fs::OpenOptions;
-use std::io::{self, Write};
+use std::fs::{self, OpenOptions};
+use std::io::{self, Read, Seek, Write}; // uso novo, Seek, para mover o cursor no arquivo
+use std::path::Path; // pasta para manipulação de
 use std::process::{Command, exit};
 use std::thread::sleep;
 use std::time::Duration;
@@ -36,7 +37,7 @@ fn fahrenheit(temp: f64) -> f64 {
 /// Função de baixo nivel que capta o valor em Fahrenheit digitado pelo usuário e faz prontamente a sua conversão
 
 fn celsius(temp: f64) -> f64 {
-    (temp - 32.0) * (9.0 / 5.0)
+    (temp - 32.0) * (5.0 / 9.0)
 }
 
 /// tempconverter -> (f64, String)
@@ -73,8 +74,8 @@ fn tempconverter() -> (f64, String) {
                     Ok(f) => {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
-                        println!("{temp}°C equivale a {}°F", fahrenheit(f));
-                        return (f, escolha); // retornando para futuro registro em arquivo
+                        println!("{f}°C equivale a {}°F", fahrenheit(f));
+                        return (f.round(), escolha.trim().to_string()); // retornando para futuro registro em arquivo
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -95,8 +96,8 @@ fn tempconverter() -> (f64, String) {
                     Ok(c) => {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
-                        println!("{temp}°F equivale a {}°C", celsius(c));
-                        return (c, escolha);
+                        println!("{c}°F equivale a {}°C", celsius(c));
+                        return (c.round(), escolha.trim().to_string());
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -122,5 +123,151 @@ fn tempconverter() -> (f64, String) {
     }
 }
 
-// agora falta a função que obtém o nome do usuário, criar a pasta onde será registrado o arquivo de texto contendo o log
-// do programa, escrever a função de salvamento e depois organizar tudo na função main
+/// obtendo_nome() -> String
+///
+/// Função que obtem o nome do usuário de forma segura.
+
+fn obtendo_nome() -> String {
+    let mut confirm: String = String::new();
+    let mut nome: String = String::new();
+
+    println!("Inicializando função de registro...");
+    println!("\n\n");
+    sleep(Duration::from_millis(250));
+
+    loop {
+        nome.clear();
+        confirm.clear();
+        println!("Por favor, digite o seu nome de usuário.");
+        io::stdin()
+            .read_line(&mut nome)
+            .expect("Não foi possível ler stdin.");
+
+        let nome_limpo = nome.trim().to_string();
+
+        println!("O nome de usuário {nome_limpo} é o desejado? (S/N)");
+
+        io::stdin()
+            .read_line(&mut confirm)
+            .expect("Falha ao ler stdin");
+
+        match confirm.trim().to_uppercase().as_str() {
+            "S" => {
+                sleep(Duration::from_millis(250));
+                println!("Nome '{nome_limpo}' confirmado!");
+                return nome_limpo;
+            }
+            "N" => {
+                sleep(Duration::from_millis(250));
+                println!("Certo, repetindo loop...");
+                sleep(Duration::from_secs(1));
+                limpar_tela();
+                continue;
+            }
+
+            _ => {
+                println!("Por favor digite S ou N.");
+                sleep(Duration::from_millis(250));
+                continue;
+            }
+        }
+    }
+}
+
+///salvar(conversao: (f64, String), user: String)
+///
+/// Esta função busca salvar os dados gerados, sendo totalmente opcional.
+fn salvar(conversao: (f64, String), user: &String) {
+    let (valor, escolha) = conversao; // desestruturando uma tupla de forma simples
+
+    sleep(Duration::from_millis(250));
+    println!("Iniciando salvamento dos dados!");
+    sleep(Duration::from_secs(1));
+    println!("Verificando se a pasta log do projeto existe.");
+    let log = Path::new("log");
+
+    if log.exists() {
+        println!(
+            "Pasta de registro encontrada! Continuando com o fluxo padrão do programa ( Ultimos registros serão mostrados )"
+        );
+    } else {
+        println!(
+            "Infelizmente a pasta log não existe, e nem os ultimos registros, vamos começar do zero"
+        );
+        sleep(Duration::from_millis(250));
+        println!("Tentando criar pasta.");
+        sleep(Duration::from_secs(1));
+        match fs::create_dir(log) {
+            Ok(_) => {
+                println!("Pasta criada com sucesso!");
+            }
+            Err(_) => {
+                println!(
+                    "Não foi possível criar a pasta, verifique se você tem permissões de escrita."
+                );
+                sleep(Duration::from_millis(250));
+                println!(
+                    "Como não foi possível criar a pasta, o programa está encerrado por aqui, obrigado por usar!"
+                );
+                exit(0);
+            }
+        }
+    }
+
+    sleep(Duration::from_millis(250));
+
+    let mut log = OpenOptions::new()
+        .append(true)
+        .create(true)
+        .read(true)
+        .open("log/registro.txt")
+        .expect("Falha ao criar o arquivo.");
+
+    let registro = format!(
+        "Nome do usuário: {} | Escolha: {} | Valor: {}",
+        user, escolha, valor
+    );
+
+    match writeln!(log, "{}\n", registro) {
+        Ok(_) => {
+            sleep(Duration::from_millis(250));
+            println!("Dados salvos com sucesso!");
+            println!("Isso foi o que será registrado no arquivo: {registro}");
+        }
+        Err(_) => {
+            sleep(Duration::from_millis(250));
+            println!("Algo inesperado aconteceu! Registro não foi feito com sucesso!");
+        }
+    }
+
+    sleep(Duration::from_millis(250));
+
+    println!("Agora, será mostrado as ultimas sessões desse código:");
+
+    sleep(Duration::from_millis(250));
+
+    log.rewind()
+        .expect("Falha ao mover o cursor dentro do arquivo para o início");
+
+    // preciso fazer a ação de cima para poder registrar o conteúdo, pois o método .append move o cursor interno do arquivo
+    // para o final
+
+    let mut conteudo = String::new();
+
+    log.read_to_string(&mut conteudo)
+        // esse método varre o arquivo, movendo o cursor e coletando os bits para
+        // a string, que então é movida
+        .expect("Falha ao ler o arquivo!");
+
+    println!("Ultimas sessões: \n\n{}", conteudo);
+}
+
+/// main
+///
+/// função que amarra toda a lógica em algo funcional
+fn main() {
+    limpar_tela();
+    let nome = obtendo_nome();
+    let conversao = tempconverter();
+    salvar(conversao, &nome);
+}

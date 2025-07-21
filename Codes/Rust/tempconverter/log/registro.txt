@@ -1,0 +1,10 @@
+Nome do usuário: Daniels | Escolha: 2 | Valor: 32
+
+Nome do usuário: neo | Escolha: 1 | Valor: 100
+
+Nome do usuário: pepe | Escolha: 2 | Valor: 75
+
+Nome do usuário: 1 | Escolha: 2 | Valor: 72
+
+Nome do usuário: Daniels | Escolha: 2 | Valor: 88
+
