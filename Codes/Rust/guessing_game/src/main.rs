@@ -6,7 +6,7 @@ use rand::Rng; // biblioteca externa para geração de valores aleatórios
 use std::cmp::Ordering;
 // estrutura de comparação de números, da biblioteca padrão de comparativos
 use std::fs::OpenOptions; // biblioteca de manipulação de arquivos em rust
-use std::io::{self, Write}; // biblioteca padrão de entrada e saída
+use std::io::{self, Read, Seek, Write}; // biblioteca padrão de entrada e saída
 // chamei desse jeito pela forma especial, de chamar um módulo interno e a biblioteca ao mesmo tempo
 // pois nas outras bibliotecas, reduzi o escopo, enquanto em io, preciso manter o uso total devido
 // ao fato de I/O ser o core do programa
@@ -46,7 +46,7 @@ fn obtendo_palpite() -> u32 {
             Ok(palpite) if (1..100).contains(&palpite) => {
                 sleep(Duration::from_secs(1));
                 println!("Você acha que é {palpite}.");
-                palpite
+                return palpite; // bug crítico
             }
             Ok(_) => {
                 println!("Por favor, digite um número entre 1 e 100!");
@@ -218,5 +218,15 @@ fn main() {
         "Abaixo serão mostradas as rodadas anteriores, com a rodada atual sendo a utlima listada."
     );
 
-    println!("{:?}", arquivo);
+    let mut conteudo = String::new();
+
+    arquivo
+        .rewind()
+        .expect("Falha ao mudar o cursor para o começo!");
+
+    arquivo
+        .read_to_string(&mut conteudo)
+        .expect("Falha ao ler o conteúdo do arquivo");
+
+    println!("{}", conteudo);
 }
