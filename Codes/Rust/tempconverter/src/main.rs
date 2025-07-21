@@ -51,6 +51,8 @@ fn tempconverter() -> (f64, String) {
     sleep(Duration::from_millis(500));
 
     loop {
+        escolha.clear(); // quase passou kkk, read_line não sobrescreve, apenas adiciona, então preciso resetar as strings
+        temp.clear();
         println!("Por favor, selecione abaixo a operação desejada.");
         println!("1 -> Converter Celsius para Fahrenheit");
         println!("2 -> Converter Fahrenheit para Celsius");
