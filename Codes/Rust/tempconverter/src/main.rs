@@ -1,6 +1,6 @@
 use std::fs::OpenOptions;
 use std::io::{self, Write};
-use std::process::{exit, Command};
+use std::process::{Command, exit};
 use std::thread::sleep;
 use std::time::Duration;
 
@@ -39,11 +39,11 @@ fn celsius(temp: f64) -> f64 {
     (temp - 32.0) * (9.0 / 5.0)
 }
 
-/// tempconverter -> f64
+/// tempconverter -> (f64, String)
 ///
-/// Gera o valor convertido, ao receber o valor desejado pelo usuário, fazendo as operações de conversão conforme
-/// a vontade do usuário.
-fn tempconverter(user: String) -> f64 {
+/// Retorna uma tupla, com o f64 representando o valor convertido e String a escolha do usuário, para uso na função
+/// de salvamento de dados.
+fn tempconverter() -> (f64, String) {
     let mut temp: String = String::new();
     let mut escolha: String = String::new();
 
@@ -72,7 +72,7 @@ fn tempconverter(user: String) -> f64 {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
                         println!("{temp}°C equivale a {}°F", fahrenheit(f));
-                        return f; // retornando para futuro registro em arquivo
+                        return (f, escolha); // retornando para futuro registro em arquivo
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -94,7 +94,7 @@ fn tempconverter(user: String) -> f64 {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
                         println!("{temp}°F equivale a {}°C", celsius(c));
-                        return c;
+                        return (c, escolha);
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -119,3 +119,6 @@ fn tempconverter(user: String) -> f64 {
         }
     }
 }
+
+// agora falta a função que obtém o nome do usuário, criar a pasta onde será registrado o arquivo de texto contendo o log
+// do programa, escrever a função de salvamento e depois organizar tudo na função main
