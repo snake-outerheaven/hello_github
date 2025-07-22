@@ -1,10 +1,7 @@
-Nome do usuário: Daniels | Escolha: 2 | Valor: 32
 
-Nome do usuário: neo | Escolha: 1 | Valor: 100
+Nome do usuário: neo | Escolha: 2 | Valor obtido pelo conversor: 0°C
 
-Nome do usuário: pepe | Escolha: 2 | Valor: 75
+Nome do usuário: Niels Bohr | Escolha: 2 | Valor obtido pelo conversor: 260°C
 
-Nome do usuário: 1 | Escolha: 2 | Valor: 72
-
-Nome do usuário: Daniels | Escolha: 2 | Valor: 88
+Nome do usuário: Finn Mcmissile | Escolha: 1 | Valor obtido pelo conversor: 1328.00°F
 

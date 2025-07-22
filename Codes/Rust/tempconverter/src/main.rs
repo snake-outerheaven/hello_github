@@ -44,7 +44,7 @@ fn celsius(temp: f64) -> f64 {
 ///
 /// Retorna uma tupla, com o f64 representando o valor convertido e String a escolha do usuário, para uso na função
 /// de salvamento de dados.
-fn tempconverter() -> (f64, String) {
+fn tempconverter() -> (String, String) {
     let mut temp: String = String::new();
     let mut escolha: String = String::new();
 
@@ -71,11 +71,13 @@ fn tempconverter() -> (f64, String) {
                     .read_line(&mut temp)
                     .expect("Falha ao ler stdin");
                 match temp.trim().parse::<f64>() {
-                    Ok(f) => {
+                    Ok(num) => {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
-                        println!("{f}°C equivale a {}°F", fahrenheit(f));
-                        return (f.round(), escolha.trim().to_string()); // retornando para futuro registro em arquivo
+                        let fah = fahrenheit(num); // isso que faltava
+                        println!("{num}°C equivale a {fah}°F");
+                        let fah = format!("{:.2}", fah);
+                        return (fah.trim().to_string(), escolha.trim().to_string()); // estava retornando o valor entrado pelo usuário
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -93,11 +95,13 @@ fn tempconverter() -> (f64, String) {
                     .read_line(&mut temp)
                     .expect("Falha ao ler stdin.");
                 match temp.trim().parse::<f64>() {
-                    Ok(c) => {
+                    Ok(num) => {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
-                        println!("{c}°F equivale a {}°C", celsius(c));
-                        return (c.round(), escolha.trim().to_string());
+                        let cels = celsius(num);
+                        println!("{num}°F equivale a {cels}°C");
+                        let cels = format!("{:.2}", cels);
+                        return (cels.trim().to_string(), escolha.trim().to_string());
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -132,7 +136,6 @@ fn obtendo_nome() -> String {
     let mut nome: String = String::new();
 
     println!("Inicializando função de registro...");
-    println!("\n\n");
     sleep(Duration::from_millis(250));
 
     loop {
@@ -177,7 +180,7 @@ fn obtendo_nome() -> String {
 ///salvar(conversao: (f64, String), user: String)
 ///
 /// Esta função busca salvar os dados gerados, sendo totalmente opcional.
-fn salvar(conversao: (f64, String), user: &String) {
+fn salvar(conversao: (String, String), user: &String) {
     let (valor, escolha) = conversao; // desestruturando uma tupla de forma simples
 
     sleep(Duration::from_millis(250));
@@ -223,16 +226,24 @@ fn salvar(conversao: (f64, String), user: &String) {
         .open("log/registro.txt")
         .expect("Falha ao criar o arquivo.");
 
+    let identificador: &str;
+
+    if escolha == "1" {
+        identificador = "°F";
+    } else {
+        identificador = "°C";
+    }
+
     let registro = format!(
-        "Nome do usuário: {} | Escolha: {} | Valor: {}",
-        user, escolha, valor
+        "Nome do usuário: {} | Escolha: {} | Valor obtido pelo conversor: {}{}",
+        user, escolha, valor, identificador
     );
 
     match writeln!(log, "{}\n", registro) {
         Ok(_) => {
             sleep(Duration::from_millis(250));
             println!("Dados salvos com sucesso!");
-            println!("Isso foi o que será registrado no arquivo: {registro}");
+            println!("Isso é o que será registrado no arquivo: {registro}");
         }
         Err(_) => {
             sleep(Duration::from_millis(250));
@@ -271,3 +282,4 @@ fn main() {
     let conversao = tempconverter();
     salvar(conversao, &nome);
 }
+// preciso prestar mais atenção, bugs críticos iam passar, é uma boa dar uma reavaliada em todos os códigos para depois prosseguir estudando.
