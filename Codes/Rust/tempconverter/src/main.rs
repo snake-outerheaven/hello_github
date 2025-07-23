@@ -64,6 +64,9 @@ fn tempconverter() -> (String, String) {
             .expect("Não foi possível ler stdin, encerrando o código");
 
         match escolha.trim() {
+            // as operações que uso no match em valores válidos são idênticas
+            // é possível escrever uma função para simplificar o código
+            // pensar em fazer isso quando começar a escrever código que se repete
             "1" => loop {
                 sleep(Duration::from_millis(250));
                 println!("Certo, por favor, digite a temperatura em Celsius.");
@@ -77,7 +80,7 @@ fn tempconverter() -> (String, String) {
                         let fah = fahrenheit(num); // isso que faltava
                         println!("{num}°C equivale a {fah}°F");
                         let fah = format!("{:.2}", fah);
-                        return (fah.trim().to_string(), escolha.trim().to_string()); // estava retornando o valor entrado pelo usuário
+                        return (fah.trim().to_string(), escolha.trim().to_string());
                     }
                     Err(_) => {
                         sleep(Duration::from_millis(250));
@@ -111,6 +114,10 @@ fn tempconverter() -> (String, String) {
                     }
                 }
             },
+
+            // código genérico como esses abaixo podem ser modularizados
+            // em uma função separada, para maior reutilização
+            // e ter menos dor de cabeça escrevendo código.
             "3" => {
                 sleep(Duration::from_millis(250));
                 println!("Certo, saindo do código.");
@@ -188,7 +195,7 @@ fn salvar(conversao: (String, String), user: &String) {
     sleep(Duration::from_secs(1));
     println!("Verificando se a pasta log do projeto existe.");
     let log = Path::new("log");
-
+    // no diretório onde está sendo executado o binário, no caso, na raiz do meu projeto
     if log.exists() {
         println!(
             "Pasta de registro encontrada! Continuando com o fluxo padrão do programa ( Ultimos registros serão mostrados )"
@@ -210,9 +217,9 @@ fn salvar(conversao: (String, String), user: &String) {
                 );
                 sleep(Duration::from_millis(250));
                 println!(
-                    "Como não foi possível criar a pasta, o programa está encerrado por aqui, obrigado por usar!"
+                    "Como não foi possível criar a pasta, o programa está encerrado por aqui, obrigado por usá-lo!"
                 );
-                exit(0);
+                exit(0); // sai com código 0, pois a função de salvar é extra
             }
         }
     }
@@ -227,6 +234,9 @@ fn salvar(conversao: (String, String), user: &String) {
         .expect("Falha ao criar o arquivo.");
 
     let identificador: &str;
+    // identificador é uma string imutável,
+    // apenas a criei vazia, posso determinar
+    // seu valor usando um condicional
 
     if escolha == "1" {
         identificador = "°F";
@@ -260,8 +270,13 @@ fn salvar(conversao: (String, String), user: &String) {
     log.rewind()
         .expect("Falha ao mover o cursor dentro do arquivo para o início");
 
-    // preciso fazer a ação de cima para poder registrar o conteúdo, pois o método .append move o cursor interno do arquivo
-    // para o final
+    // segundo o chatgpt, todo arquivo tem um cursor interno, como o cursor do editor Helix, que é o que uso
+    // para escrever os meus códigos, como eu fiz uma registro de dados, abrindo o arquivo "log", o cursor
+    // onde o sistema operacional usa para escrever os dados através da execução do meu programa, ao rodar writeln!.
+    // fica no final, então o cursor deve voltar para o início, por isso o método rewind.
+    // -------------------------------------------------------------------------------------------------------------------
+    // acho que é por isso que editores multimodais existem, porque as operações que são feitas com texto é feita de forma
+    // muito parecida
 
     let mut conteudo = String::new();
 
