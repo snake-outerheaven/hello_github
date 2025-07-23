@@ -275,8 +275,8 @@ fn salvar(conversao: (String, String), user: &String) {
     // onde o sistema operacional usa para escrever os dados através da execução do meu programa, ao rodar writeln!.
     // fica no final, então o cursor deve voltar para o início, por isso o método rewind.
     // -------------------------------------------------------------------------------------------------------------------
-    // acho que é por isso que editores multimodais existem, porque as operações que são feitas com texto é feita de forma
-    // muito parecida
+    // acho que é por isso que editores multimodais existem, para imitar os métodos de gerenciamento de arquivos que existem
+    // nas linguagens de programação ( abrir o arquivo em modo de adição, sobrescrita, leitura)
 
     let mut conteudo = String::new();
 
