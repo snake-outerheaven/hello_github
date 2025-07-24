@@ -33,7 +33,7 @@ fn verif(x: &str) -> bool {
 
         sleep(Duration::from_millis(250));
 
-        println!("Você confirma a entrada {x}?");
+        println!("Você confirma a entrada {}?", x.trim()); // faltou limpar o \n da entrada.
 
         io::stdin()
             .read_line(&mut verif)
@@ -76,6 +76,7 @@ fn obtendo_string() -> String {
             .expect("falha ao ler stdin");
 
         if verif(&entrada) {
+            entrada = entrada.trim().to_string();
             println!("Entrada {entrada} validada!");
             return entrada.trim().to_string();
         } else {
@@ -111,9 +112,11 @@ fn obter_numero() -> BigUint {
 /// fib(n: BigUint) -> BigUint
 ///
 /// Gera meu fibonacci usando a fórmula clássica, Fib = x + (x-1)
-fn fib(n: BigUint) -> BigUint {
-    let zero: BigUint = Zero::zero();
-    let one: BigUint = One::one();
+fn fib(n: &BigUint) -> BigUint {
+    let zero: BigUint = Zero::zero(); // usando o zero da biblioteca externa
+    let one: BigUint = One::one(); // usando o um da biblioteca externa
+
+    // clonando as variaveis
 
     let mut a = zero.clone();
 
@@ -121,7 +124,7 @@ fn fib(n: BigUint) -> BigUint {
 
     let mut i = zero.clone();
 
-    while &i <= &n {
+    while &i < &n {
         let temp = b.clone(); // b guarda f(n)
         b = a + &b; // x + ( x - 1 )
         a = temp; // a necessita manter o b antigo para manter o fib.
@@ -130,9 +133,48 @@ fn fib(n: BigUint) -> BigUint {
 
     return a; // retorno o valor 
 }
+
+/// format_biguint(x:BigUint) -> String
+///
+/// Formata um BigUint para valores maiores que 1 bilhão
+fn format_biguint(x: &BigUint) -> String {
+    let valor_a_formatar: String = x.to_string();
+    let len: usize = valor_a_formatar.len();
+
+    if len > 7 {
+        let primeiro_digito: &str = &valor_a_formatar[..1]; // forma de iterar sobre os dados de forma mais rápida
+        let decimal: &str = &valor_a_formatar[1..3];
+        let expoente: usize = len - 1;
+        format!("{}.{}e{}", primeiro_digito, decimal, expoente)
+    } else {
+        valor_a_formatar
+    }
+}
+
 /// main() -> ()
 ///
 /// Executa o conjunto das funções acima de modo a fornecer a saida do código
-fn main() -> () {}
+fn main() -> () {
+    println!(
+        "Este é um programa gerador de números Fibonacci que calcula o enésimo termo da sequência de Fibonacci de acordo com o número que você digitar."
+    );
+    sleep(Duration::from_millis(250));
+    println!(
+        "Ele gera os números usando a forma iterativa, simples de se gera um Fibonacci, então números absurdamente grandes podem travar o processo do programa."
+    );
+    sleep(Duration::from_millis(250));
+    println!(
+        "Isso será corrigido em uma versão posterior, quando a função que obtém o Fibonacci for reescrita com um algoritmo melhor."
+    );
+    let x: BigUint = obter_numero();
+    let fib: BigUint = fib(&x);
+    let fib_formatado: String = format_biguint(&fib);
+
+    println!("O {x}º número da sequência de Fibonacci é {fib_formatado}.");
+}
 
 // pretendo implementar uma função que salve em breve, por enquanto, vamos manter o código simples
+//
+//
+// & na prática é um ponteiro que aponta para os dados, em Rust, sempre devo usar ele para acessar dados de outras
+// variáveis, depois de terminar esse código vou seguir para o capitulo 4.
