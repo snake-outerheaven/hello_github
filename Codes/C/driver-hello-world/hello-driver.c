@@ -19,3 +19,5 @@ module_init(custom_init);
 module_exit(custom_exit);
 
 // exemplo de driver funcional, depois investigar as bibliotecas
+//
+// Fonte do código: https://medium.com/dvt-engineering/how-to-write-your-first-linux-kernel-module-cf284408beeb
