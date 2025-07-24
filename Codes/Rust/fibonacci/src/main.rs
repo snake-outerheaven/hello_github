@@ -1,9 +1,11 @@
-use std::fs::{self, OpenOptions};
-use std::io::{self, Read, Seek, Write};
-use std::path::Path;
-use std::process::{Command, exit};
+use std::io;
+use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
+
+// bibliotecas externas
+use num_bigint::BigUint;
+use num_traits::{One, Zero};
 
 // este código será menor, o objetivo dele é escrever um simples gerador de números fibonnaci, mas
 // tentando manter o código no estilo Unix, cada função vai fazer uma unica tarefa, para deixar
@@ -12,6 +14,9 @@ use std::time::Duration;
 // Então teremos: uma função de limpar tela, uma função que devolve um número parseado de string para f64,
 // uma função de validação de dados, e claro, uma função que implementa a criação automática do diretório
 // log, na raíz deste projeto, provavelmente é mais fácil criar módulos para deixar este aqui mais limpo.
+
+//
+//
 
 /// verif(x: &str) -> Bool
 ///
@@ -37,19 +42,17 @@ fn verif(x: &str) -> bool {
         match verif.trim().to_uppercase().as_str() {
             "S" => {
                 sleep(Duration::from_millis(250));
-                println!("{x} confirmado!");
                 return true;
             }
 
             "N" => {
                 sleep(Duration::from_millis(250));
-                println!("{x} não confirmado, favor repetir entrada.");
                 return false;
             }
             _ => {
                 sleep(Duration::from_millis(250));
                 println!(
-                    "Entrada inválida detectada, voce tem {tentativas} tentativas para digitar corretamente"
+                    "Entrada inválida detectada, voce tem {tentativas} tentativas para digitar corretamente antes do código ser encerrado."
                 );
                 continue;
             }
@@ -81,16 +84,16 @@ fn obtendo_string() -> String {
     }
 }
 
-/// obter_numero() -> u32
+/// obter_numero() -> BigUint
 ///
-/// Se utiliza de verif e obtendo_string para gerar um valor u32, serve mais para obter um número válido para ser
-/// parseado para um f64 dentro da função que vai chamar a fórmula de binet para de fato gerar o n-ésimo fibonacci
-fn obter_numero() -> u32 {
+/// Se utiliza de verif e obtendo_string para gerar um inteiro sem sinal arbitrário, serve mais para obter um número válido para ser
+/// parseado para um f64 dentro da função que vai chamar a fórmula de Fibonacci para de fato gerar o n-ésimo fibonacci
+fn obter_numero() -> BigUint {
     loop {
         sleep(Duration::from_millis(250));
         println!("Digite um número válido.");
         let numero = obtendo_string(); // obtem uma string validada
-        match numero.trim().parse::<u32>() {
+        match numero.trim().parse::<BigUint>() {
             Ok(num) => {
                 sleep(Duration::from_millis(250));
                 println!("Número lido: {num}");
@@ -104,3 +107,32 @@ fn obter_numero() -> u32 {
         }
     }
 }
+
+/// fib(n: BigUint) -> BigUint
+///
+/// Gera meu fibonacci usando a fórmula clássica, Fib = x + (x-1)
+fn fib(n: BigUint) -> BigUint {
+    let zero: BigUint = Zero::zero();
+    let one: BigUint = One::one();
+
+    let mut a = zero.clone();
+
+    let mut b = one.clone();
+
+    let mut i = zero.clone();
+
+    while &i <= &n {
+        let temp = b.clone(); // b guarda f(n)
+        b = a + &b; // x + ( x - 1 )
+        a = temp; // a necessita manter o b antigo para manter o fib.
+        i += one.clone();
+    }
+
+    return a; // retorno o valor 
+}
+/// main() -> ()
+///
+/// Executa o conjunto das funções acima de modo a fornecer a saida do código
+fn main() -> () {}
+
+// pretendo implementar uma função que salve em breve, por enquanto, vamos manter o código simples
