@@ -18,4 +18,4 @@ static void __exit custom_exit(void) {
 module_init(custom_init);
 module_exit(custom_exit);
 
-// simples driver que diz hello world 
+// exemplo de driver funcional, depois investigar as bibliotecas
