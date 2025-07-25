@@ -124,14 +124,14 @@ fn fib(n: &BigUint) -> BigUint {
 
     let mut i = zero.clone();
 
-    while &i < &n {
+    while &i < n {
         let temp = b.clone(); // b guarda f(n)
         b = a + &b; // x + ( x - 1 )
         a = temp; // a necessita manter o b antigo para manter o fib.
         i += one.clone();
     }
 
-    return a; // retorno o valor 
+    a// retorno o valor 
 }
 
 /// format_biguint(x:BigUint) -> String
@@ -145,7 +145,7 @@ fn format_biguint(x: &BigUint) -> String {
         let primeiro_digito: &str = &valor_a_formatar[..1]; // forma de iterar sobre os dados de forma mais rápida
         let decimal: &str = &valor_a_formatar[1..3];
         let expoente: usize = len - 1;
-        format!("{}.{}e{}", primeiro_digito, decimal, expoente)
+        format!("{primeiro_digito}.{decimal}e{expoente}")
     } else {
         valor_a_formatar
     }
@@ -154,7 +154,7 @@ fn format_biguint(x: &BigUint) -> String {
 /// main() -> ()
 ///
 /// Executa o conjunto das funções acima de modo a fornecer a saida do código
-fn main() -> () {
+fn main() {
     println!(
         "Este é um programa gerador de números Fibonacci que calcula o enésimo termo da sequência de Fibonacci de acordo com o número que você digitar."
     );
