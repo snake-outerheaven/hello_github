@@ -1,7 +1,7 @@
 # hello_github
 
 Repositório pessoal para guardar exercícios, testes e experimentos em várias linguagens de programação.  
-Aqui você encontra códigos em **C**, **C++**, **Lua**, **Python**, **Rust** e outras linguagens, organizados por pastas.
+Aqui você encontra códigos em **C**, **C++**, **Lua**, **Python**, **Rust** , **Vimscript** e outras linguagens, organizados por pastas.
 
 ---
 
@@ -20,6 +20,8 @@ Codes/
 │   └── ... (scripts e exercícios em Python)
 ├── Rust/
 │   └── ... (testes e exemplos em Rust)
+├── Vimscript/
+│   └── ... (Minha config do Vim (não recomendo usar, é bem simples) e outros scripts)
 └── ... (outras linguagens)
 
 ```
@@ -34,7 +36,7 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 ##  Sobre este projeto
 
 - **Licença:** GPL v3
-- **Propósito:** Portfólio de estudos, registro da evolução no aprendizado de programação e espaço para colaborar ou comentar.
+- **Propósito:** Registro de estudos, sinta-se a vontade para ler seu conteúdo.
 - **Contato:** [Abrir uma issue](https://github.com/snake-outerheaven/hello_github/issues) para sugerir melhorias, relatar bugs ou conversar sobre os códigos.
 
 ---
@@ -66,7 +68,7 @@ Os nomes dos arquivos seguem a ordem dos exercícios ou projetos pessoais.
 
 ---
 
-##  Dicas gerais
+##  Guia geral para contribuições.
 
 - Mantenha commits pequenos e mensagens claras.
 - Crie uma branch específica para cada nova ideia ou correção.
