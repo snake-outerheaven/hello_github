@@ -33,7 +33,11 @@ set hlsearch                    " Destaca todas as ocorrências
 set scrolloff=5                 " Mantém 5 linhas de margem ao mover o cursor
 set wrap                        " Ativa quebra de linha visual
 set mouse=a                     " Habilita uso de mouse no terminal
-set clipboard=unnamedplus       " Usa área de transferência do sistema
+
+" set clipboard=unnamedplus       " Usa área de transferência do sistema
+" Removido porque o Debian não monta o vim com clipboard e to com preguiça
+" de compilar manualmente
+
 set backspace=indent,eol,start  " Backspace funciona em todos os contextos
 
 " --------------------
@@ -62,4 +66,3 @@ colorscheme zaibatsu
 set laststatus=2                " Sempre mostrar a statusline
 let &statusline = '%f %= %y %= [%{&encoding}] %= [linha: %l/%L] %= [col: %c] %= [%p%%] %= [%{&fileformat}]' 
 " barra inferior simples 
-

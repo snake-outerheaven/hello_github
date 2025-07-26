@@ -1,5 +1,5 @@
 // Implementar salvamento dos dados do cliente em um arquivo de texto na pasta
-// /Codes
+// /Codes -> completo!
 //
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +8,7 @@
 
 
 // Objetivo do código:
-// Entender structs, e como vetorizar eles.
+// Entender structs, e como vetorizar elas.
 // Talvez seja interessante voltar naquele exemplo do banco,
 // criar um registro de clientes, onde cada um vai ter um
 // nome, número da conta, valor da conta corrente, ver se
@@ -22,14 +22,14 @@
 // colocar a função obtendo clientes como a função de
 // reescrever o arquivo de texto: usando o struct
 // cliente e o vetor de structs clientes(obtido com
-// malloc) como ferramentas para a execução do objetivo
+// malloc) como ferramentas para a execução do objetivo -> completo!
 
 // Definindo o meu cliente como um struct.
 
 typedef struct { // Essa forma de declarar structs é útil
                  // para eu usar cliente em qualquer lugar
                  // no código.
-  char nome_cliente[100]; // 100 bits
+  char nome_cliente[100]; // 100 bits de caracteres
   int numero_conta; // 1
   double conta_cliente; // 1 
   int status_divida; // bool bool1 = true
@@ -91,7 +91,6 @@ void salvando_clientes(cliente *clientes, int quantidade) {
     FILE *arquivo = fopen(caminho, "w"); // aqui, fopen abre o arquivo no modo de escrita(write)
 					 // reescrevendo ou criando o arquivo toda a vez que for
 					 // executado.
-
     if (arquivo == NULL) {
       sleep(1);
       printf(
@@ -163,7 +162,7 @@ void lendo_clientes_salvos(void) {
       while (fgets(linha, sizeof(linha), arquivo) != NULL) { // aqui fgets faz algo muito interessante,
 							     // ele esta preenchendo a string linha, com o 
 							     // tamanho de linha, da stream do tipo FILE arquivo
-							     // parseia meu arquivo
+							     
         printf("%s", linha); 
 	// mostra em tela os valores varridos por fgets
       } 
