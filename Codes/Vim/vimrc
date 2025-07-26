@@ -1,0 +1,65 @@
+" ~/.vimrc — Configuração básica e limpa para terminal puro
+
+" --------------------
+" Interface
+" --------------------
+set number                      " Mostra número das linhas
+" set relativenumber            " Números relativos 
+set showcmd                     " Mostra comandos parcialmente digitados
+set nocursorline                " Não destaca a linha atual
+syntax on                       " Ativa destaque de sintaxe
+set title                       " Exibe o nome do arquivo no título do terminal
+
+" --------------------
+" Indentação
+" --------------------
+set tabstop=4                   " Largura da tabulação em 4 espaços
+set shiftwidth=4                " Espaços usados por indentação automática
+set expandtab                   " Converte tabulações em espaços
+set autoindent                  " Mantém indentação da linha anterior
+set smartindent                 " Indenta automaticamente em blocos
+
+" --------------------
+" Busca
+" --------------------
+set ignorecase                  " Busca insensível a maiúsculas/minúsculas
+set smartcase                   " Busca sensível se usar maiúsculas
+set incsearch                   " Busca incremental conforme digita
+set hlsearch                    " Destaca todas as ocorrências
+
+" --------------------
+" Usabilidade
+" --------------------
+set scrolloff=5                 " Mantém 5 linhas de margem ao mover o cursor
+set wrap                        " Ativa quebra de linha visual
+set mouse=a                     " Habilita uso de mouse no terminal
+set clipboard=unnamedplus       " Usa área de transferência do sistema
+set backspace=indent,eol,start  " Backspace funciona em todos os contextos
+
+" --------------------
+" Arquivos e swap
+" --------------------
+set nobackup                    " Desativa criação de arquivos de backup
+set nowritebackup               " Não faz backup antes de sobrescrever
+set noswapfile                  " Desativa arquivos .swp
+
+" --------------------
+" Silenciar alertas
+" --------------------
+set noerrorbells                " Desativa sons de erro
+set visualbell                  " Usa flash visual, sem som
+set t_vb=                       " Desativa até o flash no terminal
+
+" -------------------
+" Colorscheme
+" -------------------
+
+colorscheme zaibatsu 
+
+" --------------------
+" Barra de status inferior
+" --------------------
+set laststatus=2                " Sempre mostrar a statusline
+let &statusline = '%f %= %y %= [%{&encoding}] %= [linha: %l/%L] %= [col: %c] %= [%p%%] %= [%{&fileformat}]' 
+" barra inferior simples 
+
