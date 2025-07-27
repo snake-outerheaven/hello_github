@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Calculadora	exercicio5.cpp	/^    Calculadora(double a = 0, double b = 0){$/;"	f	class:Calculadora
+Calculadora	exercicio5.cpp	/^class Calculadora {$/;"	c	file:
+HelloWorld	hellov2.cpp	/^    HelloWorld(void){$/;"	f	class:HelloWorld
+HelloWorld	hellov2.cpp	/^class HelloWorld{$/;"	c	file:
+MAX_IGNORE_SIZE	exercicio3.cpp	9;"	d	file:
+a_	exercicio5.cpp	/^    double a_;$/;"	m	class:Calculadora	file:
+b_	exercicio5.cpp	/^    double b_;$/;"	m	class:Calculadora	file:
+div	exercicio5.cpp	/^    double div(){$/;"	f	class:Calculadora
+limpar_tela	exercicio5.cpp	/^void limpar_tela( void ){ $/;"	f
+main	exercicio1.cpp	/^int main ( void ){$/;"	f
+main	exercicio2.cpp	/^int main ( void ){$/;"	f
+main	exercicio3.cpp	/^int main ( void ){$/;"	f
+main	exercicio4.cpp	/^int main ( void ){$/;"	f
+main	exercicio5.cpp	/^int main ( void ) {$/;"	f
+main	hello.cpp	/^int main ( void ){$/;"	f
+main	hellov2.cpp	/^int main ( void ){$/;"	f
+mult	exercicio5.cpp	/^    double mult(){$/;"	f	class:Calculadora
+printfworld	hellov2.cpp	/^    void printfworld(void){$/;"	f	class:HelloWorld
+soma	exercicio5.cpp	/^    double soma(){$/;"	f	class:Calculadora
+sub	exercicio5.cpp	/^    double sub(){$/;"	f	class:Calculadora
+~Calculadora	exercicio5.cpp	/^    ~Calculadora(){$/;"	f	class:Calculadora
+~HelloWorld	hellov2.cpp	/^    ~HelloWorld(void){$/;"	f	class:HelloWorld
