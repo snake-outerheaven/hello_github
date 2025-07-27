@@ -1,47 +1,53 @@
 !_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
 !_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
-!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
-!_TAG_PROGRAM_NAME	Exuberant Ctags	//
-!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-SeqCollatz	exercicio11.c	/^void SeqCollatz( int numero_do_usuario) {$/;"	f
-area_circulo	exercicio7.c	/^void area_circulo(double raio) { $/;"	f
-avaliando_contas	exercicio9.c	/^void avaliando_contas(double lista_contas[12], double media) {$/;"	f
-binet_fib	exercicio12.c	/^double binet_fib(int x) {$/;"	f
-circunferencia	exercicio7.c	/^void circunferencia(double raio) {$/;"	f
-cliente	exercicio10.c	/^} cliente; \/\/ Meu cliente!$/;"	t	typeref:struct:__anon1	file:
-conta_cliente	exercicio10.c	/^  double conta_cliente; \/\/ 1 $/;"	m	struct:__anon1	file:
-custom_exit	driver-hello-world/hello-driver.c	/^module_exit(custom_exit);$/;"	v
-custom_exit	driver-hello-world/hello-driver.c	/^static void __exit custom_exit(void) {$/;"	f	file:
-custom_init	driver-hello-world/hello-driver.c	/^module_init(custom_init);$/;"	v
-custom_init	driver-hello-world/hello-driver.c	/^static int __init custom_init(void) {$/;"	f	file:
-exibir_clientes	exercicio10.c	/^void exibir_clientes(cliente *clientes,$/;"	f
-lendo_clientes_salvos	exercicio10.c	/^void lendo_clientes_salvos(void) {$/;"	f
-limpar_tela	exercicio1.c	/^void limpar_tela (void) {$/;"	f
-main	exercicio10.c	/^int main(void) {$/;"	f
-main	exercicio11.c	/^int main (void){$/;"	f
-main	exercicio12.c	/^int main(void) {$/;"	f
-main	exercicio13.c	/^int main ( void ) {$/;"	f
-main	exercicio2.c	/^int main(){$/;"	f
-main	exercicio3.c	/^int main(void) {$/;"	f
-main	exercicio4.c	/^int main() {$/;"	f
-main	exercicio5.c	/^int main(void){$/;"	f
-main	exercicio6.c	/^int main (void){$/;"	f
-main	exercicio7.c	/^int main(void) {$/;"	f
-main	exercicio8.c	/^int main(void) {$/;"	f
-main	exercicio9.c	/^int main(void) {$/;"	f
-main	segsfault.c	/^int main (){$/;"	f
-nome_cliente	exercicio10.c	/^  char nome_cliente[100]; \/\/ 100 bits de caracteres$/;"	m	struct:__anon1	file:
-numero_conta	exercicio10.c	/^  int numero_conta; \/\/ 1$/;"	m	struct:__anon1	file:
-obtendo_aluno	exercicio13.c	/^char* obtendo_aluno(void) {$/;"	f
-obtendo_clientes	exercicio10.c	/^void obtendo_clientes(void) {$/;"	f
-obtendo_lados	exercicio8.c	/^void obtendo_lados(double lados[3]) { \/\/ função que obtem lados$/;"	f
-obtendo_listas	exercicio9.c	/^void obtendo_listas($/;"	f
-obtendo_media	exercicio9.c	/^obtendo_media(double lista_contas[12]) { \/\/ tive que mudar o tipo de função pois$/;"	f
-obtendo_notas	exercicio13.c	/^double* obtendo_notas(char* nome){$/;"	f
-ocupacao	exercicio10.c	/^  char ocupacao[100];$/;"	m	struct:__anon1	file:
-renda	exercicio10.c	/^  double renda; \/\/8$/;"	m	struct:__anon1	file:
-salvando_clientes	exercicio10.c	/^void salvando_clientes(cliente *clientes, int quantidade) {$/;"	f
-status_divida	exercicio10.c	/^  int status_divida; \/\/ bool bool1 = true$/;"	m	struct:__anon1	file:
-status_trabalho	exercicio10.c	/^  int status_trabalho; \/\/ bool bool2 = false$/;"	m	struct:__anon1	file:
-trim	exercicio1.c	/^void trim (char *entrada) {$/;"	f
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/neo/Repos/hello_github/Codes/C/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+SeqCollatz	exercicio11.c	/^void SeqCollatz( int numero_do_usuario) {$/;"	f	typeref:typename:void
+__anonce9d7b320108	exercicio10.c	/^typedef struct { \/\/ Essa forma de declarar structs é útil$/;"	s	file:
+all	driver-hello-world/Makefile	/^all:$/;"	t
+area_circulo	exercicio7.c	/^void area_circulo(double raio) { $/;"	f	typeref:typename:void
+avaliando_contas	exercicio9.c	/^void avaliando_contas(double lista_contas[12], double media) {$/;"	f	typeref:typename:void
+binet_fib	exercicio12.c	/^double binet_fib(int x) {$/;"	f	typeref:typename:double
+circunferencia	exercicio7.c	/^void circunferencia(double raio) {$/;"	f	typeref:typename:void
+clean	driver-hello-world/Makefile	/^clean:$/;"	t
+cliente	exercicio10.c	/^} cliente; \/\/ Meu cliente!$/;"	t	typeref:struct:__anonce9d7b320108	file:
+conta_cliente	exercicio10.c	/^  double conta_cliente; \/\/ 1 $/;"	m	struct:__anonce9d7b320108	typeref:typename:double	file:
+custom_exit	driver-hello-world/hello-driver.c	/^static void __exit custom_exit(void) {$/;"	f	typeref:typename:void __exit	file:
+custom_init	driver-hello-world/hello-driver.c	/^static int __init custom_init(void) {$/;"	f	typeref:typename:int __init	file:
+exibir_clientes	exercicio10.c	/^void exibir_clientes(cliente *clientes,$/;"	f	typeref:typename:void
+lendo_clientes_salvos	exercicio10.c	/^void lendo_clientes_salvos(void) {$/;"	f	typeref:typename:void
+limpar_tela	exercicio1.c	/^void limpar_tela (void) {$/;"	f	typeref:typename:void
+main	exercicio10.c	/^int main(void) {$/;"	f	typeref:typename:int
+main	exercicio11.c	/^int main (void){$/;"	f	typeref:typename:int
+main	exercicio12.c	/^int main(void) {$/;"	f	typeref:typename:int
+main	exercicio13.c	/^int main ( void ) {$/;"	f	typeref:typename:int
+main	exercicio2.c	/^int main(){$/;"	f	typeref:typename:int
+main	exercicio3.c	/^int main(void) {$/;"	f	typeref:typename:int
+main	exercicio4.c	/^int main() {$/;"	f	typeref:typename:int
+main	exercicio5.c	/^int main(void){$/;"	f	typeref:typename:int
+main	exercicio6.c	/^int main (void){$/;"	f	typeref:typename:int
+main	exercicio7.c	/^int main(void) {$/;"	f	typeref:typename:int
+main	exercicio8.c	/^int main(void) {$/;"	f	typeref:typename:int
+main	exercicio9.c	/^int main(void) {$/;"	f	typeref:typename:int
+main	segsfault.c	/^int main (){$/;"	f	typeref:typename:int
+nome_cliente	exercicio10.c	/^  char nome_cliente[100]; \/\/ 100 bits de caracteres$/;"	m	struct:__anonce9d7b320108	typeref:typename:char[100]	file:
+numero_conta	exercicio10.c	/^  int numero_conta; \/\/ 1$/;"	m	struct:__anonce9d7b320108	typeref:typename:int	file:
+obtendo_aluno	exercicio13.c	/^char* obtendo_aluno(void) {$/;"	f	typeref:typename:char *
+obtendo_clientes	exercicio10.c	/^void obtendo_clientes(void) {$/;"	f	typeref:typename:void
+obtendo_lados	exercicio8.c	/^void obtendo_lados(double lados[3]) { \/\/ função que obtem lados$/;"	f	typeref:typename:void
+obtendo_listas	exercicio9.c	/^void obtendo_listas($/;"	f	typeref:typename:void
+obtendo_media	exercicio9.c	/^obtendo_media(double lista_contas[12]) { \/\/ tive que mudar o tipo de função pois$/;"	f	typeref:typename:double
+obtendo_notas	exercicio13.c	/^double* obtendo_notas(char* nome){$/;"	f	typeref:typename:double *
+ocupacao	exercicio10.c	/^  char ocupacao[100];$/;"	m	struct:__anonce9d7b320108	typeref:typename:char[100]	file:
+renda	exercicio10.c	/^  double renda; \/\/8$/;"	m	struct:__anonce9d7b320108	typeref:typename:double	file:
+salvando_clientes	exercicio10.c	/^void salvando_clientes(cliente *clientes, int quantidade) {$/;"	f	typeref:typename:void
+status_divida	exercicio10.c	/^  int status_divida; \/\/ bool bool1 = true$/;"	m	struct:__anonce9d7b320108	typeref:typename:int	file:
+status_trabalho	exercicio10.c	/^  int status_trabalho; \/\/ bool bool2 = false$/;"	m	struct:__anonce9d7b320108	typeref:typename:int	file:
+trim	exercicio1.c	/^void trim (char *entrada) {$/;"	f	typeref:typename:void
