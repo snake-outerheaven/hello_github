@@ -21,9 +21,11 @@ cliente	exercicio10.c	/^} cliente; \/\/ Meu cliente!$/;"	t	typeref:struct:__anon
 conta_cliente	exercicio10.c	/^  double conta_cliente; \/\/ 1 $/;"	m	struct:__anonce9d7b320108	typeref:typename:double	file:
 custom_exit	driver-hello-world/hello-driver.c	/^static void __exit custom_exit(void) {$/;"	f	typeref:typename:void __exit	file:
 custom_init	driver-hello-world/hello-driver.c	/^static int __init custom_init(void) {$/;"	f	typeref:typename:int __init	file:
+escrever	exercicio1.c	/^char *escrever (FILE *arquivo, char *entrada, size_t tamanho)$/;"	f	typeref:typename:char *
 exibir_clientes	exercicio10.c	/^void exibir_clientes(cliente *clientes,$/;"	f	typeref:typename:void
+imprimir	exercicio1.c	/^void imprimir (FILE *arquivo, const char *prompt)$/;"	f	typeref:typename:void
 lendo_clientes_salvos	exercicio10.c	/^void lendo_clientes_salvos(void) {$/;"	f	typeref:typename:void
-limpar_tela	exercicio1.c	/^void limpar_tela (void) {$/;"	f	typeref:typename:void
+limpar_tela	exercicio1.c	/^void limpar_tela (void) $/;"	f	typeref:typename:void
 main	exercicio10.c	/^int main(void) {$/;"	f	typeref:typename:int
 main	exercicio11.c	/^int main (void){$/;"	f	typeref:typename:int
 main	exercicio12.c	/^int main(void) {$/;"	f	typeref:typename:int
@@ -50,4 +52,4 @@ renda	exercicio10.c	/^  double renda; \/\/8$/;"	m	struct:__anonce9d7b320108	type
 salvando_clientes	exercicio10.c	/^void salvando_clientes(cliente *clientes, int quantidade) {$/;"	f	typeref:typename:void
 status_divida	exercicio10.c	/^  int status_divida; \/\/ bool bool1 = true$/;"	m	struct:__anonce9d7b320108	typeref:typename:int	file:
 status_trabalho	exercicio10.c	/^  int status_trabalho; \/\/ bool bool2 = false$/;"	m	struct:__anonce9d7b320108	typeref:typename:int	file:
-trim	exercicio1.c	/^void trim (char *entrada) {$/;"	f	typeref:typename:void
+trim	exercicio1.c	/^void trim (char *str) $/;"	f	typeref:typename:void
