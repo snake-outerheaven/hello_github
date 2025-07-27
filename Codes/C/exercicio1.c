@@ -25,7 +25,12 @@ void limpar_tela (void) {
 
 
 void trim (char *entrada) {
-    int len = strlen(entrada); // inicializo uma variável que recebe o valor de 
+    
+
+    // função que busca remover todo os tipos de whitespace de uma string recebida do usuário
+    
+
+    int len = strlen(str); // inicializo uma variável que recebe o valor do tamanho da str
     while(len > 0 && str[len - 1] == ' ' || str[len - 1] == '\n'|| str[len - 1] == '\r'|| str[len - 1] == '\t') 
         // enquanto len for maior que zero e o caracter em len - 1 for algum desses:
     {
