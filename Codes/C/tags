@@ -21,7 +21,7 @@ cliente	exercicio10.c	/^} cliente; \/\/ Meu cliente!$/;"	t	typeref:struct:__anon
 conta_cliente	exercicio10.c	/^  double conta_cliente; \/\/ 1 $/;"	m	struct:__anonce9d7b320108	typeref:typename:double	file:
 custom_exit	driver-hello-world/hello-driver.c	/^static void __exit custom_exit(void) {$/;"	f	typeref:typename:void __exit	file:
 custom_init	driver-hello-world/hello-driver.c	/^static int __init custom_init(void) {$/;"	f	typeref:typename:int __init	file:
-escrever	exercicio1.c	/^char *escrever (FILE *arquivo, char *entrada, size_t tamanho)$/;"	f	typeref:typename:char *
+escrever	exercicio1.c	/^int escrever (FILE *stream, size_t tamanho, char *saida)$/;"	f	typeref:typename:int
 exibir_clientes	exercicio10.c	/^void exibir_clientes(cliente *clientes,$/;"	f	typeref:typename:void
 imprimir	exercicio1.c	/^void imprimir (FILE *arquivo, const char *prompt)$/;"	f	typeref:typename:void
 lendo_clientes_salvos	exercicio10.c	/^void lendo_clientes_salvos(void) {$/;"	f	typeref:typename:void

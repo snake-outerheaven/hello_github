@@ -27,14 +27,14 @@ void trim (char *str)
 {
     // Função que remove espaços em branco (whitespace) do início e do fim de uma string.
 
-    int len = strlen(str);  // Obtém o tamanho atual da string
+    int fim = strlen(str);  // Obtém o tamanho atual da string
 
     // Remover espaços em branco do fim da string
     // Enquanto o tamanho for maior que zero e o último caractere for um espaço (ou outro whitespace)
-    while(len > 0 && isspace((unsigned char) str[len - 1])) 
+    while(fim > 0 && isspace((unsigned char) str[fim - 1])) 
     {
-        str[len - 1] = '\0';  // Substitui o último caractere por '\0', encurtando a string
-        len--;                // Decrementa o tamanho da string
+        str[fim - 1] = '\0';  // Substitui o último caractere por '\0', encurtando a string
+        fim--;                // Decrementa o tamanho da string
     }
 
     // Remover espaços em branco do início da string
@@ -64,24 +64,39 @@ void imprimir (FILE *arquivo, const char *prompt)
     fprintf(arquivo,"%s\n",prompt);
 }
 
-// agora é criar uma função que permite o contrário da segunda, escrever em qualquer FILE, com um char obtido 
-// do usuário ( sem precisar usar malloc porque a entrada vai ser limitada em 100 caracteres( 100 bits )
 
-char *escrever (FILE *arquivo, char *entrada, size_t tamanho)
+int escrever (FILE *stream, size_t tamanho, char *saida)
 {
-    imprimir(stdout, "Por favor, digite a sua entrada.");  // a escadinha de funções começa a subir
-    if(fgets(entrada,tamanho,arquivo))
-    {
-        trim(entrada);
-    }else
-    {
-        entrada[0] = '\0'; // strings sempre terminam em '\0'
-    }
-    return entrada;
+   // todas as operações de entrada e saída se dão em buffers, a mesma lógica de ler uma arquivo de texto
+   // se dá em ler entrada do teclado, só que a stream de dados vem de /dev/stdin, pelo menos em sistemas Unix
+   
+   char buffer[tamanho]; // buffer de operações
+
+   if (fgets(buffer,tamanho,stream) == NULL)
+   {
+       imprimir(stderr,"Leitura de entrada falhou.");
+       return 0; // função retorna 0, depois só verificar com if ( escrever(parametros) == 0 ) 
+       // { tratamento da falha }
+   }
+
+   // fgets obtém uma string com \n, então vou usar a função trim para limpar o buffer
+
+   trim(buffer);
+   
+   if (buffer[0] == '\0')
+   {
+       imprimir(stderr,"String vazia detectada.");
+       limpar_tela();
+       imprimir(stderr,"Digite novamente:");
+       return escrever (stream, tamanho, saida);
+   }
+   strncpy(saida,buffer,tamanho);
+   saida[tamanho-1] = '\0';
+   return 1; // sucesso
 }
 
-// agora falta implementar uma função que faz a conversão de tipo de uma string para um número, usando a função
-// que obtém a entrada do usuário
+// reimplementar as funções abaixo de forma recursiva igual feito acima, e mudar o uso de escrever, ja que
+// a função foi reescrita.
 
 int obter_int(char *entrada, long *saida)
 {
@@ -117,11 +132,11 @@ int obter_flo(char *entrada, float *saida)
         return -1; // crash total, tentativa de usuário
     }
 
-    char *ptr;
+    char *ptr; // este ponteiro recebe a parte não convertida
     float val = strtof(entrada,&ptr);
 
 
-    if(*ptr == '\0' && entrada[0] != '\0')
+    if(*ptr == '\0' && entrada[0] != '\0') // se o ponteiro for uma string nula, conversão deu bom.
     {
         *saida = val;
         return 1;
@@ -131,6 +146,7 @@ int obter_flo(char *entrada, float *saida)
         return 0;
     }
 }
+
 
 
 
