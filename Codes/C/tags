@@ -47,6 +47,8 @@ obtendo_lados	exercicio8.c	/^void obtendo_lados(double lados[3]) { \/\/ função
 obtendo_listas	exercicio9.c	/^void obtendo_listas($/;"	f	typeref:typename:void
 obtendo_media	exercicio9.c	/^obtendo_media(double lista_contas[12]) { \/\/ tive que mudar o tipo de função pois$/;"	f	typeref:typename:double
 obtendo_notas	exercicio13.c	/^double* obtendo_notas(char* nome){$/;"	f	typeref:typename:double *
+obter_flo	exercicio1.c	/^int obter_flo(char *entrada, float *saida)$/;"	f	typeref:typename:int
+obter_int	exercicio1.c	/^int obter_int(char *entrada, long *saida)$/;"	f	typeref:typename:int
 ocupacao	exercicio10.c	/^  char ocupacao[100];$/;"	m	struct:__anonce9d7b320108	typeref:typename:char[100]	file:
 renda	exercicio10.c	/^  double renda; \/\/8$/;"	m	struct:__anonce9d7b320108	typeref:typename:double	file:
 salvando_clientes	exercicio10.c	/^void salvando_clientes(cliente *clientes, int quantidade) {$/;"	f	typeref:typename:void

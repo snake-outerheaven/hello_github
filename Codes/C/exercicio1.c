@@ -4,12 +4,12 @@
 #include <unistd.h>
 #include <ctype.h>
 // vamos começar a reescrita deste código, implementando modularização estilo UNIX, ou seja, faça uma coisa bem
+
 // na pratica isso significa que, vou estar criando funções simples que podem ser reutilizadas uma dentro da 
 // outra permitindo escalabilidade de forma bastante facilitada
 
 void limpar_tela (void) 
 {
-
 // função que busca limpar a tela de forma portátil
 // me utilizei de macros que me permitem configurar
 // como o programa é executado
@@ -21,7 +21,6 @@ void limpar_tela (void)
     system("clear");
 
 #endif
-
 }
 
 void trim (char *str) 
@@ -56,7 +55,6 @@ void trim (char *str)
     }
 }
 
-
 // agora é criar uma função que recebe um prompt em string e imprime em qualquer FILE, seja stdout
 // para mostrar em tela stderr, ou uma stream de dados qualquer (de forma mais elementar sendo um 
 // arquivo de texto que vai ser criado la na frente.
@@ -71,18 +69,68 @@ void imprimir (FILE *arquivo, const char *prompt)
 
 char *escrever (FILE *arquivo, char *entrada, size_t tamanho)
 {
-    sleep(1);
-    imprimir(stdout, "Por favor, digite a sua entrada."); 
+    imprimir(stdout, "Por favor, digite a sua entrada.");  // a escadinha de funções começa a subir
     if(fgets(entrada,tamanho,arquivo))
     {
         trim(entrada);
     }else
     {
-        entrada[0] = '\0' // strings sempre terminam em '\0'
+        entrada[0] = '\0'; // strings sempre terminam em '\0'
     }
     return entrada;
 }
+
+// agora falta implementar uma função que faz a conversão de tipo de uma string para um número, usando a função
+// que obtém a entrada do usuário
+
+int obter_int(char *entrada, long *saida)
+{
+    imprimir(stdout, "Por favor, digite um número inteiro. (Máximo de 4 caracteres.)"); 
+    if (escrever(stdin,entrada,5) == NULL) 
+    {
+        imprimir(stderr,"Erro ao obter entrada do usuário");
+        return -1; // crash total, tentativa de obter entrada do usuário não funcionou
+    }
     
+    char *ptr;
+    long val = strtol(entrada,&ptr,10); // 10 indica a base numérica, no caso, sistema decimal normal
+    
+    if(*ptr == '\0' && entrada[0] != '\0') // se o ptr apontar para o final da string, quer dizer que 
+                                           // houve conversão completa, e se a entrada do usuário for válida
+    {
+        *saida = val;
+        return 1; // função deu certo, yay!
+    }
+    else
+    {
+        return 0; // função deu errado, uhhh.
+    }
+}
+
+int obter_flo(char *entrada, float *saida)
+{
+    imprimir(stdout,"Por favor, digite um número decimal ( use ponto no lugar da vírgula."
+                    " máximo de 6 caracteres");
+    if (escrever(stdin,entrada, 7) == NULL)
+    {
+        imprimir(stderr,"Falha ao receber entrada.");
+        return -1; // crash total, tentativa de usuário
+    }
+
+    char *ptr;
+    float val = strtof(entrada,&ptr);
+
+
+    if(*ptr == '\0' && entrada[0] != '\0')
+    {
+        *saida = val;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 
 
@@ -112,5 +160,4 @@ int main() {
       }while (strcmp(resp,"sim") == 0 || strcmp(resp,"s") == 0 || strcmp(resp,"Sim") == 0 || strcmp(resp,"S") == 0);
     return 0;
 }
-
 */
