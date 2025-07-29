@@ -122,10 +122,10 @@ int obter_int(char *entrada, long *saida)
     }
 }
 
-int obter_flo(char *entrada, float *saida)
+int obter_double(char *entrada, double *saida)
 {
     imprimir(stdout,"Por favor, digite um número decimal ( use ponto no lugar da vírgula."
-                    " máximo de 6 caracteres");
+                    " máximo de 6 caracteres, incluindo a vírgula");
     if (escrever(stdin,7, entrada ) == 0) 
     {
         imprimir(stderr,"Falha ao receber entrada.");
@@ -133,7 +133,7 @@ int obter_flo(char *entrada, float *saida)
     }
 
     char *ptr; // este ponteiro recebe a parte não convertida
-    float val = strtof(entrada,&ptr);
+    double val = strtod(entrada,&ptr);
 
 
     if(*ptr == '\0' && entrada[0] != '\0') // se o ponteiro for uma string nula, conversão deu bom.
@@ -149,14 +149,31 @@ int obter_flo(char *entrada, float *saida)
 
 // a partir daqui vem de fato o desenvolvimento do programa de conversão
 
-double fahrenheit(float valor)
+
+
+// funções elementares que fazem a conversão entre as temperaturas
+
+double fahrenheit(double *entrada)
 {
-	double fah = (valor * (9.0/5.0)) + 32.0;
+	double fah = (*entrada * (9.0/5.0)) + 32.0; // ponteiro duplo
 	return fah;
 }
 
-// Agora falta escrever a função de celsius, menu de seleção e depois impressão com arquivos
-//   e depois a main juntando tudo 
+double celsius(double *entrada)
+{
+	double cels = (5.0/9.0)*(*entrada - 32.0);
+	return cels;
+}
+
+// vamos começar a estruturar as funções bases do programa.
+
+// agora é criar uma função que faz o primeiro bloco do código, obtém o nome do usuário
+// ela pode funcionar de forma parecida com as anteriores, retornano 0 ou 1 dependendo do status
+
+int obtendo_nome(char *entrada, char *saida)
+{
+	// lógica à ser implementada...
+}
 
 /* Programa que converte graus Celsius para Fahrenheit ( V Inicial, de meses atrás )
 int main() {
