@@ -1,6 +1,6 @@
 use std::fs::{self, OpenOptions};
 use std::io::{self, Read, Seek, Write}; // uso novo, Seek, para mover o cursor no arquivo
-use std::path::Path; // pasta para manipulação de
+use std::path::Path; // módulo para manipulação de caminhos de arquivos
 use std::process::{Command, exit};
 use std::thread::sleep;
 use std::time::Duration;
@@ -78,8 +78,8 @@ fn tempconverter() -> (String, String) {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
                         let fah = fahrenheit(num); // isso que faltava
-                        println!("{num}°C equivale a {fah}°F");
-                        let fah = format!("{:.2}", fah);
+                        let fah = format!("{:.2}", fah);                        
+                        println!("{num}°C equivale a {fah}°F"); // shadowing para string
                         return (fah.trim().to_string(), escolha.trim().to_string());
                     }
                     Err(_) => {
@@ -102,8 +102,8 @@ fn tempconverter() -> (String, String) {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
                         let cels = celsius(num);
+                        let cels = format!("{:.2}", cels); // shadowing para string
                         println!("{num}°F equivale a {cels}°C");
-                        let cels = format!("{:.2}", cels);
                         return (cels.trim().to_string(), escolha.trim().to_string());
                     }
                     Err(_) => {
@@ -137,7 +137,6 @@ fn tempconverter() -> (String, String) {
 /// obtendo_nome() -> String
 ///
 /// Função que obtem o nome do usuário de forma segura.
-
 fn obtendo_nome() -> String {
     let mut confirm: String = String::new();
     let mut nome: String = String::new();
