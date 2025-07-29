@@ -101,7 +101,7 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
 int obter_int(char *entrada, long *saida)
 {
     imprimir(stdout, "Por favor, digite um número inteiro. (Máximo de 4 caracteres.)"); 
-    if (escrever(stdin,4*sizeof(int), entrada) == 0) 
+    if (escrever(stdin,5, entrada) == 0) // 4 + caracter finalizador de string '\0'
     {
         imprimir(stderr,"Erro ao obter entrada do usuário");
         return -1; // crash total, tentativa de obter entrada do usuário não funcionou
@@ -126,7 +126,7 @@ int obter_flo(char *entrada, float *saida)
 {
     imprimir(stdout,"Por favor, digite um número decimal ( use ponto no lugar da vírgula."
                     " máximo de 6 caracteres");
-    if (escrever(stdin,6*sizeof(float), entrada ) == 0)
+    if (escrever(stdin,7, entrada ) == 0) 
     {
         imprimir(stderr,"Falha ao receber entrada.");
         return -1; // crash total, tentativa de usuário
