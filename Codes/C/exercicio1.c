@@ -147,8 +147,16 @@ int obter_flo(char *entrada, float *saida)
     }
 }
 
+// a partir daqui vem de fato o desenvolvimento do programa de conversão
 
+double fahrenheit(float valor)
+{
+	double fah = (valor * (9.0/5.0)) + 32.0;
+	return fah;
+}
 
+// Agora falta escrever a função de celsius, menu de seleção e depois impressão com arquivos
+//   e depois a main juntando tudo 
 
 /* Programa que converte graus Celsius para Fahrenheit ( V Inicial, de meses atrás )
 int main() {
