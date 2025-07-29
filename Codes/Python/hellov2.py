@@ -23,7 +23,7 @@ class HelloWorld:
 
 def main():
 
-    hello = HelloWorld # o objeto nasce aqui e aparece o __init__ 
+    hello = HelloWorld() # o objeto nasce aqui e aparece o __init__ 
 
     hello.falar() # roda o método
 
