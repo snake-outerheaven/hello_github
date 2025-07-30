@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <ctype.h>
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
 // vamos começar a reescrita deste código, implementando modularização estilo UNIX, ou seja, faça uma coisa bem
 
 // na pratica isso significa que, vou estar criando funções simples que podem ser reutilizadas uma dentro da 
@@ -21,6 +25,15 @@ void limpar_tela (void)
     system("clear");
 
 #endif
+}
+
+void dormir(int tempo)
+{
+    #ifdef _WIN32
+        Sleep(tempo * 1000); // função de sleep no windows é em milisegundos
+    #else
+        sleep(tempo);
+    #endif
 }
 
 void trim (char *str) 
@@ -125,7 +138,7 @@ int obter_int(char *entrada, long *saida)
 int obter_double(char *entrada, double *saida)
 {
     imprimir(stdout,"Por favor, digite um número decimal ( use ponto no lugar da vírgula."
-                    " máximo de 6 caracteres, incluindo a vírgula");
+                    " máximo de 6 caracteres)");
     if (escrever(stdin,7, entrada ) == 0) 
     {
         imprimir(stderr,"Falha ao receber entrada.");
@@ -167,13 +180,14 @@ double celsius(double *entrada)
 
 // vamos começar a estruturar as funções bases do programa.
 
-// agora é criar uma função que faz o primeiro bloco do código, obtém o nome do usuário
-// ela pode funcionar de forma parecida com as anteriores, retornano 0 ou 1 dependendo do status
+// como são as partes que vão interagir diretamente com o usuário, é essencial que 
+// haja a parte da UX
 
 int obtendo_nome(char *entrada, char *saida)
 {
-	// lógica à ser implementada...
+	// lógica a ser implementada
 }
+
 
 /* Programa que converte graus Celsius para Fahrenheit ( V Inicial, de meses atrás )
 int main() {
