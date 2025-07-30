@@ -43,19 +43,33 @@ void trim (char *str)
     int fim = strlen(str);  // Obtém o tamanho atual da string
 
     // Remover espaços em branco do fim da string
-    // Enquanto o tamanho for maior que zero e o último caractere for um espaço (ou outro whitespace)
+    // Enquanto o tamanho for maior que zero e o último caractere for um espaço (ou outro whitespace):
     while(fim > 0 && isspace((unsigned char) str[fim - 1])) 
     {
-        str[fim - 1] = '\0';  // Substitui o último caractere por '\0', encurtando a string
-        fim--;                // Decrementa o tamanho da string
+        str[fim - 1] = '\0';  //  1º -> Substitui o último caractere por '\0', encurtando a string
+        fim--;                //  2º -> Decrementa o tamanho da string
     }
 
     // Remover espaços em branco do início da string
     int start = 0;
     // Enquanto o caractere na posição start existir e for whitespace
     while(str[start] && isspace((unsigned char) str[start]))
-        start++;  // Avança para o próximo caractere
+    { 
 
+   /* 
+   		Retirado de man isspace ( para maior contexto da função )
+   ---------------------------------------------------------------------------------------------
+   The standards require that the argument c for these functions is either EOF or a value that
+    is  representable  in the type unsigned char; otherwise, the behavior is undefined.  If the
+    argument c is of type char, it must be cast to unsigned char, as in the following example:
+
+        char c;
+        ...
+        res = toupper((unsigned char) c);
+   ---------------------------------------------------------------------------------------------
+   */
+        start++;  // Avança para o próximo caractere
+	}
     // Se houver espaços no início, desloca a string para a esquerda para remover esses espaços
     if (start > 0) {
         int i = 0;
@@ -84,28 +98,31 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
    // se dá em ler entrada do teclado, só que a stream de dados vem de /dev/stdin, pelo menos em sistemas Unix
    
    char buffer[tamanho]; // buffer de operações
-
-   if (fgets(buffer,tamanho,stream) == NULL)
+   while(1)
    {
-       imprimir(stderr,"Leitura de entrada falhou.");
-       return 0; // função retorna 0, depois só verificar com if ( escrever(parametros) == 0 ) 
-       // { tratamento da falha }
-   }
 
-   // fgets obtém uma string com \n, então vou usar a função trim para limpar o buffer
+   		if (fgets(buffer,tamanho,stream) == NULL)
+		{
+       		imprimir(stderr,"Leitura de entrada falhou.");
+       		continue; 
+   		}
 
-   trim(buffer);
+   		// fgets obtém uma string com \n, então vou usar a função trim para limpar o buffer
+
+   		trim(buffer);
    
-   if (buffer[0] == '\0')
-   {
-       imprimir(stderr,"String vazia detectada.");
-       limpar_tela();
-       imprimir(stderr,"Digite novamente:");
-       return escrever (stream, tamanho, saida);
+   		if (buffer[0] == '\0')
+   		{
+       		imprimir(stderr,"String vazia detectada.");
+       		dormir(1);
+       		limpar_tela();
+       		imprimir(stderr,"Digite novamente:");
+     		continue;
+   		}
+   		strncpy(saida,buffer,tamanho); // strncpy(destino,entrada,tamanho_do_buffer)
+   		saida[tamanho-1] = '\0';
+   		return 1; // sucesso
    }
-   strncpy(saida,buffer,tamanho);
-   saida[tamanho-1] = '\0';
-   return 1; // sucesso
 }
 
 // reimplementar as funções abaixo de forma recursiva igual feito acima, e mudar o uso de escrever, ja que
@@ -181,7 +198,7 @@ double celsius(double *entrada)
 // vamos começar a estruturar as funções bases do programa.
 
 // como são as partes que vão interagir diretamente com o usuário, é essencial que 
-// haja a parte da UX
+// haja a parte da UX.
 
 int obtendo_nome(char *entrada, char *saida)
 {
