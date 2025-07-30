@@ -107,26 +107,63 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
        		continue; 
    		}
 
-   		// fgets obtém uma string com \n, então vou usar a função trim para limpar o buffer
+		int c;
 
-   		trim(buffer);
-   
-   		if (buffer[0] == '\0')
+		while( ( c = getchar() ) !='\n' && c!= EOF ); 
+
+		// c = getchar() é avaliado como um booleano, por isso o uso do () ao redor da atribuição
+		// na pratica c vai recebendo os diversos valores, no caso, getchar converte o caracter de
+		// stdin, fazendo o cast dele para int, que então é descartado e substituido por outro char
+		// até o getchar encostar no '\n' ou no fim do stdin (EOF ou END OF FILE), é uma boa usar
+		// um int c para maior visualização, podendo ser possível imaginar esse processo como um
+		// é uma boa pegar usar um int c para melhor visualização, podendo ser possível 
+		// imaginar este processo como um Pac-Man comendo as bolinhas de um corredor 
+
+		// esse loop pode ser modularizado depois no futuro em uma função simples que limpar stdin
+
+	/*
+		Retirado de man getchar
+		-------------------------------------------------------------------------------------------
+		fgetc()  reads the next character from stream and returns it as an unsigned char cast to an
+        int, or EOF on end of file or error.
+
+       	getc() is equivalent to fgetc() except that it may be implemented as a macro  which  evalu‐
+       	ates stream more than once.
+
+       	getchar() is equivalent to getc(stdin).
+
+       	fgets() reads in at most one less than size characters from stream and stores them into the
+	    buffer pointed to by s.  Reading stops after an EOF or a newline.  If a newline is read, it
+	    is stored into the buffer.  A terminating null byte ('\0') is stored after the last charac‐
+	    ter in the buffer.
+
+	    ungetc()  pushes  c back to stream, cast to unsigned char, where it is available for subse‐
+	    quent read operations.  Pushed-back characters will be returned in reverse order; only  one
+	    pushback is guaranteed.
+		-------------------------------------------------------------------------------------------
+	*/
+				
+   		if (buffer[0] == '\0'|| buffer[tamanho - 1] != '\n' ) // <- isto se faz necessário porque
+   															  // fgets trunca se a string que o 
+   															  // usuário escreve em stdin for maior
+   															  // que o tamanho determinado na função
    		{
-       		imprimir(stderr,"String vazia detectada.");
+       		imprimir(stderr,"Entrada inválida.");
        		dormir(1);
        		limpar_tela();
        		imprimir(stderr,"Digite novamente:");
      		continue;
    		}
+		// se tudo deu certo, trima a entrada do usuário no buffer, copia, assegura o tamanho e depois
+		// retorna 1
+   		trim(buffer);
    		strncpy(saida,buffer,tamanho); // strncpy(destino,entrada,tamanho_do_buffer)
    		saida[tamanho-1] = '\0';
    		return 1; // sucesso
    }
+   // em uma última análise, em uma versão posterior do programa, esta função poderia ter um contador de tentativas
+   // usando uma constante que pode ser igual a 3 ou 5, trocando o while (1) por while tentativas < TENTATIVAS_MAX
 }
-
-// reimplementar as funções abaixo de forma recursiva igual feito acima, e mudar o uso de escrever, ja que
-// a função foi reescrita.
 
 int obter_int(char *entrada, long *saida)
 {
@@ -177,7 +214,7 @@ int obter_double(char *entrada, double *saida)
     }
 }
 
-// a partir daqui vem de fato o desenvolvimento do programa de conversão
+// a partir daqui vem de fato o uso das funções para montar o programa
 
 
 
@@ -185,7 +222,7 @@ int obter_double(char *entrada, double *saida)
 
 double fahrenheit(double *entrada)
 {
-	double fah = (*entrada * (9.0/5.0)) + 32.0; // ponteiro duplo
+	double fah = (*entrada * (9.0/5.0)) + 32.0; 
 	return fah;
 }
 
@@ -202,7 +239,17 @@ double celsius(double *entrada)
 
 int obtendo_nome(char *entrada, char *saida)
 {
-	// lógica a ser implementada
+    char resposta[4]; // string de 4 bytes para confirmar a resposta
+	while(1)
+	{
+		dormir(1);
+		imprimir(stdout,"Por favor, digite o seu nome de usuário: \n(Máximo de 10 caracteres ASCII)\n");
+		if(escrever(stdin,11,entrada) != 1)
+		{
+			imprimir(stdout,"Hum, não era para você chegar aqui, saíndo do código.");
+			exit(1); // encerro o processo com 1
+		}
+	}
 }
 
 
