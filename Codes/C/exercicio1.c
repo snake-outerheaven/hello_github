@@ -165,7 +165,6 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
 		// retorna 1
    		trim(buffer);
    		strncpy(saida,buffer,tamanho); // strncpy(destino,entrada,tamanho_do_buffer)
-   		buffer[0] ='\0';
    		saida[tamanho-1] = '\0';
    		return 1; // sucesso
    }
@@ -263,7 +262,7 @@ int obtendo_nome(char *nome)
 			int bool = 0;
 			while(bool == 0)
 			{
-				printf("Voce deseja confirmar o nome %s?\n", buffer); // fprintf para preencher arquivos, snprintf para preencher strings
+				printf("Voce deseja confirmar o nome %s?  (S/N)\n\n: ", buffer); // fprintf para preencher arquivos, snprintf para preencher strings
 				escrever(stdin,sizeof(resposta),resposta);
 				for (int i = 0; resposta[i]; i++)
 				{
@@ -322,7 +321,7 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 {
 	char resposta[4];
 	long int escolha, bool = 0;
-	double temperatura, celsius, fahrenheitv; 
+	double temperatura, celsiusv, fahrenheitv; 
 
 	printf("\nBem vindo %s, por favor, selecione uma das opções abaixo.\n", usuario);
 	dormir(1);
@@ -330,13 +329,13 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 	// o loop deve ser quebrado depois de uma verificação com bool, em cima da resposta
 	while (bool == 0)
 	{
-		limpar_stdin(); // em loops onde há entrada de muitas coisas, é válido limpar stdin no começo de cada iteração
-		imprimir(stdout,"Por favor, digite o número referente à uma das opções abaixo");
+		imprimir(stdout,"Por favor, digite o número referente à uma das opções.");
 		imprimir(stdout,"1 - Converter de graus Celsius(°C) para graus Fahrenheit(°F).");
-		imprimir(stdout,"2 - Converter de graus Fahrenheit(°F) para graus Celsius (°C).");
+		imprimir(stdout,"2 - Converter de graus Fahrenheit(°F) para graus Celsius(°C).");
 		imprimir(stdout,"3 - Sair do programa.");
 		printf("\n\n: ");
 		obter_int(&escolha);
+		printf("\nDigite Enter para continuar.\n");
 		limpar_stdin();
 
 		switch (escolha)
@@ -345,9 +344,10 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 				while(1)
 				{
 					dormir(1);
-					imprimir(stdout, "Certo, vamos iniciar a conversão de um valor em Celsius para Fahrenheit, digite um valor.");
+					imprimir(stdout, "Certo, vamos iniciar a conversão de um valor em Celsius para Fahrenheit, digite um valor");
+					printf("\n\n: ");
 					obter_double(&temperatura);
-					printf("%lf está correto?(S ou N)\n\n:",temperatura);
+					printf("\n%.2lf°F está correto?(S ou N)\n\n:",temperatura);
 					escrever(stdin,sizeof(resposta),resposta);
 					for (int i = 0; resposta[i]; i++)
 					{
@@ -356,37 +356,76 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 					if(resposta[0] == 's')
 					{
 					   fahrenheitv = fahrenheit(temperatura);
-					   printf("%lf°C equivalem à %.2lf°F\n",temperatura,fahrenheitv);
-					  *saida = fahrenheitv;
-					  *verif = 'f';
-					  break;
+					   dormir(1);
+					   printf("\n%.2lf°C equivalem à %.2lf°F\n",temperatura,fahrenheitv);
+					   *saida = fahrenheitv;
+					   *verif = 'F';
+					   break;
 					}
 					else
 					{
-						printf("Resposta inválida, por favor, digitar a temperatura novamente.");
+						printf("\nResposta inválida, por favor, digitar a temperatura novamente.");
 						continue;
 					}
 				}
 				bool = 1;
 				break;
+			case 2:
+				while(1)
+				{
+					dormir(1);
+					printf("Certo, vamos iniciar a conversão de um valor em Fahrenheit para Celsius, digite um valor\n");
+					obter_double(&temperatura);
+					printf("\n%.2lf está correto? (S/N)", temperatura);
+					escrever(stdin, sizeof(resposta), resposta);
+					for(int i = 0; resposta[i]; i++)
+					{
+						resposta[i] = tolower((unsigned char) resposta[i]);
+					}
+					if (resposta[0] == 's')
+					{
+						celsiusv = celsius(temperatura);
+						dormir(1);
+						printf("\n%.2lf°F equivalem a %.2lf°C\n",temperatura,celsiusv);
+						*saida = celsiusv;
+						*verif = 'C';
+						break;
+					}
+					else
+					{
+						printf("\nResposta inválida, por favor, digitar a temperatura novamente.\n");
+						continue;
+					}
+				}
+				bool = 1;
+				break;
+			case 3:
+				printf("\nCerto %s, obrigado por usar este programa!",usuario);
+				dormir(1);
+				exit(0);
 
 			default:
 				imprimir(stdout,"Por favor, digite 1, 2 ou 3.");
+				dormir(1);
 				break;
 
 			
 		}
 	}
-
-	limpar_stdin(); // limpando stdin para prosseguir
 	return;
 }
 
 int main (void)
 {
-	char usuario[11];
+	char usuario[11]; 
+	char verif;
+	double temp;
 	limpar_tela();
 	obtendo_nome(usuario);
+	tempconverter(usuario,&temp, &verif);
+	printf("\nUsuário: %s |Temperatura obtida: %.2lf | Escala: %c\n", usuario, temp, verif);
+	dormir(1);
+	printf("\nMuito bem, só falta a ultima função, que faz a função de I/O(exibir log de sessões, bem como registrar no log)\n");
 	// printf("%s lido.\n", nome); <- serviu apenas para debug, função funciona como o esperado.
 	return 0;
 }
