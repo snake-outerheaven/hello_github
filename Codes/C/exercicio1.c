@@ -112,7 +112,7 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
 																  // o buffer 
 
 		size_t len = strlen(buffer);
-		if (buffer[len- 1] != '\n')
+		if (buffer[len - 1] != '\n')
    		{
    			int c;
    		
@@ -240,7 +240,7 @@ double celsius(double *entrada)
 int obtendo_nome(char *nome)
 {
     char resposta[4]; // string de 4 bytes (0,1,2,3,4)
-    char buffer[10];
+    char buffer[11];
 	while (1)
 	{
 		dormir(1);
