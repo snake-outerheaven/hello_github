@@ -34,6 +34,7 @@ void dormir(int tempo)
     #else
         sleep(tempo);
     #endif
+    return;
 }
 
 void trim (char *str) 
@@ -80,6 +81,7 @@ void trim (char *str)
         }
         str[i] = '\0';  // Finaliza a string corretamente
     }
+    return;
 }
 
 // agora é criar uma função que recebe um prompt em string e imprime em qualquer FILE, seja stdout
@@ -89,8 +91,47 @@ void trim (char *str)
 void imprimir (FILE *arquivo, const char *prompt)
 {
     fprintf(arquivo,"%s\n",prompt);
+    return;
 }
 
+
+void limpar_stdin (void)
+{
+	int c;
+	   		
+	while( ( c = getchar() ) !='\n' && c!= EOF ); 
+	   		
+	// c = getchar() é avaliado como um booleano, por isso o uso do () ao redor da atribuição
+	// na pratica c vai recebendo os diversos valores, no caso, getchar converte o caracter de
+	// stdin, fazendo o cast dele para int, que então é descartado e substituido por outro char
+	// até o getchar encostar no '\n' ou no fim do stdin (EOF ou END OF FILE), é uma boa usar
+	// um int c para maior visualização, podendo ser possível imaginar esse processo como um
+	// é uma boa pegar usar um int c para melhor visualização, podendo ser possível 
+	// imaginar este processo como um Pac-Man comendo as bolinhas de um corredor 
+	   		   		
+	/*
+	   		Retirado de man getchar
+	   		-------------------------------------------------------------------------------------------
+	   		fgetc()  reads the next character from stream and returns it as an unsigned char cast to an
+	   		int, or EOF on end of file or error.
+	   		
+	   		getc() is equivalent to fgetc() except that it may be implemented as a macro  which  evalu‐
+	   		ates stream more than once.
+	   		
+	   		getchar() is equivalent to getc(stdin).
+	   		
+	   		fgets() reads in at most one less than size characters from stream and stores them into the
+	   		buffer pointed to by s.  Reading stops after an EOF or a newline.  If a newline is read, it
+	   		is stored into the buffer.  A terminating null byte ('\0') is stored after the last charac‐
+	   		ter in the buffer.
+	   		
+	   		ungetc()  pushes  c back to stream, cast to unsigned char, where it is available for subse‐
+	   		quent read operations.  Pushed-back characters will be returned in reverse order; only  one
+	   		pushback is guaranteed.
+	   		-------------------------------------------------------------------------------------------
+	*/
+	return;
+}
 
 int escrever (FILE *stream, size_t tamanho, char *saida)
 {
@@ -114,41 +155,7 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
 		size_t len = strlen(buffer);
 		if (buffer[len - 1] != '\n')
    		{
-   			int c;
-   		
-   			while( ( c = getchar() ) !='\n' && c!= EOF ); 
-   		
-   			// c = getchar() é avaliado como um booleano, por isso o uso do () ao redor da atribuição
-   			// na pratica c vai recebendo os diversos valores, no caso, getchar converte o caracter de
-   			// stdin, fazendo o cast dele para int, que então é descartado e substituido por outro char
-   			// até o getchar encostar no '\n' ou no fim do stdin (EOF ou END OF FILE), é uma boa usar
-   			// um int c para maior visualização, podendo ser possível imaginar esse processo como um
-   			// é uma boa pegar usar um int c para melhor visualização, podendo ser possível 
-   			// imaginar este processo como um Pac-Man comendo as bolinhas de um corredor 
-   		
-   			// esse loop pode ser modularizado depois no futuro em uma função simples que limpar stdin
-   		
-   			/*
-   				Retirado de man getchar
-   				-------------------------------------------------------------------------------------------
-   				fgetc()  reads the next character from stream and returns it as an unsigned char cast to an
-   		        int, or EOF on end of file or error.
-   		
-   		       	getc() is equivalent to fgetc() except that it may be implemented as a macro  which  evalu‐
-   		       	ates stream more than once.
-   		
-   		       	getchar() is equivalent to getc(stdin).
-   		
-   		       	fgets() reads in at most one less than size characters from stream and stores them into the
-   			    buffer pointed to by s.  Reading stops after an EOF or a newline.  If a newline is read, it
-   			    is stored into the buffer.  A terminating null byte ('\0') is stored after the last charac‐
-   			    ter in the buffer.
-   		
-   			    ungetc()  pushes  c back to stream, cast to unsigned char, where it is available for subse‐
-   			    quent read operations.  Pushed-back characters will be returned in reverse order; only  one
-   			    pushback is guaranteed.
-   				-------------------------------------------------------------------------------------------
-   			*/
+   			limpar_stdin();	
        		imprimir(stderr,"Entrada inválida.");
        		dormir(1);
        		imprimir(stderr,"Digite novamente:");
@@ -158,6 +165,7 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
 		// retorna 1
    		trim(buffer);
    		strncpy(saida,buffer,tamanho); // strncpy(destino,entrada,tamanho_do_buffer)
+   		buffer[0] ='\0';
    		saida[tamanho-1] = '\0';
    		return 1; // sucesso
    }
@@ -165,10 +173,10 @@ int escrever (FILE *stream, size_t tamanho, char *saida)
    // usando uma constante que pode ser igual a 3 ou 5, trocando o while (1) por while tentativas < TENTATIVAS_MAX
 }
 
-int obter_int(char *entrada, long *saida)
+int obter_int(long int *saida)
 {
-    imprimir(stdout, "Por favor, digite um número inteiro. (Máximo de 4 caracteres.)"); 
-    if (escrever(stdin,5, entrada) == 0) // 4 + caracter finalizador de string '\0'
+	char entrada[10];
+    if (escrever(stdin,sizeof(entrada), entrada) == 0) // 4 + caracter finalizador de string '\0'
     {
         imprimir(stderr,"Erro ao obter entrada do usuário");
         return -1; // crash total, tentativa de obter entrada do usuário não funcionou
@@ -189,11 +197,10 @@ int obter_int(char *entrada, long *saida)
     }
 }
 
-int obter_double(char *entrada, double *saida)
+int obter_double(double *saida)
 {
-    imprimir(stdout,"Por favor, digite um número decimal ( use ponto no lugar da vírgula."
-                    " máximo de 6 caracteres)");
-    if (escrever(stdin,7, entrada ) == 0) 
+	char entrada[10];
+    if (escrever(stdin,sizeof(entrada), entrada ) == 0) 
     {
         imprimir(stderr,"Falha ao receber entrada.");
         return -1; // crash total, tentativa de usuário
@@ -220,15 +227,15 @@ int obter_double(char *entrada, double *saida)
 
 // funções elementares que fazem a conversão entre as temperaturas
 
-double fahrenheit(double *entrada)
+double fahrenheit(double entrada)
 {
-	double fah = (*entrada * (9.0/5.0)) + 32.0; 
+	double fah = (entrada * (9.0/5.0)) + 32.0; 
 	return fah;
 }
 
-double celsius(double *entrada)
+double celsius(double entrada)
 {
-	double cels = (5.0/9.0)*(*entrada - 32.0);
+	double cels = (5.0/9.0)*(entrada - 32.0);
 	return cels;
 }
 
@@ -256,7 +263,7 @@ int obtendo_nome(char *nome)
 			int bool = 0;
 			while(bool == 0)
 			{
-				fprintf(stdout,"Voce deseja confirmar o nome %s?\n", buffer);
+				printf("Voce deseja confirmar o nome %s?\n", buffer); // fprintf para preencher arquivos, snprintf para preencher strings
 				escrever(stdin,sizeof(resposta),resposta);
 				for (int i = 0; resposta[i]; i++)
 				{
@@ -284,7 +291,9 @@ int obtendo_nome(char *nome)
 				else
 				{
 					imprimir(stdout,"Resposta não foi reconhecida.");
-					imprimir(stdout,"Aguarde para ");
+					imprimir(stdout,"Aguarde para repetir.");
+					dormir(1);
+					limpar_tela();
 				}
 			}
 			if (bool == 2)
@@ -305,12 +314,81 @@ int obtendo_nome(char *nome)
 	}
 }
 
+// tempconverter -> void
+// 
+// Uma função que introduz um menu interativo, onde o usuário seleciona a operação de conversão, usando a função 
+
+void tempconverter(char *usuario, double *saida, char *verif) // verif deve receber c ou f, para registro na função que vai salvar em log
+{
+	char resposta[4];
+	long int escolha, bool = 0;
+	double temperatura, celsius, fahrenheitv; 
+
+	printf("\nBem vindo %s, por favor, selecione uma das opções abaixo.\n", usuario);
+	dormir(1);
+
+	// o loop deve ser quebrado depois de uma verificação com bool, em cima da resposta
+	while (bool == 0)
+	{
+		limpar_stdin(); // em loops onde há entrada de muitas coisas, é válido limpar stdin no começo de cada iteração
+		imprimir(stdout,"Por favor, digite o número referente à uma das opções abaixo");
+		imprimir(stdout,"1 - Converter de graus Celsius(°C) para graus Fahrenheit(°F).");
+		imprimir(stdout,"2 - Converter de graus Fahrenheit(°F) para graus Celsius (°C).");
+		imprimir(stdout,"3 - Sair do programa.");
+		printf("\n\n: ");
+		obter_int(&escolha);
+		limpar_stdin();
+
+		switch (escolha)
+		{
+			case 1:
+				while(1)
+				{
+					dormir(1);
+					imprimir(stdout, "Certo, vamos iniciar a conversão de um valor em Celsius para Fahrenheit, digite um valor.");
+					obter_double(&temperatura);
+					printf("%lf está correto?(S ou N)\n\n:",temperatura);
+					escrever(stdin,sizeof(resposta),resposta);
+					for (int i = 0; resposta[i]; i++)
+					{
+						resposta[i] = tolower((unsigned char) resposta[i]); 
+					}
+					if(resposta[0] == 's')
+					{
+					   fahrenheitv = fahrenheit(temperatura);
+					   printf("%lf°C equivalem à %.2lf°F\n",temperatura,fahrenheitv);
+					  *saida = fahrenheitv;
+					  *verif = 'f';
+					  break;
+					}
+					else
+					{
+						printf("Resposta inválida, por favor, digitar a temperatura novamente.");
+						continue;
+					}
+				}
+				bool = 1;
+				break;
+
+			default:
+				imprimir(stdout,"Por favor, digite 1, 2 ou 3.");
+				break;
+
+			
+		}
+	}
+
+	limpar_stdin(); // limpando stdin para prosseguir
+	return;
+}
+
 int main (void)
 {
-	char nome[11];
+	char usuario[11];
 	limpar_tela();
-	obtendo_nome(nome);
-	printf("%s lido.\n", nome);
+	obtendo_nome(usuario);
+	// printf("%s lido.\n", nome); <- serviu apenas para debug, função funciona como o esperado.
+	return 0;
 }
 
 /* Programa que converte graus Celsius para Fahrenheit ( V Inicial, de meses atrás )
