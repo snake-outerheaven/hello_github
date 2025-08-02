@@ -317,7 +317,7 @@ int obtendo_nome(char *nome)
 // 
 // Uma função que introduz um menu interativo, onde o usuário seleciona a operação de conversão, usando a função 
 
-void tempconverter(char *usuario, double *saida, char *verif) // verif deve receber c ou f, para registro na função que vai salvar em log
+void tempconverter(const char *usuario, double *saida, char *verif) // verif deve receber c ou f, para registro na função que vai salvar em log
 {
 	char resposta[4];
 	long int escolha, bool = 0;
@@ -325,7 +325,7 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 
 	printf("\nBem vindo %s, por favor, selecione uma das opções abaixo.\n", usuario);
 	dormir(1);
-
+    printf("\n\n");
 	// o loop deve ser quebrado depois de uma verificação com bool, em cima da resposta
 	while (bool == 0)
 	{
@@ -347,7 +347,7 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 					imprimir(stdout, "Certo, vamos iniciar a conversão de um valor em Celsius para Fahrenheit, digite um valor");
 					printf("\n\n: ");
 					obter_double(&temperatura);
-					printf("\n%.2lf°F está correto?(S ou N)\n\n:",temperatura);
+					printf("\n%.2lf°C está correto?(S ou N)\n\n:",temperatura);
 					escrever(stdin,sizeof(resposta),resposta);
 					for (int i = 0; resposta[i]; i++)
 					{
@@ -376,7 +376,7 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 					dormir(1);
 					printf("Certo, vamos iniciar a conversão de um valor em Fahrenheit para Celsius, digite um valor\n");
 					obter_double(&temperatura);
-					printf("\n%.2lf está correto? (S/N)", temperatura);
+					printf("\n%.2lf°F está correto? (S/N)", temperatura);
 					escrever(stdin, sizeof(resposta), resposta);
 					for(int i = 0; resposta[i]; i++)
 					{
@@ -415,18 +415,129 @@ void tempconverter(char *usuario, double *saida, char *verif) // verif deve rece
 	return;
 }
 
+void armazenar_e_exibir ( const char *usuario, const double *temp, const char *verif)
+{	
+	int tamanho;
+	char log[70];
+	char buffer[256];
+	FILE *fp = fopen("ex1_log.txt","a+");
+
+	// código  continua depois do recorte da manpage
+    
+	
+		/*
+											              Retirado da man page de fopen
+			   ---------------------------------------------------------------------------------------------------------------
+		       The  fopen()  function  opens  the file whose name is the string pointed to by pathname and associates a stream
+		       with it.
+		
+		       The argument mode points to a string beginning with one of the following sequences (possibly followed by  addi‐
+		       tional characters, as described below):
+		
+		       r      Open text file for reading.  The stream is positioned at the beginning of the file.
+		
+		       r+     Open for reading and writing.  The stream is positioned at the beginning of the file.
+		
+		       w      Truncate file to zero length or create text file for writing.  The stream is positioned at the beginning
+		              of the file.
+		
+		       w+     Open for reading and writing.  The file is created if it does not exist, otherwise it is truncated.  The
+		              stream is positioned at the beginning of the file.
+		
+		       a      Open  for  appending (writing at end of file).  The file is created if it does not exist.  The stream is
+		              positioned at the end of the file.
+		
+		       a+     Open for reading and appending (writing at end of file).  The file is created  if  it  does  not  exist.
+		              Output  is always appended to the end of the file.  POSIX is silent on what the initial read position is
+		              when using this mode.  For glibc, the initial file position for reading is at the beginning of the file,
+		              but for Android/BSD/MacOS, the initial file position for reading is at the end of the file.
+		       ---------------------------------------------------------------------------------------------------------------
+		*/
+		
+
+	if (fp == NULL)
+	{
+		dormir(1);
+		fprintf(stderr ,"\nNão foi possível inicializar corretamente a função de registro da sessão, %s\n",usuario);
+		printf("\nEncerrando função.\n");
+		dormir(1);
+		return;
+	}
+	else
+	{
+		snprintf(log, sizeof(log),"Usuário: %s | Temperatura obtida pela conversão: %.2lf°%c\n", usuario, *temp, *verif);
+
+		// log preenchido
+
+		fseek(fp,0,SEEK_END); 
+
+		tamanho = ftell(fp);
+
+		if (tamanho == 0)
+		{	
+			rewind(fp);
+			fprintf(fp,"Registro de sessões do exercício 1.\n");
+			fprintf(fp,"%s", log);
+		}
+		else
+		{
+			fprintf(fp,"%s",log);
+		}
+
+		// logica de leitura do arquivo depois da manpage
+				
+		/*
+												Retirado de man fseek
+			-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			The  fseek()  function  sets the file position indicator for the stream pointed to by stream.  The new position, measured in bytes, is obtained by adding offset bytes to the position
+			    specified by whence.  If whence is set to SEEK_SET, SEEK_CUR, or SEEK_END, the offset is relative to the start of the file, the current position indicator,  or  end-of-file,  respec‐
+			     tively.  A successful call to the fseek() function clears the end-of-file indicator for the stream and undoes any effects of the ungetc(3) function on the same stream.
+
+			     The ftell() function obtains the current value of the file position indicator for the stream pointed to by stream.
+
+			     The rewind() function sets the file position indicator for the stream pointed to by stream to the beginning of the file.  It is equivalent to:
+
+			            (void) fseek(stream, 0L, SEEK_SET)
+
+			     except that the error indicator for the stream is also cleared (see clearerr(3)).
+
+			     The fgetpos() and fsetpos() functions are alternate interfaces equivalent to ftell() and fseek() (with whence set to SEEK_SET), setting and storing the current value of the file off‐
+			     set  into  or  from  the object referenced by pos.  On some non-UNIX systems, an fpos_t object may be a complex object and these routines may be the only way to portably reposition a
+			     text stream.
+
+			     If the stream refers to a regular file and the resulting stream offset is beyond the size of the file, subsequent writes will extend the file with a hole, up to  the  offset,  before
+			     committing any data.  See lseek(2) for details on file seeking semantics.
+
+			-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		*/
+
+		dormir(1);
+
+		printf("\nAgora, serão exibidas as ultimas entradas do programa, %s\n", usuario);
+
+		rewind(fp);
+		// faltou reposicionar o ponteiro no arquivo
+
+		while (fgets(buffer,sizeof(buffer), fp) != NULL)
+		{
+			printf("%s", buffer);
+		}
+		
+		fclose(fp); // todo fopen tem seu fclose
+	} // fim do else longo
+}
+
 int main (void)
 {
-	char usuario[11]; 
+	char usuario[11]; // log vai receber o snprintf, e o 
 	char verif;
 	double temp;
+	
 	limpar_tela();
 	obtendo_nome(usuario);
 	tempconverter(usuario,&temp, &verif);
-	printf("\nUsuário: %s |Temperatura obtida: %.2lf | Escala: %c\n", usuario, temp, verif);
 	dormir(1);
-	printf("\nMuito bem, só falta a ultima função, que faz a função de I/O(exibir log de sessões, bem como registrar no log)\n");
-	// printf("%s lido.\n", nome); <- serviu apenas para debug, função funciona como o esperado.
+	armazenar_e_exibir(usuario,&temp,&verif);
 	return 0;
 }
 
