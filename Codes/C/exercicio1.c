@@ -54,7 +54,7 @@ void trim (char *str)
     // Remover espaços em branco do início da string
     int start = 0;
     // Enquanto o caractere na posição start existir e for whitespace
-    while(str[start] && isspace((unsigned char) str[start]))
+    while(str[start] && isspace(str[start]))
     { 
 
    /* 
@@ -84,3 +84,5 @@ void trim (char *str)
     return;
 }
 
+// acho que depois daqui, na versão anterior, o código desandou, é possível deixar ele mais seco. e é isso que vou fazer 
+// até entregar um resultado sensato.
