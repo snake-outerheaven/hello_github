@@ -1,25 +1,40 @@
-#include <cmath>
-// biblioteca para matemática
+#include <cmath> 
+// Fornece funções matemáticas padrão como sqrt, pow, sin, cos, etc.
+// Ideal para cálculos matemáticos avançados (trigonometria, exponenciais, raízes, etc.)
 
-#include <iostream>
-#include <iomanip>
-// biblioteca para entrada e saída (I/O)
+#include <iostream> 
+// Biblioteca padrão para entrada e saída de dados no terminal.
+// Contém os objetos cin, cout, cerr, etc. — para ler do teclado e escrever na tela.
 
-#include <string>
-// biblioteca de tipos e métodos para manipulação de strings
+#include <iomanip> 
+// Permite controlar o formato da saída (ex: número de casas decimais, alinhamento, largura).
+// Usado junto com cout para exibir valores com precisão controlada.
 
-#include <thread>
-// isso aqui consigo manipular diretamente com o processo do executável
+#include <string> 
+// Define a classe std::string e funções associadas para manipular textos (strings).
+// Permite trabalhar com textos de forma mais segura e prática que arrays de `char`.
 
-#include <chrono>
-// puxo para pegar um tipo de tempo
+#include <thread> 
+// Permite criar e controlar múltiplas threads (execução paralela).
+// Útil para programas que precisam fazer tarefas ao mesmo tempo (ex: som + jogo + rede).
 
-#include <cstdlib>
-// puxo para usar std::system
+#include <chrono> 
+// Fornece tipos de dados e funções para medir e manipular o tempo (segundos, milissegundos, etc.).
+// Muito usado com std::this_thread::sleep_for para fazer pausas ou medir duração de eventos.
+
+#include <cstdlib> 
+// Contém funções utilitárias como std::system, std::rand, std::exit.
+// Também oferece acesso a manipulação de ambiente e números aleatórios antigos.
 
 #include <algorithm> 
-#include <cctype>
-// ambos para normalizar string em método descrito na função principal para tornar todo o conteúdo da resposta minúsculo
+// Contém funções genéricas para manipular coleções (ex: std::sort, std::find, std::reverse).
+// Pode ser usada com arrays, vetores e strings.
+
+#include <cctype> 
+// Funções para testar ou converter caracteres (ex: std::tolower, std::isalpha).
+// Útil para normalizar strings, validar entrada, converter letras maiúsculas/minúsculas.
+
+// código em status de revisão
 
 /*Classe simples para começar a molhar os pés em OOP*/
 
