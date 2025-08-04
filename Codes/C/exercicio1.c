@@ -86,3 +86,18 @@ void trim (char *str)
 
 // acho que depois daqui, na versão anterior, o código desandou, é possível deixar ele mais seco. e é isso que vou fazer 
 // até entregar um resultado sensato.
+
+
+int main (void) {
+ 	// char* wawa = "   wawawa    "; < isto cria uma variável em área de leitura
+
+	char wawa[] = "   wawa   ";
+	
+ 	printf("\n%s\n", wawa);
+
+ 	trim(wawa);
+
+ 	printf("\n%s\n", wawa);
+
+ 	return 0;
+}
