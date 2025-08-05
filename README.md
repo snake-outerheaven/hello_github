@@ -1,7 +1,8 @@
 # hello_github
 
 Repositório pessoal para guardar exercícios, testes e experimentos em várias linguagens de programação.  
-Aqui você encontra códigos em **C**, **C++**, **Lua**, **Python**, **Ruby**  , **Rust** , **Vimscript** e outras linguagens, organizados por pastas.
+Aqui você encontra códigos em **C**, **C++**, **Java**,  **Lua**, **Python**, **Ruby**, **Rust**, **Vimscript**,
+todos organizados por pastas.
 
 ---
 
@@ -14,6 +15,8 @@ Codes/
 │   └── ... (exercícios e exemplos em C)
 ├── C++/
 │   └── ... (exercícios e exemplos em C++)
+├── Java/
+│   └── ... (exercícios e exemplos em Java)
 ├── Lua/
 │   └── ... (scripts e exercícios em Lua)
 ├── Python/
