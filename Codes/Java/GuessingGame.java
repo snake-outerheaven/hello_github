@@ -65,7 +65,7 @@ public class GuessingGame {
 
         catch (Exception e) {
 
-            System.out.println("Não foi possível gera pausa visual para UX");
+            System.out.println("Não foi possível gerar pausa visual para UX");
         }
 
         // loop principal, bem tranquilo
@@ -117,13 +117,42 @@ public class GuessingGame {
         }
 
     }
+
+    // método que obtém o palpite
+    public static int obter_palpite (String usuario) {
+        while (true) {
+            try {
+                Thread.sleep(750);
+            } catch ( Exception e) {
+                System.out.println("Não foi possível pausar o processo.");
+            }
+            System.out.printf("\nCerto %s, por favor, digite um número de 1 a 100 para o jogo:\n", usuario);
+            String buffer = scanner.nextLine().trim();
+
+            // este é o melhor método de leitura de números, obter strings e fazer parsing para o tipo de entrada
+
+            try {
+                int palpite = Integer.parseInt(buffer);
+                if (palpite >= 1 && palpite <= 100) {
+                    System.out.printf("Certo, valor %d é válido e será utilizado pelo jogo.\n", palpite);
+                    return palpite;
+                } else {
+                    System.out.printf("%s, %s não está no intervalo correto, digite novamente.\n", usuario, buffer);
+                } 
+            } catch (Exception e) {
+                System.err.printf("%s, %s não é uma entrada válida para o jogo", usuario, buffer);
+            }
+        }
+    }
+
+    // método de confirmação 
     
     // método principal ( em OOP puro, eu criaria uma classe separada onde os objetos são criados e começam a interagir entre si )
     public static void main(String[] args){
         limpartela();
-        String nome = obter_nome();
-        System.out.printf("\nNome do usuário é: %s\n", nome);
+        String user = obter_nome();
+        int palpite = obter_palpite(user);
+        System.out.println("DEBUG Nome de usuário é: " + user); // para debug, função funciona corretamente
+        System.out.println("DEBUG Número digitado é: " + palpite);
     }
-
-
-}
+} // fim da classe
