@@ -75,7 +75,7 @@ public class GuessingGame {
       System.out.println("Este programa necessita de seu nome de usuário, por favor, digite-o abaixo.");
 
       System.out.printf("\n: ");
-      
+
       String nome = scanner.nextLine().trim();
       // a variável nome é inicializada ao se fazer necessária, o que deixa o código
       // meio diferente do estilo C, mesmo Java sendo descendente
@@ -178,15 +178,89 @@ public class GuessingGame {
     }
   }
 
+  // método do jogo, que retorna o valor criado
+
+  public static int[] Jogar(String user) {
+    try {
+      Thread.sleep(750);
+    } catch (Exception e) {
+      System.out.println("Não foi possível pausar o tempo para melhor experiência do usuário.");
+    }
+    Random rand = new Random(); // construindo gerador de números pseudoaleatórios.
+    int numero_secreto = rand.nextInt(100) + 1; // usando o gerador de números aleatórios
+    int tentativa = 0;
+
+    while (true) {
+      tentativa++;
+      int palpite = obter_palpite(user);
+      if (palpite != numero_secreto) {
+        if (palpite < numero_secreto) {
+          System.out.println(palpite + " é menor que o número secreto!");
+        } else {
+          System.out.println(palpite + " é maior que o número secreto!");
+        }
+        boolean verif = verif(user, palpite);
+        if (verif) {
+          System.out.println("Certo, vamos continuar o jogo");
+          continue;
+        } else {
+          System.out.println("Certo, obrigado por jogar o jogo!");
+          System.exit(0);
+        }
+      } else {
+        System.out.println("Parabéns " + user + " você descobriu o número secreto com " + tentativa + " tentativas.");
+        try {
+          System.out.println("Retornando...");
+          Thread.sleep(750);
+        } catch (Exception e) {
+          System.out.println("Não foi possível pausar o tempo para uma boa experiência do usuário.");
+        }
+        return new int[] { numero_secreto, tentativa };
+      }
+    }
+  }
+
+  // método que executa salvamento de dados.
+  public static void salvarLog(String user, int numSec, int tents) {
+
+    File logDir = new File("GuessingGame_logdir");
+    if (!logDir.exists()) {
+      logDir.mkdir();
+    }
+
+    File logFile = new File(logDir, "game_log.txt");
+
+    try (FileWriter fw = new FileWriter(logFile, true);
+        BufferedWriter bw = new BufferedWriter(fw)) {
+      String log = String.format("Nome do jogador: %s | Número secreto: %d | Tentativas: %d", user, numSec, tents);
+      bw.write(log); // escrita de arquivos
+      bw.newLine();
+      System.out.println("Log criado com sucesso!");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    System.out.println("Abaixo vem o histório de partidas:");
+
+    try (BufferedReader br = new BufferedReader(new FileReader(logFile))) {
+      String linha;
+      while ((linha = br.readLine()) != null) {
+        System.out.println(linha);
+      }
+    } catch (Exception e) {
+      System.out.println("Erro ao ler o arquivo.");
+    }
+
+  }
+
   // método principal ( em OOP puro, eu criaria uma classe separada onde os
   // objetos são criados e começam a interagir entre si )
   public static void main(String[] args) {
     limpartela();
+    System.out.println("Bem vindo ao jogo da adivinhação! Espero que se divirta muito!");
     String user = obter_nome();
-    int palpite = obter_palpite(user);
-    boolean verif = verif(user, palpite);
-    System.out.println("DEBUG Nome de usuário é: " + user); // para debug, função funciona corretamente
-    System.out.println("DEBUG Número digitado é: " + palpite);
-    System.out.println("DEBUG Verif é: " + verif);
+    int[] resultado = Jogar(user);
+    salvarLog(user, resultado[0], resultado[1]);
+    System.out.println("Obrigado por jogar!");
   }
 } // fim da classe

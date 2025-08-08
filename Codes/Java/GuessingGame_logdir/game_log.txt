@@ -1,0 +1,1 @@
+Nome do jogador: DummySubject | Número secreto: 80 | Tentativas: 10
