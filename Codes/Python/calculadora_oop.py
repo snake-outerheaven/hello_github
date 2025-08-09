@@ -182,8 +182,8 @@ def obter_numeros():
 # Menu para escolher operação
 def menu_calculadora(calc):
     while True:
-        print('0) Sair')
         print('\nEscolha a operação desejada:')
+        print('0) Sair')
         print('1) Soma (usa a e b)')
         print('2) Subtração (usa a e b)')
         print('3) Multiplicação (usa a e b)')
