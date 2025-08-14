@@ -1,66 +1,114 @@
-" ~/.vimrc — Configuração básica e limpa para terminal puro
+" ~/.vimrc - configuração no arch linux
+" Plugins instalados pelo pacman:
+" vim
+" vim-runtime
+" vim-airline
+" vim-airline-themes
+" vim-ale
+" vim-auto-pairs
+" vim-ctrlp
+" vim-devicons
+" vim-easymotion
+" vim-fugitive
+" vim-gitgutter
+" vim-nerdtree
+" vim-molokai
+" (opcionais) vim-syntastic, vim-supertab, vim-bufexplorer, vim-tabular
 
-" --------------------
+" --------------------------------------------------------------------
+set nocompatible                " modo Vim (não vi)
+filetype plugin indent on       " filetype + plugins + indent
+syntax on                       " syntax highlighting
+
 " Interface
-" --------------------
-set number                      " Mostra número das linhas
-" set relativenumber            " Números relativos 
-set showcmd                     " Mostra comandos parcialmente digitados
-set nocursorline                " Não destaca a linha atual
-syntax on                       " Ativa destaque de sintaxe
-set title                       " Exibe o nome do arquivo no título do terminal
+set termguicolors               " truecolor se suportado
+set background=dark             " tema: dark/light
+set number                      " número absoluto
+colorscheme elflord
+""set cursorline                  " destaca linha atual
+set signcolumn=yes              " coluna de sinais fixa
+set showcmd                     " mostra comando parcial
+set title                       " mostra nome no título do terminal
+set laststatus=2                " sempre mostrar statusline
+let &statusline = '%f %= %y %= [%{&encoding}] %= [linha: %l/%L] %= [col: %c] %= [%p%%] %= [%{&fileformat}]'
 
-" --------------------
-" Indentação
-" --------------------
-set tabstop=4                   " Largura da tabulação em 4 espaços
-set shiftwidth=4                " Espaços usados por indentação automática
-set expandtab                   " Converte tabulações em espaços
-set autoindent                  " Mantém indentação da linha anterior
-set smartindent                 " Indenta automaticamente em blocos
+" Indentação e tabs
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set smartindent
 
-" --------------------
 " Busca
-" --------------------
-set ignorecase                  " Busca insensível a maiúsculas/minúsculas
-set smartcase                   " Busca sensível se usar maiúsculas
-set incsearch                   " Busca incremental conforme digita
-set hlsearch                    " Destaca todas as ocorrências
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
 
-" --------------------
 " Usabilidade
-" --------------------
-set scrolloff=5                 " Mantém 5 linhas de margem ao mover o cursor
-set wrap                        " Ativa quebra de linha visual
-set mouse=a                     " Habilita uso de mouse no terminal
-set clipboard=unnamedplus       " Usa área de transferência do sistema
-set backspace=indent,eol,start  " Backspace funciona em todos os contextos
-set tags=./tags;,tags;          " Ctags
+set scrolloff=5
+set wrap
+set mouse=a
+set clipboard=unnamedplus
+set backspace=indent,eol,start
 
-" --------------------
-" Arquivos e swap
-" --------------------
-set nobackup                    " Desativa criação de arquivos de backup
-set nowritebackup               " Não faz backup antes de sobrescrever
-set noswapfile                  " Desativa arquivos .swp
+" Arquivos temporários (diretórios locais)
+set undodir=~/.vim/undo
+set undofile                    " undo persistente
+""set backupdir=~/.vim/backup//
+""set directory=~/.vim/swap//
+""set backup
+""set writebackup
+" Observação: preferir pastas locais em vez de desabilitar swap/backup
 
-" --------------------
-" Silenciar alertas
-" --------------------
-set noerrorbells                " Desativa sons de erro
-set visualbell                  " Usa flash visual, sem som
-set t_vb=                       " Desativa até o flash no terminal
+" Performance
+set ttyfast
+set timeoutlen=500
 
-" -------------------
-" Colorscheme
-" -------------------
+" Plugins: configurações diretas
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'behelit'
 
-colorscheme zaibatsu 
+" CtrlP
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_working_path_mode = 0
 
-" --------------------
-" Barra de status inferior
-" --------------------
-set laststatus=2                " Sempre mostrar a statusline
-let &statusline = '%f %= %y %= [%{&encoding}] %= [linha: %l/%L] %= [col: %c] %= [%p%%] %= [%{&fileformat}]' 
-" barra inferior simples 
+" NERDTree
+nnoremap <leader>n :NERDTreeToggle<CR>
+
+" EasyMotion (exemplo de uso)
+nmap <Leader><Leader>w <Plug>(easymotion-w)
+
+" ALE - linting e fixers
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines','trim_whitespace'],
+\   'python': ['black'],
+\   'rust': ['rustfmt'],
+\}
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'c': ['gcc'],
+\   'cpp': ['clang'],
+\   'rust': ['rls','rust-analyzer'],
+\}
+let g:ale_emit_conflict_warnings = 0
+
+" Auto pairs
+let g:AutoPairsMapBS = 1
+
+" Conveniências e mapeamentos
+let mapleader = " "            " leader = space
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :q!<CR>
+nnoremap <leader>bd :bdelete<CR>
+inoremap jk <Esc>               " sair do modo insert com 'jk'
+
+" Final: carregar arquivo extra se existir
+if filereadable(expand("~/.vim/pluginrc.vim"))
+  source ~/.vim/pluginrc.vim
+endif
 
