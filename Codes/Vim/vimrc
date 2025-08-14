@@ -1,31 +1,22 @@
 " ~/.vimrc - configuração no arch linux
-" Plugins instalados pelo pacman:
-" vim
-" vim-runtime
-" vim-airline
-" vim-airline-themes
-" vim-ale
-" vim-auto-pairs
-" vim-ctrlp
-" vim-devicons
-" vim-easymotion
-" vim-fugitive
-" vim-gitgutter
-" vim-nerdtree
-" vim-molokai
-" (opcionais) vim-syntastic, vim-supertab, vim-bufexplorer, vim-tabular
+" Plugins instalados no pacman:
+" vim vim-runtime vim-airline vim-airline-themes vim-ale vim-auto-pairs
+" vim-ctrlp vim-devicons vim-easymotion vim-fugitive vim-gitgutter
+" vim-nerdtree vim-molokai (opcionais: vim-syntastic, vim-supertab, vim-bufexplorer, vim-tabular)
 
-" --------------------------------------------------------------------
 set nocompatible                " modo Vim (não vi)
 filetype plugin indent on       " filetype + plugins + indent
 syntax on                       " syntax highlighting
+
+" Conveniências: leader (defina antes dos mappings)
+let mapleader = " "             " leader = space
 
 " Interface
 set termguicolors               " truecolor se suportado
 set background=dark             " tema: dark/light
 set number                      " número absoluto
 colorscheme elflord
-""set cursorline                  " destaca linha atual
+" set cursorline                " não usar cursorline
 set signcolumn=yes              " coluna de sinais fixa
 set showcmd                     " mostra comando parcial
 set title                       " mostra nome no título do terminal
@@ -55,11 +46,11 @@ set backspace=indent,eol,start
 " Arquivos temporários (diretórios locais)
 set undodir=~/.vim/undo
 set undofile                    " undo persistente
-""set backupdir=~/.vim/backup//
-""set directory=~/.vim/swap//
-""set backup
-""set writebackup
-" Observação: preferir pastas locais em vez de desabilitar swap/backup
+" (backup/swap podem ser ativados direcionando para ~/.vim/* se quiser)
+" set backupdir=~/.vim/backup//
+" set directory=~/.vim/swap//
+" set backup
+" set writebackup
 
 " Performance
 set ttyfast
@@ -75,7 +66,7 @@ let g:airline_theme = 'behelit'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_working_path_mode = 0
 
-" NERDTree
+" NERDTree (toggle com <leader>n)
 nnoremap <leader>n :NERDTreeToggle<CR>
 
 " EasyMotion (exemplo de uso)
@@ -100,7 +91,6 @@ let g:ale_emit_conflict_warnings = 0
 let g:AutoPairsMapBS = 1
 
 " Conveniências e mapeamentos
-let mapleader = " "            " leader = space
 nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>Q :q!<CR>
@@ -111,4 +101,3 @@ inoremap jk <Esc>               " sair do modo insert com 'jk'
 if filereadable(expand("~/.vim/pluginrc.vim"))
   source ~/.vim/pluginrc.vim
 endif
-
