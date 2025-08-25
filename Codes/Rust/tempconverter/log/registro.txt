@@ -7,3 +7,5 @@ Nome do usuário: Finn Mcmissile | Escolha: 1 | Valor obtido pelo conversor: 132
 
 Nome do usuário: Neo | Escolha: 2 | Valor obtido pelo conversor: 22.22°C
 
+Nome do usuário: Tralalero Tralala | Escolha: 2 | Valor obtido pelo conversor: 29.17°C | Horário de uso do programa: 24/08/2025 - 23:25
+

@@ -1,3 +1,4 @@
+use chrono::{DateTime, Local};
 use std::fs::{self, OpenOptions};
 use std::io::{self, Read, Seek, Write}; // uso novo, Seek, para mover o cursor no arquivo
 use std::path::Path; // módulo para manipulação de caminhos de arquivos
@@ -78,7 +79,7 @@ fn tempconverter() -> (String, String) {
                         println!("Gerando valor convertido.");
                         sleep(Duration::from_millis(250));
                         let fah = fahrenheit(num); // isso que faltava
-                        let fah = format!("{:.2}", fah);                        
+                        let fah = format!("{:.2}", fah);
                         println!("{num}°C equivale a {fah}°F"); // shadowing para string
                         return (fah.trim().to_string(), escolha.trim().to_string());
                     }
@@ -154,7 +155,7 @@ fn obtendo_nome() -> String {
 
         let nome_limpo = nome.trim().to_string();
 
-        println!("O nome de usuário {nome_limpo} é o desejado? (S/N)");
+        println!("O nome de usuário '{nome_limpo}' é o desejado? (S/N)");
 
         io::stdin()
             .read_line(&mut confirm)
@@ -243,9 +244,13 @@ fn salvar(conversao: (String, String), user: &String) {
         identificador = "°C";
     }
 
+    let agora: DateTime<Local> = Local::now();
+
+    let time_stamp_format: String = agora.format("%d/%m/%Y - %H:%M").to_string();
+
     let registro = format!(
-        "Nome do usuário: {} | Escolha: {} | Valor obtido pelo conversor: {}{}",
-        user, escolha, valor, identificador
+        "Nome do usuário: {} | Escolha: {} | Valor obtido pelo conversor: {}{} | Horário de uso do programa: {}",
+        user, escolha, valor, identificador, time_stamp_format
     );
 
     match writeln!(log, "{}\n", registro) {
