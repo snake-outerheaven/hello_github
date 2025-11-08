@@ -38,7 +38,9 @@ public class Livro {
      * @return um número positivo representando o ID do livro
      */
     private static Long gerarId() {
-        return Math.abs(rg.nextLong());
+        Long a = rg.nextLong();
+        Long b = rg.nextLong();
+        return Math.abs(a ^ b); // XOR mistura bits, gerando maior aleatoriedade
     }
 
     // ============================================================
