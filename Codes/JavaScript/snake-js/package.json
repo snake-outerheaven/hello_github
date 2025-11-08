@@ -1,0 +1,17 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "Little snake game as first project, with NodeJS",
+  "main": "snake.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "snake",
+    "games",
+    "newbie"
+  ],
+  "private": "true",
+  "author": "neo-dev",
+  "license": "MIT"
+}

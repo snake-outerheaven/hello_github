@@ -1,1 +1,2 @@
 Nome do jogador: DummySubject | Número secreto: 80 | Tentativas: 10
+Nome do jogador: Neo | Número secreto: 42 | Tentativas: 11

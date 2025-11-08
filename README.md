@@ -19,6 +19,8 @@ Codes/
 │   └── ... (exercícios e exemplos em C++)
 ├── Java/
 │   └── ... (exercícios e exemplos em Java)
+├── JavaScript/
+│   └── ... (exercícios e exemplos em JavaScript)
 ├── Lua/
 │   └── ... (scripts e exercícios em Lua)
 ├── Python/

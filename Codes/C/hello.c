@@ -22,6 +22,7 @@ int main(void) {
       }
     }
   }
+
   for (int i = X - 1; i >= 0; i--) {
     int depth_offset = (X - 1 - i) * 3;
 
@@ -37,6 +38,7 @@ int main(void) {
     }
     printf("\n");
   }
+
   idx = linear_idx(valor, dims, ndim);
 
   printf("Valor na posição x = %d, y = %d, z = %d -> %d.\n", valor[0], valor[1],
@@ -49,6 +51,7 @@ int main(void) {
  * Esta implementação recebe um array dos índices, um array das dimensões e o
  * número das dimensões
  */
+
 int linear_idx(int *indices, int *dims, int n) {
   int idx = 0;
   int stride = 1; // strides seriam saltos dimensionais.
