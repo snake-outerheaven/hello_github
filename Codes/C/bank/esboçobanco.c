@@ -53,9 +53,7 @@ unsigned long long criarRand(void);
 /*
  * Protótipo de funções essenciais
  */
- Cliente* criarCliente(void){
-
- }
+Cliente *criarCliente(void);
 /*
  * Função principal
  */
@@ -101,3 +99,4 @@ unsigned long long criarRand(void) {
 /*
  * Implementação das funções do sistema
  */
+Cliente *criarCliente(void) { Cliente *c = malloc(sizeof(Cliente)); }
