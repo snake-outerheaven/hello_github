@@ -1,254 +1,330 @@
 package Project1;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Objects;
 
 /**
- * Representa um livro cadastrado no sistema da biblioteca.
+ * Representa um item do catálogo (livro) em um sistema de gestão.
  * <p>
- * Cada livro possui um identificador único, nome, autor, tipo e um estado
- * que define sua disponibilidade no sistema. Os objetos desta classe são
- * imutáveis em relação aos atributos básicos (id, nome, autor e tipo),
- * mas o estado pode ser alterado conforme o livro é emprestado,
- * reservado ou devolvido.
+ * Cada instância contém metadados imutáveis (id, nome, autor, tipo) e um
+ * estado mutável {@link Estado} que representa o ciclo de vida do item
+ * (disponível, emprestado, reservado, perdido).
  * </p>
  *
- * <b>Autor:</b> neo-dev</p>
- * <p><b>Versão:</b> 0.01<br>
+ * <p>
+ * Contratos principais:
+ * <ul>
+ *   <li>Os campos {@code nome}, {@code autor} e {@code tipo} não podem ser {@code null}.</li>
+ *   <li>O identificador {@code id} é gerado internamente e é imutável.</li>
+ *   <li>Operações que alteram o estado do livro são atômicas em relação à
+ *       própria instância (métodos sincronizados) para ajudar a evitar condições
+ *       de corrida em cenários simples de concorrência.</li>
+ * </ul>
+ * </p>
+ *
+ * <p><b>Uso típico:</b>
+ * criar instâncias via construtor, consultar atributos via getters e manipular
+ * estado chamando os métodos {@link #emprestar()}, {@link #reservar()},
+ * {@link #perder()} e {@link #disponibilizar()}.</p>
+ *
+ * @author neo-dev
+ * @version 0.02
+ * @since 1.0
  */
 public class Livro {
 
-    // ============================================================
-    // Utilitários de classe
-    // ============================================================
+    /* ============================================================
+     * Utilitários de classe
+     * ============================================================ */
 
     /**
-     * Gerador de números aleatórios seguro utilizado para criação de IDs de livros.
+     * Gerador de números aleatórios criptograficamente seguro para criação de IDs.
      * <p>
-     * {@link SecureRandom} é preferido em relação a {@link java.util.Random}
-     * por fornecer entropia criptograficamente segura, garantindo que
-     * os IDs sejam menos previsíveis.
+     * Usar {@link SecureRandom} garante maior entropia que {@link java.util.Random}.
      * </p>
      */
-    private static final SecureRandom rg = new SecureRandom();
+    private static final SecureRandom RG = new SecureRandom();
 
     /**
-     * Gera um identificador único para um novo livro.
+     * Gera um identificador único positivo para um livro.
+     * <p>
+     * A máscara com {@code Long.MAX_VALUE} garante que o valor retornado seja não-negativo
+     * (evita problemas com {@code Math.abs(Long.MIN_VALUE)}).
+     * </p>
      *
-     * @return um número positivo representando o ID do livro
+     * @return identificador positivo pseudo-aleatório
      */
     private static Long gerarId() {
-        Long a = rg.nextLong();
-        Long b = rg.nextLong();
-        return Math.abs(a ^ b); // XOR mistura bits, gerando maior aleatoriedade
+        return RG.nextLong() & Long.MAX_VALUE;
     }
 
-    // ============================================================
-    // Enumerações
-    // ============================================================
+    /* ============================================================
+     * Enumerações
+     * ============================================================ */
 
     /**
-     * Enumeração que define os possíveis estados de um livro no sistema.
-     * <ul>
-     *     <li>{@link #DISPONIVEL} — o livro está livre para empréstimo ou reserva;</li>
-     *     <li>{@link #EMPRESTADO} — o livro está atualmente emprestado a um usuário;</li>
-     *     <li>{@link #RESERVADO} — o livro foi reservado e não pode ser emprestado;</li>
-     *     <li>{@link #PERDIDO} — o livro foi declarado como perdido;</li>
-     * </ul>
+     * Representa os estados possíveis de um {@code Livro} no sistema.
+     * <p>
+     * Cada enum possui um código inteiro fixo (útil para persistência/integração)
+     * e um {@link #getLabel() label} legível.
+     * </p>
      */
     public enum Estado {
-        DISPONIVEL,
-        EMPRESTADO,
-        RESERVADO,
-        PERDIDO,
-    }
+        /**
+         * Livro disponível para empréstimo ou reserva.
+         */
+        DISPONIVEL(0, "Disponível"),
 
-    /**
-     * Converte um Integer em um {@link Estado} correspondente.
-     * <p>
-     * Os códigos válidos são:
-     * <ul>
-     *     <li>0 — {@link Estado#DISPONIVEL}</li>
-     *     <li>1 — {@link Estado#EMPRESTADO}</li>
-     *     <li>2 — {@link Estado#RESERVADO}</li>
-     *     <li>3 — {@link Estado#PERDIDO}</li>
-     * </ul>
-     * </p>
-     * <p>
-     * Este método é utilizado para inicializar ou alterar o estado de um livro
-     * a partir de um valor numérico, facilitando integração com interfaces ou
-     * sistemas externos que utilizem códigos inteiros.
-     * </p>
-     *
-     * @param code Código inteiro representando o estado do livro.
-     * @return O {@link Estado} correspondente ao código informado.
-     * @throws IllegalArgumentException Se o código não estiver entre 0 e 3, indicando um valor inválido.
-     */
-    private static Estado estadoFromInt(Integer code) {
-        if (code == null) {
-            throw new IllegalArgumentException(
-                "Código de estado não pode ser null."
-            );
+        /**
+         * Livro atualmente emprestado.
+         */
+        EMPRESTADO(1, "Emprestado"),
+
+        /**
+         * Livro reservado e não livre para empréstimo.
+         */
+        RESERVADO(2, "Reservado"),
+
+        /**
+         * Livro declarado perdido.
+         */
+        PERDIDO(3, "Perdido");
+
+        private final Integer code;
+        private final String label;
+
+        Estado(Integer code, String label) {
+            this.code = code;
+            this.label = label;
         }
-        return switch (code) {
-            case 0 -> Estado.DISPONIVEL;
-            case 1 -> Estado.EMPRESTADO;
-            case 2 -> Estado.RESERVADO;
-            case 3 -> Estado.PERDIDO;
-            default -> throw new IllegalArgumentException(
+
+        /**
+         * Retorna o código inteiro associado ao estado.
+         *
+         * @return código inteiro do estado
+         */
+        public Integer getCode() {
+            return code;
+        }
+
+        /**
+         * Rótulo legível do estado (para exibição em UI/relatórios).
+         *
+         * @return rótulo legível do estado
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * Converte um código inteiro em {@link Estado}.
+         *
+         * @param code código inteiro
+         * @return {@link Estado} correspondente
+         * @throws IllegalArgumentException se o código não corresponder a nenhum estado
+         */
+        public static Estado fromCode(int code) {
+            for (Estado e : Estado.values()) {
+                if (e.code == code) return e;
+            }
+            throw new IllegalArgumentException(
                 "Código de estado inválido: " + code
             );
-        };
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
     }
 
-    // ============================================================
-    // Atributos de instância
-    // ============================================================
+    /* ============================================================
+     * Atributos de instância
+     * ============================================================ */
 
     /**
-     * Identificador único do livro.
+     * Identificador único do livro (imóvel após construção).
      */
     private final Long id;
 
     /**
-     * Nome (título) do livro.
+     * Título do livro (não nulo).
      */
     private final String nome;
 
     /**
-     * Nome do autor do livro.
+     * Nome do autor (não nulo).
      */
     private final String autor;
 
     /**
-     * Tipo ou categoria do livro (ex.: Romance, Técnico, Infantil etc.).
+     * Tipo ou categoria do livro (não nulo).
      */
-    private final String type;
+    private final String tipo;
 
     /**
-     * Estado atual do livro no sistema.
+     * Estado atual do livro (mutável).
+     * <p>
+     * Métodos que alteram este campo são sincronizados para manter consistência
+     * em operações concorrentes simples.
+     * </p>
      */
     private Estado status;
 
-    // ============================================================
-    // Construtor
-    // ============================================================
+    /* ============================================================
+     * Construtores
+     * ============================================================ */
 
     /**
-     * Construtor principal da classe {@code Livro}.
-     * <p>
-     * Permite criar um livro já definindo o estado inicial via código inteiro.
-     * O código é mapeado para a enum {@link Estado} conforme:
-     * <ul>
-     *     <li>0 — DISPONIVEL</li>
-     *     <li>1 — EMPRESTADO</li>
-     *     <li>2 — RESERVADO</li>
-     *     <li>3 — PERDIDO</li>
-     * </ul>
-     * </p>
+     * Construtor principal.
      *
-     * @param nome        título do livro (não pode ser {@code null})
-     * @param autor       nome do autor do livro (não pode ser {@code null})
-     * @param type        tipo ou categoria do livro (não pode ser {@code null})
-     * @param estadoCode  código do estado inicial do livro
-     * @throws NullPointerException      se qualquer parâmetro {@code nome}, {@code autor} ou {@code type} for {@code null}
-     * @throws IllegalArgumentException  se {@code estadoCode} não estiver entre 0 e 3
+     * @param nome       título do livro; não pode ser {@code null}
+     * @param autor      nome do autor; não pode ser {@code null}
+     * @param tipo       tipo/categoria; não pode ser {@code null}
+     * @param estadoCode código inicial do estado (inteiro); se {@code null}, assume {@link Estado#DISPONIVEL}
+     * @throws NullPointerException     se {@code nome}, {@code autor} ou {@code tipo} for {@code null}
+     * @throws IllegalArgumentException se {@code estadoCode} for inválido (quando não nulo)
      */
-    public Livro(String nome, String autor, String type, Integer estadoCode) {
+    public Livro(String nome, String autor, String tipo, Integer estadoCode) {
         this.id = gerarId();
-        this.nome = Objects.requireNonNull(nome);
-        this.autor = Objects.requireNonNull(autor);
-        this.type = Objects.requireNonNull(type);
-        this.status = estadoFromInt(estadoCode);
+        this.nome = Objects.requireNonNull(nome, "nome não pode ser null");
+        this.autor = Objects.requireNonNull(autor, "autor não pode ser null");
+        this.tipo = Objects.requireNonNull(tipo, "tipo não pode ser null");
+        this.status = (estadoCode == null)
+            ? Estado.DISPONIVEL
+            : Estado.fromCode(estadoCode);
     }
 
-    // ============================================================
-    // Métodos herdados
-    // ============================================================
+    /**
+     * Construtor de conveniência que cria um livro com estado padrão {@link Estado#DISPONIVEL}.
+     *
+     * @param nome  título do livro; não pode ser {@code null}
+     * @param autor nome do autor; não pode ser {@code null}
+     * @param tipo  tipo/categoria; não pode ser {@code null}
+     * @throws NullPointerException se {@code nome}, {@code autor} ou {@code tipo} for {@code null}
+     */
+    public Livro(String nome, String autor, String tipo) {
+        this(nome, autor, tipo, null);
+    }
+
+    /* ============================================================
+     * Sobrescritas e utilitários
+     * ============================================================ */
 
     /**
-     * Retorna uma representação textual dos atributos do livro.
+     * Retorna uma representação legível do livro.
      * <p>
-     * O formato é legível por humanos e exibe todas as informações básicas,
-     * incluindo o estado atual.
+     * Formato:
+     * <pre>
+     * Livro #id
+     * Nome: ...
+     * Autor: ...
+     * Tipo: ...
+     * Estado: ...
+     * </pre>
      * </p>
      *
-     * @return uma {@link String} com os principais atributos do livro
+     * @return string com os principais atributos do livro
      */
     @Override
     public String toString() {
-        return """
-        Livro #%d
-        Nome: %s
-        Autor: %s
-        Tipo: %s
-        Estado: %s
-        """.formatted(this.id, this.nome, this.autor, this.type, this.status);
+        return String.format(
+            "Livro #%d%nNome: %s%nAutor: %s%nTipo: %s%nEstado: %s%n",
+            this.id,
+            this.nome,
+            this.autor,
+            this.tipo,
+            this.status
+        );
     }
 
-    // ============================================================
-    // Getters
-    // ============================================================
+    /**
+     * Dois livros são considerados iguais se compartilharem o mesmo {@code id}.
+     *
+     * @param o outro objeto
+     * @return {@code true} se o outro for um {@code Livro} com mesmo {@code id}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Livro)) return false;
+        Livro other = (Livro) o;
+        return Objects.equals(this.id, other.id);
+    }
+
+    /**
+     * Hash code baseado no {@code id}.
+     *
+     * @return hash code do livro
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.id);
+    }
+
+    /* ============================================================
+     * Getters
+     * ============================================================ */
 
     /**
      * Retorna o identificador único do livro.
      *
-     * @return o ID do livro
+     * @return id (não nulo)
      */
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     /**
-     * Retorna o nome (título) do livro.
+     * Retorna o título do livro.
      *
-     * @return o nome do livro
+     * @return título (não nulo)
      */
     public String getNome() {
-        return this.nome;
+        return nome;
     }
 
     /**
      * Retorna o autor do livro.
      *
-     * @return o autor do livro
+     * @return autor (não nulo)
      */
     public String getAutor() {
-        return this.autor;
+        return autor;
     }
 
     /**
-     * Retorna o tipo ou categoria do livro.
+     * Retorna o tipo/categoria do livro.
      *
-     * @return o tipo do livro
+     * @return tipo (não nulo)
      */
     public String getTipo() {
-        return this.type;
+        return tipo;
     }
 
     /**
      * Retorna o estado atual do livro.
      *
-     * @return o estado do livro no sistema
+     * @return estado atual (não nulo)
      */
-    public Estado getStatus() {
-        return this.status;
+    public synchronized Estado getStatus() {
+        return status;
     }
 
-    /**
-     * Métodos responsáveis por alterar o estado de um item no sistema de biblioteca.
-     * Cada método realiza uma verificação antes de atualizar o estado,
-     * garantindo a consistência lógica do ciclo de vida do item.
-     */
+    /* ============================================================
+     * Operações de ciclo de vida (mutações de estado)
+     * ============================================================ */
 
     /**
-     * Tenta emprestar o item.
-     * <p>Um item só pode ser emprestado se estiver disponível.</p>
+     * Tenta emprestar o livro.
+     * <p>
+     * Pré-condição: somente é possível emprestar se o estado atual for {@link Estado#DISPONIVEL}.
+     * Pós-condição: se retornado {@code true}, o estado será alterado para {@link Estado#EMPRESTADO}.
+     * </p>
      *
-     * @return {@code true} se o empréstimo for bem-sucedido;
-     *         {@code false} caso o item não esteja disponível.
+     * @return {@code true} se o empréstimo foi efetuado; {@code false} caso contrário
      */
-    public boolean emprestar() {
+    public synchronized boolean emprestar() {
         if (this.status != Estado.DISPONIVEL) {
             return false;
         }
@@ -257,13 +333,15 @@ public class Livro {
     }
 
     /**
-     * Marca o item como perdido.
-     * <p>Um item não pode ser marcado como perdido se já estiver reservado ou perdido.</p>
+     * Marca o livro como perdido.
+     * <p>
+     * Não permite marcar como perdido se já estiver {@link Estado#RESERVADO} ou {@link Estado#PERDIDO}.
+     * Se bem-sucedido, atualiza o estado para {@link Estado#PERDIDO}.
+     * </p>
      *
-     * @return {@code true} se a operação for bem-sucedida;
-     *         {@code false} caso contrário.
+     * @return {@code true} se a operação foi realizada; {@code false} caso contrário
      */
-    public boolean perder() {
+    public synchronized boolean perder() {
         if (this.status == Estado.RESERVADO || this.status == Estado.PERDIDO) {
             return false;
         }
@@ -272,13 +350,15 @@ public class Livro {
     }
 
     /**
-     * Reserva o item.
-     * <p>Um item só pode ser reservado se estiver disponível.</p>
+     * Reserva o livro.
+     * <p>
+     * Só é possível reservar quando o estado atual é {@link Estado#DISPONIVEL}.
+     * Em caso de sucesso, altera o estado para {@link Estado#RESERVADO}.
+     * </p>
      *
-     * @return {@code true} se a reserva for bem-sucedida;
-     *         {@code false} caso o item não esteja disponível.
+     * @return {@code true} se a reserva foi efetuada; {@code false} caso contrário
      */
-    public boolean reservar() {
+    public synchronized boolean reservar() {
         if (this.status != Estado.DISPONIVEL) {
             return false;
         }
@@ -287,17 +367,59 @@ public class Livro {
     }
 
     /**
-     * Disponibiliza novamente o item.
-     * <p>Um item não pode ser disponibilizado se já estiver disponível.</p>
+     * Disponibiliza o livro novamente (ex.: devolução).
+     * <p>
+     * Não realiza ação se o livro já estiver {@link Estado#DISPONIVEL}.
+     * Caso a transição ocorra, o novo estado será {@link Estado#DISPONIVEL}.
+     * </p>
      *
-     * @return {@code true} se a operação for bem-sucedida;
-     *         {@code false} caso o item já esteja disponível.
+     * @return {@code true} se o estado foi alterado; {@code false} se já estava disponível
      */
-    public boolean disponibilizar() {
+    public synchronized boolean disponibilizar() {
         if (this.status == Estado.DISPONIVEL) {
             return false;
         }
         this.status = Estado.DISPONIVEL;
         return true;
     }
+
+    /**
+     * Define o estado do livro a partir de um código inteiro.
+     * <p>
+     * Útil para desserialização de registros persistidos. Se o código for inválido,
+     * será lançada {@link IllegalArgumentException}.
+     * </p>
+     *
+     * @param code código inteiro do estado
+     * @throws IllegalArgumentException se {@code code} não corresponder a um estado válido
+     */
+    public synchronized void setStatusFromCode(int code) {
+        this.status = Estado.fromCode(code);
+    }
+
+    /* ============================================================
+     * Notas de concorrência e integração
+     * ============================================================ */
+
+    /**
+     * Observações sobre concorrência:
+     * <ul>
+     *   <li>Os métodos que alteram {@code status} são sincronizados para fornecer
+     *       uma proteção básica contra condições de corrida quando múltiplas threads
+     *       acessam a mesma instância.</li>
+     *   <li>Em cenários de alta concorrência ou quando a integridade do sistema
+     *       depende de transações complexas (por exemplo, atualizações em persistência,
+     *       notificação de usuários, logs), recomenda-se orquestrar mudanças de estado
+     *       em um nível superior (serviço/repositório) usando mecanismos transacionais
+     *       ou locks adequados.</li>
+     * </ul>
+     *
+     * Integração/persistência:
+     * <ul>
+     *   <li>Para persistência, recomenda-se armazenar o {@link #id} (chave primária)
+     *       e o {@link Estado#getCode()} para reconstruir o objeto posteriormente.</li>
+     *   <li>Ao expor dados via API, prefira transformar objetos {@code Livro} em
+     *       DTOs imutáveis para evitar vazamento de referências mutáveis.</li>
+     * </ul>
+     */
 }
