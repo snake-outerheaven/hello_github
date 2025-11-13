@@ -35,41 +35,49 @@ int main(void) {
   double mean_total = 0.0, mean_g1 = 0.0, mean_g2 = 0.0;
   size_t count = 0;
 
-  if (wait_us(DEF_WAIT)) {
-    fprintf(stderr, "Error: wait_us() failed.\n");
-    return EXIT_FAILURE;
-  }
+  while (1) {
 
-  printf("This program receives group and age data for %d individuals.\n",
-         MAX_USERS);
-
-  for (size_t i = 0; i < MAX_USERS; i++) {
-    if (insert_data(&users[i])) {
-      fprintf(stderr, "Error: failed to insert data for user %zu.\n", i);
+    if (wait_us(DEF_WAIT)) {
+      fprintf(stderr, "Error: wait_us() failed.\n");
       return EXIT_FAILURE;
     }
-    count++;
-  }
 
-  if (calc_mean_group1(users, count, &mean_g1)) {
-    fprintf(stderr, "Error: failed to calculate mean for group 1.\n");
-    return EXIT_FAILURE;
-  }
+    if (clear_screen()) {
+      fprintf(stderr, "Error: clear_screen() failed.\n");
+      return EXIT_FAILURE;
+    }
 
-  if (calc_mean_group2(users, count, &mean_g2)) {
-    fprintf(stderr, "Error: failed to calculate mean for group 2.\n");
-    return EXIT_FAILURE;
-  }
+    printf("This program receives group and age data for %d individuals.\n",
+           MAX_USERS);
 
-  if (calc_mean_total(users, count, &mean_total)) {
-    fprintf(stderr, "Error: failed to calculate total mean.\n");
-    return EXIT_FAILURE;
-  }
+    for (size_t i = 0; i < MAX_USERS; i++) {
+      if (insert_data(&users[i])) {
+        fprintf(stderr, "Error: failed to insert data for user %zu.\n", i);
+        return EXIT_FAILURE;
+      }
+      count++;
+    }
 
-  printf("Mean age (Group 1): %.1lf\n"
-         "Mean age (Group 2): %.1lf\n"
-         "Mean age (All groups): %.1lf\n",
-         mean_g1, mean_g2, mean_total);
+    if (calc_mean_group1(users, count, &mean_g1)) {
+      fprintf(stderr, "Error: failed to calculate mean for group 1.\n");
+      return EXIT_FAILURE;
+    }
+
+    if (calc_mean_group2(users, count, &mean_g2)) {
+      fprintf(stderr, "Error: failed to calculate mean for group 2.\n");
+      return EXIT_FAILURE;
+    }
+
+    if (calc_mean_total(users, count, &mean_total)) {
+      fprintf(stderr, "Error: failed to calculate total mean.\n");
+      return EXIT_FAILURE;
+    }
+
+    printf("Mean age (Group 1): %.1lf\n"
+           "Mean age (Group 2): %.1lf\n"
+           "Mean age (All groups): %.1lf\n",
+           mean_g1, mean_g2, mean_total);
+  }
 
   return EXIT_SUCCESS;
 }
