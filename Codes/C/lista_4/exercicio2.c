@@ -30,7 +30,6 @@ struct worker {
 struct workerqueue {
   Worker *w;
   WorkerQueue *next;
-  WorkerQueue *(*new)(void);
 };
 
 struct mempool {
@@ -43,19 +42,20 @@ int trim(char *str);
 int wait_ms(uint32_t tm);
 int clear_screen(void);
 
-Worker worker_new(void);
-void worker_free(Worker *w);
-int worker_setLn(Worker *w, Line ln);
-int worker_setProd(Worker *w, uint32_t p);
+int worker_init(Worker *w);
+void worker_destroy(Worker *w);
+int worker_set_line(Worker *w, Line ln);
+int worker_set_prod(Worker *w, uint32_t p);
+int worker_set_name(Worker *w, const char *name);
 
-WorkerQueue *queue_new(void);
-int queue_push(WorkerQueue **head, Worker *w);
-Worker *queue_pop(WorkerQueue **head);
-void queue_free(WorkerQueue **head);
-int queue_size(WorkerQueue *head);
+int queue_init(WorkerQueue **q);
+void queue_destroy(WorkerQueue **q);
+int queue_push(WorkerQueue *q, Worker *w);
+int queue_pop(WorkerQueue *q, Worker **out);
+size_t queue_size(const WorkerQueue *q);
 
-MPool *mempool_new(size_t sz);
-void mempool_free(MPool *pool);
+int mempool_init(MPool *pool, size_t sz);
+void mempool_destroy(MPool *pool);
 void *mempool_alloc(MPool *pool, size_t sz);
 void mempool_reset(MPool *pool);
 

@@ -31,6 +31,8 @@ Codes/
 │   └── ... (testes e exercícios em Rust)
 ├── Vimscript/
 │   └── ... (Minha config do Vim (não recomendo usar, é bem simples) e outros scripts)
+├── Zig/
+│   └── ... (testes e exercícios em Zig)
 └── ... (outras linguagens)
 
 ```
